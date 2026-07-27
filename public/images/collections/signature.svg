@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#1c1917"/>
+  <path d="M120 360C220 260 320 180 400 140C480 180 580 260 680 360" stroke="#c9a962" stroke-width="3"/>
+  <text x="400" y="430" fill="#a8a29e" font-family="Georgia, serif" font-size="32" text-anchor="middle">Signature Collection</text>
+</svg>
