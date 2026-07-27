@@ -17,7 +17,6 @@ const variantMap = {
 interface RevealProps extends HTMLMotionProps<"div"> {
   variant?: RevealVariant;
   delay?: number;
-  as?: "div" | "section" | "article" | "blockquote" | "li" | "span";
 }
 
 export function Reveal({
@@ -25,13 +24,10 @@ export function Reveal({
   className,
   variant = "fadeUp",
   delay = 0,
-  as = "div",
   ...props
 }: RevealProps) {
-  const Component = motion[as];
-
   return (
-    <Component
+    <motion.div
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
@@ -41,6 +37,6 @@ export function Reveal({
       {...props}
     >
       {children}
-    </Component>
+    </motion.div>
   );
 }

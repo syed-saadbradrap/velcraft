@@ -5,7 +5,16 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { springSnappy } from "@/lib/motion";
 
-interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
+type MotionConflictingProps =
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onAnimationStart"
+  | "onAnimationEnd"
+  | "onAnimationIteration";
+
+interface ButtonProps
+  extends Omit<React.ComponentPropsWithoutRef<"button">, MotionConflictingProps> {
   href?: string;
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
