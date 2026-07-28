@@ -129,6 +129,10 @@ export function getErrorMessage(error: unknown, fallback = "Something went wrong
   }
 
   if (error instanceof Error) {
+    if (error.message === "Failed to fetch" || error.name === "TypeError") {
+      return "Unable to reach the store. Please try again.";
+    }
+
     return error.message;
   }
 
