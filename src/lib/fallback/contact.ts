@@ -6,8 +6,8 @@ export const fallbackContactPage: ContactPageData = {
     name: "Velcraft",
   },
   contact: {
-    title: contactContent.hero.title,
-    description: contactContent.hero.description,
+    title: contactContent.info.title,
+    description: contactContent.info.description,
     email: contactContent.info.email,
     phone: contactContent.info.phone,
     hours: contactContent.info.hours,

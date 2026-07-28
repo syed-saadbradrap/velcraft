@@ -5,9 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { Button } from "@/components/ui/Button";
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
 
 interface FaqEntry {
   question: string;
@@ -19,6 +16,7 @@ interface FaqSectionProps {
   eyebrow?: string;
   title?: string;
   description?: string;
+  showSidebar?: boolean;
 }
 
 function FaqItem({
@@ -80,9 +78,10 @@ function FaqItem({
 
 export function FaqSection({
   faqs,
-  eyebrow = "FAQ",
+  eyebrow,
   title = "Frequently Asked Questions",
-  description = "Everything you need to know about customization, sizing, materials, and orders.",
+  description,
+  showSidebar = true,
 }: FaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -90,21 +89,20 @@ export function FaqSection({
     <section id="faq" className="relative border-y border-border py-24 md:py-28">
       <div className="absolute inset-0 section-glow" />
       <Container className="relative">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
-          <Reveal className="lg:sticky lg:top-28">
-            <SectionHeading eyebrow={eyebrow} title={title} description={description} />
-            <div className="mt-8 hidden rounded-2xl border border-border bg-white/[0.03] p-6 lg:block">
-              <p className="text-xs uppercase tracking-[0.28em] text-accent">Need more help?</p>
-              <p className="mt-3 text-sm leading-7 text-stone-400">
-                Our team is available Mon–Sat, 12:00 PM – 10:00 PM.
-              </p>
-              <p className="mt-2 text-sm text-stone-300">{siteConfig.contact.email}</p>
-              <div className="mt-5">
-                <Button href={siteConfig.links.contact} variant="secondary" size="sm">
-                  Contact Us
-                </Button>
-              </div>
-            </div>
+        <div
+          className={
+            showSidebar
+              ? "grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16"
+              : "mx-auto max-w-4xl space-y-10"
+          }
+        >
+          <Reveal className={showSidebar ? "lg:sticky lg:top-28" : undefined}>
+            <SectionHeading
+              eyebrow={eyebrow}
+              title={title}
+              description={description}
+              align={showSidebar ? "left" : "center"}
+            />
           </Reveal>
 
           <div className="grid gap-4">
@@ -120,17 +118,6 @@ export function FaqSection({
             ))}
           </div>
         </div>
-
-        <Reveal className="mt-8 lg:hidden">
-          <div className={cn("rounded-2xl border border-border bg-white/[0.03] p-6 text-center")}>
-            <p className="text-sm text-stone-400">Still have questions?</p>
-            <div className="mt-4">
-              <Button href={siteConfig.links.contact} variant="secondary" size="sm">
-                Contact Us
-              </Button>
-            </div>
-          </div>
-        </Reveal>
       </Container>
     </section>
   );

@@ -49,29 +49,15 @@ export function AtelierShowcaseSection() {
               {craftedStyle.description}
             </motion.p>
 
-            <motion.div variants={staggerItem} className="grid gap-3 sm:grid-cols-2">
-              {craftedStyle.features.map((feature) => (
-                <span
-                  key={feature}
-                  className="rounded-2xl border border-border bg-white/5 px-4 py-3 text-[10px] uppercase tracking-[0.18em] text-stone-300"
-                >
-                  {feature}
-                </span>
-              ))}
-            </motion.div>
-
-            <motion.div variants={staggerItem} className="flex flex-wrap gap-4 pt-2">
+            <motion.div variants={staggerItem} className="pt-2">
               <Button href={customizeUrl()} size="lg">
                 {craftedStyle.ctaLabel}
-              </Button>
-              <Button href="/collection" variant="secondary" size="lg">
-                Browse Collection
               </Button>
             </motion.div>
           </div>
 
           <motion.div variants={staggerItem} className="glass-panel rounded-[2rem] p-8">
-            <p className="text-xs uppercase tracking-[0.35em] text-accent">Why Customers Love Us</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-accent">{craftedStyle.whyCustomersLoveUs}</p>
             <ul className="mt-6 space-y-4">
               {craftedStyle.features.map((feature, index) => (
                 <li key={feature} className="flex items-start gap-4 border-b border-border pb-4 last:border-0 last:pb-0">

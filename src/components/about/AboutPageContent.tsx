@@ -21,8 +21,7 @@ export function AboutPageContent() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(201,169,98,0.16),transparent_35%)]" />
         <Container className="relative max-w-4xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.35em] text-accent">{hero.eyebrow}</p>
-            <h1 className="mt-5 font-display text-5xl leading-tight text-white md:text-6xl">{hero.title}</h1>
+            <h1 className="font-display text-5xl leading-tight text-white md:text-6xl">{hero.title}</h1>
             <p className="mt-6 text-lg leading-8 text-stone-400 md:text-xl md:leading-9">{hero.description}</p>
           </Reveal>
         </Container>
@@ -63,6 +62,16 @@ export function AboutPageContent() {
               <p className="font-display text-4xl text-accent/70">{String(index + 1).padStart(2, "0")}</p>
               <h3 className="mt-4 font-display text-2xl text-white md:text-3xl">{step.title}</h3>
               <p className="mt-4 text-sm leading-7 text-stone-400 md:text-base md:leading-8">{step.description}</p>
+              {"bullets" in step && step.bullets ? (
+                <ul className="mt-4 space-y-2 text-sm leading-7 text-stone-400 md:text-base md:leading-8">
+                  {step.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2">
+                      <span className="text-accent">•</span>
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </motion.div>
           ))}
         </motion.div>
@@ -92,12 +101,7 @@ export function AboutPageContent() {
         </motion.ul>
       </SectionShell>
 
-      <FaqSection
-        faqs={faqs}
-        eyebrow="FAQ"
-        title="Frequently Asked Questions"
-        description="Learn more about Velcraft's history, customization platform, materials, and ordering process."
-      />
+      <FaqSection faqs={faqs} title="Frequently Asked Questions" showSidebar={false} />
 
       <SectionShell tone="default" containerClassName="pb-8">
         <Reveal className="relative overflow-hidden rounded-[2rem] border border-accent/15 bg-[linear-gradient(135deg,rgba(201,169,98,0.12),rgba(12,10,9,0.92))] p-8 text-center md:p-14">

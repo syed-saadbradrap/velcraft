@@ -14,8 +14,8 @@ export const siteConfig = {
     height: 662,
   },
   contact: {
-    email: "support@velcraft.com",
-    phone: "+92 300 0000000",
+    email: "support@[yourdomain].com",
+    phone: "+1 (000) 000-0000",
   },
   links: {
     collection: "/collection",

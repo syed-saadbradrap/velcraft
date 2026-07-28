@@ -1,16 +1,10 @@
 export const homeContent = {
   hero: {
     title: "Your Shoes. Your Signature.",
-    subtitle: "Velcraft Atelier",
     description:
-      "Design footwear that's made to match your style—not someone else's. Customize every detail in our interactive 3D designer, from colors and premium fabrics to buckles, soles, sizes, and shoe styles for both men and women.",
+      "Design footwear that's made to match your style-not someone else's. Customize every detail in our interactive 3D designer, from colors and premium fabrics to buckles, soles, sizes, and shoe styles for both men and women.",
     ctaLabel: "Customize Your Pair",
     ctaUrl: "/customize/ivory-gold-bit-mule",
-    stats: [
-      { label: "Premium colors", value: "20+" },
-      { label: "Buckle designs", value: "10+" },
-      { label: "For men & women", value: "Unisex" },
-    ],
   },
   whySettle: {
     eyebrow: "Why Settle for Ordinary?",
@@ -36,7 +30,8 @@ export const homeContent = {
       },
       {
         title: "Every Size Available",
-        description: "A comfortable fit for everyone—because great style starts with the perfect fit.",
+        description:
+          "A comfortable fit for everyone-because great style starts with the perfect fit.",
         icon: "size",
       },
       {
@@ -52,6 +47,7 @@ export const homeContent = {
     title: "See It. Customize It. Wear It.",
     description:
       "Experience your design before it reaches your doorstep. Our real-time 3D configurator lets you visualize every change instantly, ensuring every pair feels truly yours.",
+    whyCustomersLoveUs: "Why Customers Love Us",
     features: [
       "Interactive 3D customization",
       "Premium craftsmanship",
@@ -64,27 +60,23 @@ export const homeContent = {
   testimonials: {
     eyebrow: "Customer Reviews",
     title: "Loved by Every Step",
-    description: "Real feedback from customers who designed footwear that feels uniquely theirs.",
     items: [
       {
         customer_name: "Junaid Zia",
-        customer_title: "Verified Customer",
         content:
-          "The customization experience is incredible. Being able to preview every change in 3D made designing my shoes so easy. The final pair looked exactly like I imagined.",
+          '"The customization experience is incredible." Being able to preview every change in 3D made designing my shoes so easy. The final pair looked exactly like I imagined.',
         rating: 5,
       },
       {
         customer_name: "Fizza Shah",
-        customer_title: "Verified Customer",
         content:
-          "Premium quality with endless options. The fabric quality exceeded my expectations, and the buckle choices gave my shoes a completely unique look.",
+          '"Premium quality with endless options." The fabric quality exceeded my expectations, and the buckle choices gave my shoes a completely unique look.',
         rating: 5,
       },
       {
         customer_name: "Khurram Khattak",
-        customer_title: "Verified Customer",
         content:
-          "Perfect fit and amazing craftsmanship. Finally found shoes that fit perfectly and reflect my personal style. I'll definitely be designing another pair.",
+          '"Perfect fit and amazing craftsmanship." Finally found shoes that fit perfectly and reflect my personal style. I\'ll definitely be designing another pair.',
         rating: 5,
       },
     ],
@@ -126,7 +118,6 @@ export const homeContent = {
     },
   ],
   finalCta: {
-    eyebrow: "Your Signature Awaits",
     title: "Create a Pair That's Uniquely Yours",
     description:
       "From premium fabrics and bold colors to signature buckles and perfect sizing, every detail is yours to personalize.",
@@ -137,7 +128,6 @@ export const homeContent = {
 
 export const aboutContent = {
   hero: {
-    eyebrow: "About Velcraft",
     title: "Two Decades of Craftsmanship. A New Era of Personalization.",
     description:
       "For over 20 years, Velcraft has been dedicated to crafting premium footwear with exceptional quality and timeless design. What began as a trusted local store has evolved into a modern customization experience, giving every customer the opportunity to create shoes that reflect their own style.",
@@ -163,8 +153,14 @@ export const aboutContent = {
       },
       {
         title: "Personalize Every Detail",
-        description:
-          "Bring your design to life by choosing from 20+ premium colors, premium fabric options, 10+ distinctive buckle designs, sole color and style, and complete men's and women's size ranges.",
+        description: "Bring your design to life by choosing from:",
+        bullets: [
+          "20+ premium colors",
+          "Premium fabric options",
+          "10+ distinctive buckle designs",
+          "Sole color and style",
+          "Complete men's and women's size ranges",
+        ],
       },
       {
         title: "Preview in Real Time",
@@ -248,18 +244,17 @@ export const aboutContent = {
 
 export const contactContent = {
   hero: {
-    eyebrow: "Contact Us",
     title: "We're Here to Help",
     description:
       "Have a question about your order, customization options, or sizing? Our team is ready to assist you every step of the way.",
   },
   info: {
-    eyebrow: "Get in Touch",
-    title: "Contact Information",
+    sectionTitle: "Contact Information",
+    title: "Get in Touch",
     description: "Reach out through your preferred method, and we'll respond as quickly as possible.",
-    email: "support@velcraft.com",
-    phone: "+92 300 0000000",
-    hours: "Monday – Saturday, 12:00 PM – 10:00 PM",
+    email: "support@[yourdomain].com",
+    phone: "+1 (000) 000-0000",
+    hours: "Monday - Saturday, 12:00 PM - 10:00 PM",
     address: "Dolmen Center, Tariq Road, Karachi",
   },
   form: {
@@ -269,7 +264,8 @@ export const contactContent = {
   },
   faqPrompt: {
     title: "Need Answers Faster?",
-    description: "Visit our FAQ section to find quick answers to the most common questions about customization, sizing, materials, and orders.",
+    description:
+      "Visit our FAQ section to find quick answers to the most common questions about customization, sizing, materials, and orders.",
     ctaLabel: "View FAQs",
     ctaHref: "/#faq",
   },

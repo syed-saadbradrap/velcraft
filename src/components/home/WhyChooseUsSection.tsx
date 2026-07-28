@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import type { WhyChooseItem } from "@/types/api";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionShell } from "@/components/ui/SectionShell";
-import { Button } from "@/components/ui/Button";
-import { customizeUrl } from "@/lib/catalog/purchase";
 import { homeContent } from "@/lib/content/velcraft";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
@@ -24,7 +22,6 @@ interface WhyChooseUsSectionProps {
   eyebrow?: string;
   title?: string;
   description?: string;
-  ctaLabel?: string;
 }
 
 export function WhyChooseUsSection({
@@ -32,7 +29,6 @@ export function WhyChooseUsSection({
   eyebrow = homeContent.whySettle.eyebrow,
   title = homeContent.whySettle.title,
   description = homeContent.whySettle.description,
-  ctaLabel = homeContent.craftedStyle.ctaLabel,
 }: WhyChooseUsSectionProps) {
   return (
     <SectionShell tone="default" containerClassName="space-y-14">
@@ -62,12 +58,6 @@ export function WhyChooseUsSection({
           </motion.div>
         ))}
       </motion.div>
-
-      <div className="flex justify-center pt-2">
-        <Button href={customizeUrl()} size="lg">
-          {ctaLabel}
-        </Button>
-      </div>
     </SectionShell>
   );
 }

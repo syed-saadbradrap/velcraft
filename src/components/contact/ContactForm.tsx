@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import Link from "next/link";
 import type { ContactPageContent } from "@/types/api";
 import { apiClient } from "@/lib/api/client";
 import { contactContent } from "@/lib/content/velcraft";
@@ -53,7 +52,7 @@ export function ContactForm({ content }: ContactFormProps) {
     <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
       <Reveal className="space-y-6">
         <div className="glass-panel rounded-[1.75rem] p-8">
-          <p className="text-xs uppercase tracking-[0.35em] text-accent">{contactContent.info.eyebrow}</p>
+          <p className="text-xs uppercase tracking-[0.35em] text-accent">{contactContent.info.sectionTitle}</p>
           <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">{contactContent.info.title}</h2>
           <p className="mt-4 text-sm leading-7 text-stone-400">{contactContent.info.description}</p>
 
@@ -150,14 +149,7 @@ export function ContactForm({ content }: ContactFormProps) {
 
           {feedback ? (
             <p className={`text-sm ${status === "error" ? "text-red-300" : "text-accent"}`}>{feedback}</p>
-          ) : (
-            <p className="text-xs leading-6 text-stone-500">
-              Prefer email? Write to{" "}
-              <Link href={`mailto:${content.email}`} className="text-accent hover:underline">
-                {content.email}
-              </Link>
-            </p>
-          )}
+          ) : null}
         </form>
       </Reveal>
     </div>

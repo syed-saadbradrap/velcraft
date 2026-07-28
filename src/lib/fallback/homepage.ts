@@ -5,12 +5,11 @@ import { homeContent } from "@/lib/content/velcraft";
 export const fallbackHomepageData: HomepageData = {
   brand: {
     name: "Velcraft",
-    tagline: "Your Shoes. Your Signature.",
+    tagline: homeContent.hero.title,
   },
   hero: [
     {
       title: homeContent.hero.title,
-      subtitle: homeContent.hero.subtitle,
       description: homeContent.hero.description,
       image_url: "/images/hero/main.jpg",
       cta_label: homeContent.hero.ctaLabel,
@@ -18,26 +17,7 @@ export const fallbackHomepageData: HomepageData = {
     },
   ],
   featured_shoes: fallbackShoes,
-  process_steps: [
-    {
-      title: "Choose Your Silhouette",
-      description:
-        "Select from our signature mule collection photographed and curated for bespoke customization.",
-      icon: "shoe",
-    },
-    {
-      title: "Configure Every Detail",
-      description:
-        "Material, color, buckle, sole, and size — all rendered instantly in 3D.",
-      icon: "palette",
-    },
-    {
-      title: "Crafted & Delivered",
-      description:
-        "Your design enters production with artisan oversight and tracked delivery.",
-      icon: "truck",
-    },
-  ],
+  process_steps: [],
   why_choose_us: homeContent.whySettle.highlights.map((item) => ({
     title: item.title,
     description: item.description,

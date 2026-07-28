@@ -34,7 +34,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         ))}
       </div>
       <p className="flex-1 text-xl leading-9 text-stone-100 md:text-2xl md:leading-10">
-        &ldquo;{testimonial.content}&rdquo;
+        {testimonial.content}
       </p>
       <footer className="mt-8 flex items-center gap-4 border-t border-border pt-6">
         <div className="flex h-14 w-14 items-center justify-center rounded-full border border-accent/25 bg-accent/10 font-display text-xl text-accent">
@@ -57,7 +57,7 @@ export function TestimonialsSection({
   testimonials,
   eyebrow = "Customer Reviews",
   title = "Loved by Every Step",
-  description = "Real feedback from customers who designed footwear that feels uniquely theirs.",
+  description,
 }: TestimonialsSectionProps) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
