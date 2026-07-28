@@ -24,12 +24,28 @@ interface WhyChooseUsSectionProps {
   description?: string;
 }
 
+function WhyChooseCard({ item, index }: { item: WhyChooseItem; index: number }) {
+  return (
+    <>
+      <p className="text-xs uppercase tracking-[0.35em] text-accent">
+        {iconLabels[item.icon ?? ""] ?? "Atelier"}
+      </p>
+      <p className="mt-3 font-display text-5xl text-white/10">{String(index + 1).padStart(2, "0")}</p>
+      <h3 className="mt-4 font-display text-2xl text-white md:text-3xl">{item.title}</h3>
+      <p className="mt-4 flex-1 text-sm leading-7 text-stone-400 md:text-base md:leading-8">{item.description}</p>
+    </>
+  );
+}
+
 export function WhyChooseUsSection({
   items,
   eyebrow = homeContent.whySettle.eyebrow,
   title = homeContent.whySettle.title,
   description = homeContent.whySettle.description,
 }: WhyChooseUsSectionProps) {
+  const topRow = items.slice(0, 3);
+  const bottomRow = items.slice(3);
+
   return (
     <SectionShell tone="default" containerClassName="space-y-14">
       <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
@@ -39,24 +55,35 @@ export function WhyChooseUsSection({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="space-y-6"
       >
-        {items.map((item, index) => (
-          <motion.div
-            key={item.title}
-            variants={staggerItem}
-            className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8"
-          >
-            <p className="text-xs uppercase tracking-[0.35em] text-accent">
-              {iconLabels[item.icon ?? ""] ?? "Atelier"}
-            </p>
-            <p className="mt-3 font-display text-5xl text-white/10">{String(index + 1).padStart(2, "0")}</p>
-            <h3 className="mt-4 font-display text-2xl text-white md:text-3xl">{item.title}</h3>
-            <p className="mt-4 flex-1 text-sm leading-7 text-stone-400 md:text-base md:leading-8">
-              {item.description}
-            </p>
-          </motion.div>
-        ))}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {topRow.map((item, index) => (
+            <motion.div
+              key={item.title}
+              variants={staggerItem}
+              className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8"
+            >
+              <WhyChooseCard item={item} index={index} />
+            </motion.div>
+          ))}
+        </div>
+
+        {bottomRow.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-6">
+            {bottomRow.map((item, index) => (
+              <motion.div
+                key={item.title}
+                variants={staggerItem}
+                className={`glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8 lg:col-span-2 ${
+                  index === 0 ? "lg:col-start-2" : index === 1 ? "lg:col-start-4" : ""
+                }`}
+              >
+                <WhyChooseCard item={item} index={index + topRow.length} />
+              </motion.div>
+            ))}
+          </div>
+        ) : null}
       </motion.div>
     </SectionShell>
   );
