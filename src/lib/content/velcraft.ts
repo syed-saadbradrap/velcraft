@@ -42,6 +42,17 @@ export const homeContent = {
       },
     ],
   },
+  products: {
+    eyebrow: "Shop Collection",
+    title: "Signature Styles, Ready to Wear",
+    description:
+      "Explore our curated mule collection with premium fabrics, signature hardware, and sizes for men and women. Add to cart instantly or open the atelier to customize your pair.",
+    stats: [
+      { label: "Premium colors", value: "20+" },
+      { label: "Buckle designs", value: "10+" },
+      { label: "Unisex sizing", value: "Men & Women" },
+    ],
+  },
   craftedStyle: {
     eyebrow: "Crafted Around Your Style",
     title: "See It. Customize It. Wear It.",

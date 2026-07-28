@@ -2,6 +2,7 @@ import { apiClient } from "@/lib/api/client";
 import { homeContent } from "@/lib/content/velcraft";
 import { HeroSection } from "@/components/home/HeroSection";
 import { WhyChooseUsSection } from "@/components/home/WhyChooseUsSection";
+import { FeaturedShoesSection } from "@/components/home/FeaturedShoesSection";
 import { AtelierShowcaseSection } from "@/components/home/AtelierShowcaseSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { FaqSection } from "@/components/home/FaqSection";
@@ -14,6 +15,7 @@ export default async function HomePage() {
     <>
       <HeroSection slides={homepage.hero} />
       <WhyChooseUsSection items={homepage.why_choose_us} />
+      <FeaturedShoesSection shoes={homepage.featured_shoes} />
       <AtelierShowcaseSection />
       <TestimonialsSection
         testimonials={homepage.testimonials}
