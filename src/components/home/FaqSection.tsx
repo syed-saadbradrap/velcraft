@@ -87,7 +87,7 @@ export function FaqSection({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative border-y border-border py-24 md:py-28">
+    <section id="faq" className="relative border-y border-border py-24 md:py-28">
       <div className="absolute inset-0 section-glow" />
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">

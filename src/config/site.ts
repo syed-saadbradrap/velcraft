@@ -14,8 +14,8 @@ export const siteConfig = {
     height: 662,
   },
   contact: {
-    email: "concierge@velcraft.com",
-    phone: "+1 (212) 555-0199",
+    email: "support@velcraft.com",
+    phone: "+92 300 0000000",
   },
   links: {
     collection: "/collection",

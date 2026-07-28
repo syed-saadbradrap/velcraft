@@ -245,3 +245,32 @@ export const aboutContent = {
     ctaLabel: "Start Your Custom Design",
   },
 } as const;
+
+export const contactContent = {
+  hero: {
+    eyebrow: "Contact Us",
+    title: "We're Here to Help",
+    description:
+      "Have a question about your order, customization options, or sizing? Our team is ready to assist you every step of the way.",
+  },
+  info: {
+    eyebrow: "Get in Touch",
+    title: "Contact Information",
+    description: "Reach out through your preferred method, and we'll respond as quickly as possible.",
+    email: "support@velcraft.com",
+    phone: "+92 300 0000000",
+    hours: "Monday – Saturday, 12:00 PM – 10:00 PM",
+    address: "Dolmen Center, Tariq Road, Karachi",
+  },
+  form: {
+    title: "Send Us a Message",
+    description: "Whether you need support or have a custom request, we'd love to hear from you.",
+    submitLabel: "Send Message",
+  },
+  faqPrompt: {
+    title: "Need Answers Faster?",
+    description: "Visit our FAQ section to find quick answers to the most common questions about customization, sizing, materials, and orders.",
+    ctaLabel: "View FAQs",
+    ctaHref: "/#faq",
+  },
+} as const;

@@ -91,7 +91,7 @@ export function SiteFooter() {
         <Reveal delay={0.15}>
           <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Atelier</p>
           <p className="text-sm leading-7 text-stone-400">
-            Mon–Sat, 10:00–19:00
+            Mon–Sat, 12:00 PM – 10:00 PM
             <br />
             {siteConfig.contact.email}
             <br />
