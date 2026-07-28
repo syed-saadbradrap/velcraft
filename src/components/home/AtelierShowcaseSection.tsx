@@ -5,21 +5,8 @@ import { useRef } from "react";
 import { SectionShell } from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { customizeUrl } from "@/lib/catalog/purchase";
+import { homeContent } from "@/lib/content/velcraft";
 import { staggerContainer, staggerItem } from "@/lib/motion";
-
-const features = [
-  "Real-time 3D preview",
-  "12+ material finishes",
-  "Signature hardware",
-  "Concierge sizing",
-] as const;
-
-const steps = [
-  { step: "01", label: "Select silhouette", value: "Ivory Gold Bit Mule" },
-  { step: "02", label: "Choose material", value: "Premium ivory suede" },
-  { step: "03", label: "Configure hardware", value: "Gold horsebit buckle" },
-  { step: "04", label: "Preview & order", value: "Live 3D atelier" },
-] as const;
 
 export function AtelierShowcaseSection() {
   const ref = useRef<HTMLElement>(null);
@@ -28,6 +15,7 @@ export function AtelierShowcaseSection() {
     offset: ["start end", "end start"],
   });
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const { craftedStyle } = homeContent;
 
   return (
     <SectionShell ref={ref} tone="default" containerClassName="relative">
@@ -49,24 +37,23 @@ export function AtelierShowcaseSection() {
         <div className="relative grid gap-10 lg:grid-cols-2 lg:items-center">
           <div className="space-y-6">
             <motion.p variants={staggerItem} className="text-xs uppercase tracking-[0.35em] text-accent">
-              The Atelier Experience
+              {craftedStyle.eyebrow}
             </motion.p>
             <motion.h2
               variants={staggerItem}
               className="font-display text-4xl leading-tight text-white md:text-5xl"
             >
-              Design your signature mule in <span className="luxury-gradient">real time</span>
+              {craftedStyle.title}
             </motion.h2>
             <motion.p variants={staggerItem} className="max-w-xl text-base leading-8 text-stone-400">
-              Step into our interactive studio — configure suede, hardware, sole color, and size with a live 3D preview
-              before your pair enters production.
+              {craftedStyle.description}
             </motion.p>
 
-            <motion.div variants={staggerItem} className="grid grid-cols-2 gap-3">
-              {features.map((feature) => (
+            <motion.div variants={staggerItem} className="grid gap-3 sm:grid-cols-2">
+              {craftedStyle.features.map((feature) => (
                 <span
                   key={feature}
-                  className="rounded-2xl border border-border bg-white/5 px-4 py-3 text-center text-[10px] uppercase tracking-[0.18em] text-stone-300"
+                  className="rounded-2xl border border-border bg-white/5 px-4 py-3 text-[10px] uppercase tracking-[0.18em] text-stone-300"
                 >
                   {feature}
                 </span>
@@ -75,7 +62,7 @@ export function AtelierShowcaseSection() {
 
             <motion.div variants={staggerItem} className="flex flex-wrap gap-4 pt-2">
               <Button href={customizeUrl()} size="lg">
-                Enter Atelier Studio
+                {craftedStyle.ctaLabel}
               </Button>
               <Button href="/collection" variant="secondary" size="lg">
                 Browse Collection
@@ -84,20 +71,15 @@ export function AtelierShowcaseSection() {
           </div>
 
           <motion.div variants={staggerItem} className="glass-panel rounded-[2rem] p-8">
-            <div className="space-y-5">
-              {steps.map((row) => (
-                <div
-                  key={row.step}
-                  className="flex items-start gap-4 border-b border-border pb-5 last:border-0 last:pb-0"
-                >
-                  <span className="font-display text-2xl text-accent/70">{row.step}</span>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">{row.label}</p>
-                    <p className="mt-1 font-display text-xl text-white">{row.value}</p>
-                  </div>
-                </div>
+            <p className="text-xs uppercase tracking-[0.35em] text-accent">Why Customers Love Us</p>
+            <ul className="mt-6 space-y-4">
+              {craftedStyle.features.map((feature, index) => (
+                <li key={feature} className="flex items-start gap-4 border-b border-border pb-4 last:border-0 last:pb-0">
+                  <span className="font-display text-2xl text-accent/70">{String(index + 1).padStart(2, "0")}</span>
+                  <p className="pt-1 text-sm leading-7 text-stone-300 md:text-base">{feature}</p>
+                </li>
               ))}
-            </div>
+            </ul>
           </motion.div>
         </div>
       </motion.div>

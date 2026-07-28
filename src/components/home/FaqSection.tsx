@@ -9,38 +9,17 @@ import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 
-const faqs = [
-  {
-    question: "Which Velcraft styles can I customize?",
-    answer:
-      "The Ivory Gold Bit Mule is available in our interactive 3D atelier today. The full collection can be shopped with concierge sizing, and additional customizable silhouettes are added seasonally.",
-  },
-  {
-    question: "How long does production and delivery take?",
-    answer:
-      "Standard atelier pairs are hand-finished and delivered within 10–14 business days. Custom configurations may require a short additional window depending on material selection.",
-  },
-  {
-    question: "What sizing do you offer?",
-    answer:
-      "We offer EU sizing for both men and women. Concierge support is available if you need guidance translating your usual size or prefer a bespoke fit consultation.",
-  },
-  {
-    question: "How does the 3D atelier preview work?",
-    answer:
-      "Inside the atelier studio you can adjust materials, hardware, sole color, and size while viewing a live 3D render of your mule. Changes update instantly before you place your order.",
-  },
-  {
-    question: "What payment methods are accepted?",
-    answer:
-      "We accept secure card payments via Stripe, bank transfer, and cash on delivery in supported regions. All transactions are handled with encrypted checkout.",
-  },
-  {
-    question: "Can I return or exchange my order?",
-    answer:
-      "Unworn pairs in original condition may be returned within 14 days of delivery. Custom atelier orders are made to your specification and are eligible for size exchange subject to concierge review.",
-  },
-] as const;
+interface FaqEntry {
+  question: string;
+  answer: string;
+}
+
+interface FaqSectionProps {
+  faqs: readonly FaqEntry[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
 
 function FaqItem({
   question,
@@ -99,7 +78,12 @@ function FaqItem({
   );
 }
 
-export function FaqSection() {
+export function FaqSection({
+  faqs,
+  eyebrow = "FAQ",
+  title = "Frequently Asked Questions",
+  description = "Everything you need to know about customization, sizing, materials, and orders.",
+}: FaqSectionProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -108,20 +92,16 @@ export function FaqSection() {
       <Container className="relative">
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-16">
           <Reveal className="lg:sticky lg:top-28">
-            <SectionHeading
-              eyebrow="FAQ"
-              title="Questions our clients ask before entering the atelier"
-              description="Everything you need to know about sizing, customization, delivery, and concierge support."
-            />
+            <SectionHeading eyebrow={eyebrow} title={title} description={description} />
             <div className="mt-8 hidden rounded-2xl border border-border bg-white/[0.03] p-6 lg:block">
               <p className="text-xs uppercase tracking-[0.28em] text-accent">Need more help?</p>
               <p className="mt-3 text-sm leading-7 text-stone-400">
-                Our concierge team is available Mon–Sat, 10:00–19:00.
+                Our team is available Mon–Sat, 12:00 PM – 10:00 PM.
               </p>
               <p className="mt-2 text-sm text-stone-300">{siteConfig.contact.email}</p>
               <div className="mt-5">
                 <Button href={siteConfig.links.contact} variant="secondary" size="sm">
-                  Contact Concierge
+                  Contact Us
                 </Button>
               </div>
             </div>
@@ -146,7 +126,7 @@ export function FaqSection() {
             <p className="text-sm text-stone-400">Still have questions?</p>
             <div className="mt-4">
               <Button href={siteConfig.links.contact} variant="secondary" size="sm">
-                Contact Concierge
+                Contact Us
               </Button>
             </div>
           </div>

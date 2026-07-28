@@ -6,34 +6,44 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { SectionShell } from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { customizeUrl } from "@/lib/catalog/purchase";
+import { homeContent } from "@/lib/content/velcraft";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const iconLabels: Record<string, string> = {
-  gem: "Materials",
+  gem: "Fabrics",
+  palette: "Colors",
+  buckle: "Hardware",
+  size: "Sizing",
+  people: "Unisex",
   cube: "3D Atelier",
   shield: "Assurance",
 };
 
 interface WhyChooseUsSectionProps {
   items: WhyChooseItem[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  ctaLabel?: string;
 }
 
-export function WhyChooseUsSection({ items }: WhyChooseUsSectionProps) {
+export function WhyChooseUsSection({
+  items,
+  eyebrow = homeContent.whySettle.eyebrow,
+  title = homeContent.whySettle.title,
+  description = homeContent.whySettle.description,
+  ctaLabel = homeContent.craftedStyle.ctaLabel,
+}: WhyChooseUsSectionProps) {
   return (
     <SectionShell tone="default" containerClassName="space-y-14">
-      <SectionHeading
-        eyebrow="Why Velcraft"
-        title="The intimacy of a private atelier, refined for the digital age"
-        description="Every silhouette is designed for bespoke expression — from material selection to signature hardware, finished with artisan care."
-        align="center"
-      />
+      <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
 
       <motion.div
         variants={staggerContainer(0.08, 0.05)}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
-        className="grid gap-6 md:grid-cols-3"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
       >
         {items.map((item, index) => (
           <motion.div
@@ -55,7 +65,7 @@ export function WhyChooseUsSection({ items }: WhyChooseUsSectionProps) {
 
       <div className="flex justify-center pt-2">
         <Button href={customizeUrl()} size="lg">
-          Start Customizing
+          {ctaLabel}
         </Button>
       </div>
     </SectionShell>

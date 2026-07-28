@@ -4,7 +4,7 @@ export const siteConfig = {
   name: "Velcraft",
   tagline: "Bespoke luxury footwear",
   description:
-    "Velcraft offers curated luxury mules with concierge sizing, plus an exclusive atelier studio for our signature customizable style.",
+    "Design footwear that's made to match your style. Customize colors, premium fabrics, buckles, soles, and sizes in our interactive 3D designer.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3002",
   apiUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1",
   logo: {
@@ -19,6 +19,7 @@ export const siteConfig = {
   },
   links: {
     collection: "/collection",
+    about: "/about",
     customize: customizeUrl(),
     contact: "/contact",
     privacy: "/privacy",
@@ -36,6 +37,7 @@ export const siteConfig = {
 export const navigation = [
   { label: "Home", href: "/" },
   { label: "Collection", href: "/collection" },
+  { label: "About", href: "/about" },
   { label: "Atelier", href: customizeUrl() },
   { label: "Contact", href: "/contact" },
 ] as const;

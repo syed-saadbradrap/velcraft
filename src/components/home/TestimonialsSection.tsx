@@ -10,6 +10,9 @@ import { cn } from "@/lib/utils";
 
 interface TestimonialsSectionProps {
   testimonials: Testimonial[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
 }
 
 function initials(name: string) {
@@ -50,7 +53,12 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
+export function TestimonialsSection({
+  testimonials,
+  eyebrow = "Customer Reviews",
+  title = "Loved by Every Step",
+  description = "Real feedback from customers who designed footwear that feels uniquely theirs.",
+}: TestimonialsSectionProps) {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const count = testimonials.length;
@@ -83,9 +91,9 @@ export function TestimonialsSection({ testimonials }: TestimonialsSectionProps) 
   return (
     <SectionShell tone="accent" containerClassName="space-y-14">
       <SectionHeading
-        eyebrow="Client Stories"
-        title="Trusted by creators, founders, and style leaders"
-        description="Private clients and creative teams choose Velcraft for elevated silhouettes and a seamless bespoke experience."
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
         align="center"
       />
 

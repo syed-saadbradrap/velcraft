@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import type { HeroSlide } from "@/types/api";
 import { normalizeImageUrl } from "@/lib/media";
+import { homeContent } from "@/lib/content/velcraft";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { TextReveal } from "@/components/motion/TextReveal";
@@ -15,11 +16,7 @@ interface HeroSectionProps {
   slides: HeroSlide[];
 }
 
-const stats = [
-  { label: "Signature mules", value: "4+" },
-  { label: "Material options", value: "12+" },
-  { label: "Atelier delivery", value: "10–14 days" },
-] as const;
+const stats = homeContent.hero.stats;
 
 export function HeroSection({ slides }: HeroSectionProps) {
   const slide = slides[0];
@@ -37,9 +34,9 @@ export function HeroSection({ slides }: HeroSectionProps) {
   }
 
   const heroImage = normalizeImageUrl(slide.image_url, "/images/hero/main.jpg");
-  const titleParts = slide.title?.split(",") ?? ["Luxury Mules", "Made Yours"];
-  const titleLead = titleParts[0]?.trim() || "Luxury Mules";
-  const titleAccent = titleParts.slice(1).join(",").trim() || "Made Yours";
+  const titleParts = slide.title?.split(".") ?? ["Your Shoes", "Your Signature"];
+  const titleLead = titleParts[0]?.trim() || "Your Shoes";
+  const titleAccent = titleParts.slice(1).join(".").trim() || "Your Signature";
 
   return (
     <section ref={ref} className="relative overflow-hidden border-b border-border">
