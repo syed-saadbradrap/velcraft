@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { pageTransition } from "@/lib/motion";
 
@@ -25,6 +26,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </motion.main>
       </AnimatePresence>
       <SiteFooter />
+      <WhatsAppButton />
     </>
   );
 }

@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
 import { Reveal } from "@/components/motion/Reveal";
+import { WhatsAppIcon } from "@/components/layout/WhatsAppIcon";
+import { siteConfig } from "@/config/site";
+import { getWhatsAppUrl } from "@/lib/utils";
 
 interface ContactFormProps {
   content: ContactPageContent;
@@ -53,41 +56,55 @@ export function ContactForm({ content }: ContactFormProps) {
       <Reveal className="space-y-6">
         <div className="glass-panel rounded-[1.75rem] p-8">
           <p className="text-xs uppercase tracking-[0.35em] text-accent">{contactContent.info.sectionTitle}</p>
-          <h2 className="mt-4 font-display text-3xl text-white md:text-4xl">{contactContent.info.title}</h2>
-          <p className="mt-4 text-sm leading-7 text-stone-400">{contactContent.info.description}</p>
+          <h2 className="mt-4 font-display text-3xl text-stone-900 md:text-4xl">{contactContent.info.title}</h2>
+          <p className="mt-4 text-sm leading-7 text-stone-700">{contactContent.info.description}</p>
 
           <dl className="mt-8 space-y-6 text-sm">
             <div>
-              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-500">Email</dt>
+              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">Email</dt>
               <dd className="mt-2">
-                <a href={`mailto:${content.email}`} className="text-white transition hover:text-accent">
+                <a href={`mailto:${content.email}`} className="text-stone-900 transition hover:text-accent">
                   {content.email}
                 </a>
               </dd>
             </div>
             <div>
-              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-500">Phone</dt>
+              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">Phone</dt>
               <dd className="mt-2">
-                <a href={`tel:${content.phone.replace(/\s/g, "")}`} className="text-white transition hover:text-accent">
+                <a href={`tel:${content.phone.replace(/\s/g, "")}`} className="text-stone-900 transition hover:text-accent">
                   {content.phone}
                 </a>
               </dd>
             </div>
             <div>
-              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-500">Business Hours</dt>
-              <dd className="mt-2 text-white">{content.hours}</dd>
+              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">WhatsApp</dt>
+              <dd className="mt-2">
+                <a
+                  href={getWhatsAppUrl(siteConfig.contact.whatsapp, siteConfig.contact.whatsappMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-stone-900 transition hover:text-[#25D366]"
+                >
+                  <WhatsAppIcon className="h-4 w-4" />
+                  Chat on WhatsApp
+                </a>
+              </dd>
             </div>
             <div>
-              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-500">Address</dt>
-              <dd className="mt-2 text-white">{content.address}</dd>
+              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">Business Hours</dt>
+              <dd className="mt-2 text-stone-900">{content.hours}</dd>
+            </div>
+            <div>
+              <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">Address</dt>
+              <dd className="mt-2 text-stone-900">{content.address}</dd>
             </div>
           </dl>
         </div>
 
         <div className="glass-panel rounded-[1.75rem] p-8">
           <p className="text-xs uppercase tracking-[0.35em] text-accent">FAQ</p>
-          <h3 className="mt-3 font-display text-2xl text-white">{contactContent.faqPrompt.title}</h3>
-          <p className="mt-3 text-sm leading-7 text-stone-400">{contactContent.faqPrompt.description}</p>
+          <h3 className="mt-3 font-display text-2xl text-stone-900">{contactContent.faqPrompt.title}</h3>
+          <p className="mt-3 text-sm leading-7 text-stone-700">{contactContent.faqPrompt.description}</p>
           <div className="mt-6">
             <Button href={contactContent.faqPrompt.ctaHref} variant="secondary" size="sm">
               {contactContent.faqPrompt.ctaLabel}
@@ -100,8 +117,8 @@ export function ContactForm({ content }: ContactFormProps) {
         <form onSubmit={handleSubmit} className="glass-panel space-y-5 rounded-[1.75rem] p-8">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-accent">Message</p>
-            <h2 className="mt-3 font-display text-3xl text-white">{contactContent.form.title}</h2>
-            <p className="mt-3 text-sm leading-7 text-stone-400">{contactContent.form.description}</p>
+            <h2 className="mt-3 font-display text-3xl text-stone-900">{contactContent.form.title}</h2>
+            <p className="mt-3 text-sm leading-7 text-stone-700">{contactContent.form.description}</p>
           </div>
 
           <Input
@@ -126,6 +143,7 @@ export function ContactForm({ content }: ContactFormProps) {
             name="phone"
             type="tel"
             autoComplete="tel"
+            placeholder="+92 300 1234567"
             value={form.phone}
             onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
           />
