@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import type { ShoeSummary } from "@/types/api";
 import { ShoeCard } from "@/components/catalog/ShoeCard";
 import { SectionShell } from "@/components/ui/SectionShell";
@@ -34,6 +34,25 @@ function useItemsPerView(count: number) {
   }, [count]);
 
   return itemsPerView;
+}
+
+function NavArrow({ direction, onClick }: { direction: "prev" | "next"; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={direction === "prev" ? "Previous products" : "Next products"}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 transition hover:border-accent/30 hover:text-white"
+    >
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+        {direction === "prev" ? (
+          <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+        ) : (
+          <path d="M9 6l6 6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+        )}
+      </svg>
+    </button>
+  );
 }
 
 export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
@@ -85,11 +104,13 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
     return null;
   }
 
-  const slideWidth = 100 / itemsPerView;
   const showControls = count > itemsPerView;
+  const visibleShoes = ordered.slice(active, active + itemsPerView);
+  const slideShare = 100 / count;
+  const trackOffset = (active / count) * 100;
 
   return (
-    <SectionShell tone="muted" containerClassName="relative overflow-hidden">
+    <SectionShell tone="muted" containerClassName="relative">
       <div className="pointer-events-none absolute -right-20 top-0 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
 
       <div className="relative grid gap-12 xl:grid-cols-[minmax(280px,360px)_1fr] xl:items-start xl:gap-14">
@@ -121,57 +142,67 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
         </Reveal>
 
         <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          <div className="mb-5 flex items-center justify-between gap-4">
-            <p className="text-[11px] uppercase tracking-[0.24em] text-stone-500">
-              {count} styles · swipe or use arrows
-            </p>
-            {showControls ? (
-              <div className="hidden items-center gap-2 sm:flex">
-                <button
-                  type="button"
-                  onClick={prev}
-                  aria-label="Previous products"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 transition hover:border-accent/30 hover:text-white"
+          <div className="mb-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-[11px] uppercase tracking-[0.24em] text-stone-500">Curated Selection</p>
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={visibleShoes.map((shoe) => shoe.slug).join("-")}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="mt-1 font-display text-xl text-white md:text-2xl"
                 >
-                  ←
-                </button>
-                <button
-                  type="button"
-                  onClick={next}
-                  aria-label="Next products"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 transition hover:border-accent/30 hover:text-white"
-                >
-                  →
-                </button>
-              </div>
-            ) : null}
+                  {visibleShoes.length === 1
+                    ? visibleShoes[0]?.name
+                    : `${visibleShoes[0]?.name} · ${visibleShoes[1]?.name}`}
+                </motion.p>
+              </AnimatePresence>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {showControls ? (
+                <span className="hidden text-[11px] uppercase tracking-[0.22em] text-stone-500 sm:inline">
+                  {String(active + 1).padStart(2, "0")} / {String(maxIndex + 1).padStart(2, "0")}
+                </span>
+              ) : null}
+              {showControls ? (
+                <div className="hidden items-center gap-2 sm:flex">
+                  <NavArrow direction="prev" onClick={prev} />
+                  <NavArrow direction="next" onClick={next} />
+                </div>
+              ) : null}
+            </div>
           </div>
 
-          <div className="overflow-hidden rounded-[2rem] border border-border/80 bg-stone-950/40 p-3 sm:p-4">
-            <motion.div
-              className="flex"
-              animate={{ x: `-${active * slideWidth}%` }}
-              transition={{ duration: 0.55, ease: luxuryEase }}
-              drag={showControls ? "x" : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.08}
-              onDragEnd={(_, info) => {
-                if (info.offset.x > 70 || info.velocity.x > 350) prev();
-                else if (info.offset.x < -70 || info.velocity.x < -350) next();
-              }}
-            >
-              {ordered.map((shoe, index) => (
-                <div key={shoe.id} className="shrink-0 px-2" style={{ width: `${slideWidth}%` }}>
-                  <ShoeCard
-                    shoe={shoe}
-                    priority={index < 2}
-                    featured={index === 0 && isCustomizableShoe(shoe.slug)}
-                    variant="slider"
-                    className="h-full"
-                  />
-                </div>
-              ))}
-            </motion.div>
+          <div className="relative overflow-x-clip rounded-[2rem] border border-border/80 bg-stone-950/40 p-3 sm:p-4">
+            <div className="overflow-x-clip">
+              <motion.div
+                className="flex items-stretch"
+                style={{ width: `${(count * 100) / itemsPerView}%` }}
+                animate={{ x: `-${trackOffset}%` }}
+                transition={{ duration: 0.55, ease: luxuryEase }}
+                drag={showControls ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.08}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x > 70 || info.velocity.x > 350) prev();
+                  else if (info.offset.x < -70 || info.velocity.x < -350) next();
+                }}
+              >
+                {ordered.map((shoe, index) => (
+                  <div key={shoe.id} className="shrink-0 px-2" style={{ width: `${slideShare}%` }}>
+                    <ShoeCard
+                      shoe={shoe}
+                      priority={index < 2}
+                      featured={index === 0 && isCustomizableShoe(shoe.slug)}
+                      variant="slider"
+                    />
+                  </div>
+                ))}
+              </motion.div>
+            </div>
           </div>
 
           {showControls ? (

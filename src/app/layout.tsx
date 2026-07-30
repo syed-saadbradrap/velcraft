@@ -4,6 +4,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { siteConfig } from "@/config/site";
+import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -15,6 +16,7 @@ const display = Cormorant_Garamond({
 const sans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "en_PK",
     url: siteConfig.url,
     siteName: siteConfig.name,
     title: siteConfig.name,
@@ -43,8 +45,12 @@ export const metadata: Metadata = {
     follow: true,
   },
   icons: {
-    icon: [{ url: "/images/logo/velcraft-favicon.png", type: "image/png" }],
-    apple: [{ url: "/images/logo/velcraft-favicon.png", type: "image/png" }],
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/images/logo/velcraft-favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/icon.png",
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
 };
 
@@ -54,7 +60,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} h-full`}>
+    <html lang="en-PK" suppressHydrationWarning className={`${display.variable} ${sans.variable} h-full`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full bg-stone-950 text-stone-100 antialiased">
         <StructuredData />
         <AppProviders>
