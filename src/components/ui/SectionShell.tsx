@@ -13,7 +13,7 @@ interface SectionShellProps {
 
 const toneClasses: Record<SectionTone, string> = {
   default: "",
-  muted: "border-y border-border bg-stone-950/50",
+  muted: "border-y border-border bg-stone-100/70",
   accent:
     "border-y border-border bg-[linear-gradient(180deg,rgba(201,169,98,0.06),transparent_60%)]",
 };

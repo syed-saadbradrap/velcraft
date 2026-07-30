@@ -31,9 +31,9 @@ function WhyChooseCard({ item, index }: { item: WhyChooseItem; index: number }) 
       <p className="text-xs uppercase tracking-[0.35em] text-accent">
         {iconLabels[item.icon ?? ""] ?? "Atelier"}
       </p>
-      <p className="mt-3 font-display text-5xl text-white/10">{String(index + 1).padStart(2, "0")}</p>
-      <h3 className="mt-4 font-display text-2xl text-white md:text-3xl">{item.title}</h3>
-      <p className="mt-4 flex-1 text-sm leading-7 text-stone-400 md:text-base md:leading-8">{item.description}</p>
+      <p className="mt-3 font-display text-5xl text-stone-900/10">{String(index + 1).padStart(2, "0")}</p>
+      <h3 className="mt-4 font-display text-2xl text-stone-900 md:text-3xl">{item.title}</h3>
+      <p className="mt-4 flex-1 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{item.description}</p>
     </>
   );
 }

@@ -44,9 +44,9 @@ function FaqItem({
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full items-start justify-between gap-4 px-6 py-5 text-left transition hover:bg-white/[0.02]"
+        className="flex w-full items-start justify-between gap-4 px-6 py-5 text-left transition hover:bg-stone-100/[0.02]"
       >
-        <span className="font-display text-xl text-white md:text-2xl">{question}</span>
+        <span className="font-display text-xl text-stone-900 md:text-2xl">{question}</span>
         <motion.span
           animate={{ rotate: open ? 45 : 0 }}
           transition={{ duration: 0.25 }}
@@ -66,7 +66,7 @@ function FaqItem({
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="border-t border-border px-6 pb-5 pt-4 text-sm leading-7 text-stone-400 md:text-base md:leading-8">
+            <p className="border-t border-border px-6 pb-5 pt-4 text-sm leading-7 text-stone-600 md:text-base md:leading-8">
               {answer}
             </p>
           </motion.div>

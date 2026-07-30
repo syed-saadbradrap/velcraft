@@ -56,12 +56,12 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
           <div className="relative grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
             <div className="space-y-6">
               <p className="text-xs uppercase tracking-[0.35em] text-accent">Newsletter</p>
-              <h2 className="font-display text-4xl leading-tight text-white md:text-5xl">{content.title}</h2>
-              <p className="max-w-xl text-base leading-8 text-stone-400">{content.description}</p>
+              <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{content.title}</h2>
+              <p className="max-w-xl text-base leading-8 text-stone-600">{content.description}</p>
 
               <ul className="space-y-3">
                 {perks.map((perk) => (
-                  <li key={perk} className="flex items-center gap-3 text-sm text-stone-300">
+                  <li key={perk} className="flex items-center gap-3 text-sm text-stone-600">
                     <span className="flex h-6 w-6 items-center justify-center rounded-full border border-accent/25 bg-accent/10 text-[10px] text-accent">
                       ✓
                     </span>
@@ -74,14 +74,14 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
             <div className="glass-panel rounded-[1.5rem] p-6 md:p-8">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <label className="block space-y-2">
-                  <span className="text-[11px] uppercase tracking-[0.24em] text-stone-500">Email address</span>
+                  <span className="text-[11px] uppercase tracking-[0.24em] text-stone-600">Email address</span>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="you@company.com"
-                    className="h-14 w-full rounded-2xl border border-border bg-stone-950/70 px-5 text-sm text-white outline-none transition focus:border-accent focus:shadow-[0_0_0_4px_rgba(201,169,98,0.12)]"
+                    className="h-14 w-full rounded-2xl border border-border bg-stone-50/70 px-5 text-sm text-stone-900 outline-none transition focus:border-accent focus:shadow-[0_0_0_4px_rgba(201,169,98,0.12)]"
                   />
                 </label>
                 <Button type="submit" size="lg" className="w-full" disabled={status === "loading"}>
@@ -94,7 +94,7 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
                   {message}
                 </p>
               ) : (
-                <p className="mt-4 text-xs leading-6 text-stone-500">
+                <p className="mt-4 text-xs leading-6 text-stone-600">
                   By subscribing you agree to receive updates from Velcraft. Unsubscribe anytime.
                 </p>
               )}

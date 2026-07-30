@@ -33,7 +33,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           <span key={starIndex}>★</span>
         ))}
       </div>
-      <p className="flex-1 text-xl leading-9 text-stone-100 md:text-2xl md:leading-10">
+      <p className="flex-1 text-xl leading-9 text-stone-800 md:text-2xl md:leading-10">
         {testimonial.content}
       </p>
       <footer className="mt-8 flex items-center gap-4 border-t border-border pt-6">
@@ -41,9 +41,9 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           {initials(testimonial.customer_name)}
         </div>
         <div>
-          <p className="font-display text-2xl text-white">{testimonial.customer_name}</p>
+          <p className="font-display text-2xl text-stone-900">{testimonial.customer_name}</p>
           {testimonial.customer_title ? (
-            <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-stone-500">
+            <p className="mt-1 text-[11px] uppercase tracking-[0.2em] text-stone-600">
               {testimonial.customer_title}
             </p>
           ) : null}
@@ -129,7 +129,7 @@ export function TestimonialsSection({
               type="button"
               onClick={prev}
               aria-label="Previous review"
-              className="absolute left-0 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 backdrop-blur transition hover:border-accent/30 hover:text-white md:inline-flex"
+              className="absolute left-0 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-600 backdrop-blur transition hover:border-accent/30 hover:text-stone-900 md:inline-flex"
             >
               ←
             </button>
@@ -137,7 +137,7 @@ export function TestimonialsSection({
               type="button"
               onClick={next}
               aria-label="Next review"
-              className="absolute right-0 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 backdrop-blur transition hover:border-accent/30 hover:text-white md:inline-flex"
+              className="absolute right-0 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-600 backdrop-blur transition hover:border-accent/30 hover:text-stone-900 md:inline-flex"
             >
               →
             </button>
@@ -165,7 +165,7 @@ export function TestimonialsSection({
                 type="button"
                 onClick={prev}
                 aria-label="Previous review"
-                className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-border px-5 text-xs uppercase tracking-[0.2em] text-stone-300"
+                className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-border px-5 text-xs uppercase tracking-[0.2em] text-stone-600"
               >
                 Previous
               </button>

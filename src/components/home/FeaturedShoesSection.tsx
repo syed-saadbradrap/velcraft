@@ -42,7 +42,7 @@ function NavArrow({ direction, onClick }: { direction: "prev" | "next"; onClick:
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous products" : "Next products"}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-stone-950/80 text-stone-300 transition hover:border-accent/30 hover:text-white"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/90 text-stone-600 transition hover:border-accent/30 hover:text-stone-900"
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
         {direction === "prev" ? (
@@ -118,15 +118,15 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
           <div className="space-y-5">
             <p className="text-xs uppercase tracking-[0.35em] text-accent">{products.eyebrow}</p>
             <div className="gold-divider w-16" />
-            <h2 className="font-display text-4xl leading-tight text-white md:text-5xl">{products.title}</h2>
-            <p className="text-base leading-8 text-stone-400">{products.description}</p>
+            <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{products.title}</h2>
+            <p className="text-base leading-8 text-stone-600">{products.description}</p>
           </div>
 
           <div className="grid grid-cols-3 gap-3">
             {products.stats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-border bg-white/[0.03] px-3 py-4 text-center">
-                <p className="font-display text-2xl text-white">{stat.value}</p>
-                <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-stone-500">{stat.label}</p>
+              <div key={stat.label} className="rounded-2xl border border-stone-200/80 bg-white px-3 py-4 text-center shadow-sm">
+                <p className="font-display text-2xl text-stone-900">{stat.value}</p>
+                <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-stone-600">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -144,7 +144,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
         <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           <div className="mb-5 flex items-end justify-between gap-4">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.24em] text-stone-500">Curated Selection</p>
+              <p className="text-[11px] uppercase tracking-[0.24em] text-stone-600">Curated Selection</p>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={visibleShoes.map((shoe) => shoe.slug).join("-")}
@@ -152,7 +152,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
-                  className="mt-1 font-display text-xl text-white md:text-2xl"
+                  className="mt-1 font-display text-xl text-stone-900 md:text-2xl"
                 >
                   {visibleShoes.length === 1
                     ? visibleShoes[0]?.name
@@ -163,7 +163,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
 
             <div className="flex items-center gap-3">
               {showControls ? (
-                <span className="hidden text-[11px] uppercase tracking-[0.22em] text-stone-500 sm:inline">
+                <span className="hidden text-[11px] uppercase tracking-[0.22em] text-stone-600 sm:inline">
                   {String(active + 1).padStart(2, "0")} / {String(maxIndex + 1).padStart(2, "0")}
                 </span>
               ) : null}
@@ -176,7 +176,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
             </div>
           </div>
 
-          <div className="relative overflow-x-clip rounded-[2rem] border border-border/80 bg-stone-950/40 p-3 sm:p-4">
+          <div className="relative overflow-x-clip rounded-[2rem] border border-border/80 bg-white/70 p-3 sm:p-4">
             <div className="overflow-x-clip">
               <motion.div
                 className="flex items-stretch"
@@ -227,7 +227,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                 <button
                   type="button"
                   onClick={prev}
-                  className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-border px-5 text-xs uppercase tracking-[0.2em] text-stone-300"
+                  className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-border px-5 text-xs uppercase tracking-[0.2em] text-stone-600"
                 >
                   Previous
                 </button>

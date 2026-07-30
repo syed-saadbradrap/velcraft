@@ -79,12 +79,12 @@ export function CustomizationProcessSection({ steps }: CustomizationProcessSecti
                 </div>
                 <div className="text-right">
                   <p className="font-display text-3xl text-accent/80">{meta.number}</p>
-                  <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">{meta.label}</p>
+                  <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600">{meta.label}</p>
                 </div>
               </div>
 
-              <h3 className="font-display text-2xl text-white md:text-3xl">{step.title}</h3>
-              <p className="mt-4 flex-1 text-sm leading-7 text-stone-400">{step.description}</p>
+              <h3 className="font-display text-2xl text-stone-900 md:text-3xl">{step.title}</h3>
+              <p className="mt-4 flex-1 text-sm leading-7 text-stone-600">{step.description}</p>
             </motion.div>
           );
         })}

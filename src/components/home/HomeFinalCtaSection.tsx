@@ -22,8 +22,8 @@ export function HomeFinalCtaSection() {
         <div className="absolute inset-x-0 top-0 gold-divider opacity-80" />
 
         <div className="relative mx-auto max-w-3xl space-y-6">
-          <h2 className="font-display text-4xl leading-tight text-white md:text-5xl">{finalCta.title}</h2>
-          <p className="text-base leading-8 text-stone-400 md:text-lg">{finalCta.description}</p>
+          <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{finalCta.title}</h2>
+          <p className="text-base leading-8 text-stone-600 md:text-lg">{finalCta.description}</p>
           <p className="font-display text-xl text-accent md:text-2xl">{finalCta.subline}</p>
           <div className="pt-4">
             <Button href={customizeUrl()} size="lg">

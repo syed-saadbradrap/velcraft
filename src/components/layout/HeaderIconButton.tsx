@@ -14,7 +14,7 @@ interface HeaderIconButtonProps {
 }
 
 const iconClassName =
-  "relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-stone-300 transition hover:border-accent/30 hover:bg-accent/5 hover:text-white";
+  "relative inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-200 bg-stone-100/[0.03] text-stone-600 transition hover:border-accent/30 hover:bg-accent/5 hover:text-stone-900";
 
 export function HeaderIconButton({
   href,

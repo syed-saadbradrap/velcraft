@@ -33,11 +33,11 @@ export function SectionHeading({
             <div className={cn("gold-divider w-16", align === "center" && "mx-auto")} />
           </div>
         ) : null}
-        <h2 className="font-display text-4xl font-medium leading-[1.08] text-white md:text-5xl lg:text-[3.25rem]">
+        <h2 className="font-display text-4xl font-medium leading-[1.08] text-stone-900 md:text-5xl lg:text-[3.25rem]">
           {title}
         </h2>
         {description ? (
-          <p className="max-w-2xl text-base leading-8 text-stone-400 md:text-lg">{description}</p>
+          <p className="max-w-2xl text-base leading-8 text-stone-600 md:text-lg">{description}</p>
         ) : null}
       </div>
       {action ? <div className="shrink-0">{action}</div> : null}

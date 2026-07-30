@@ -60,7 +60,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-PK" className={`${display.variable} ${sans.variable} h-full`}>
-      <body className="min-h-full bg-stone-950 text-stone-100 antialiased">
+      <body className="min-h-full bg-background text-foreground antialiased">
         <StructuredData />
         <AppProviders>
           <AppShell>{children}</AppShell>

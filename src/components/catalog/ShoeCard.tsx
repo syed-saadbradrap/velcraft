@@ -62,7 +62,7 @@ export function ShoeCard({
         </Link>
 
         {customizable ? (
-          <span className="absolute left-3 top-3 rounded-full border border-accent/30 bg-stone-950/80 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-accent backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:text-[10px]">
+          <span className="absolute left-3 top-3 rounded-full border border-accent/30 bg-white/90 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-accent backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:text-[10px]">
             {featured ? "Signature Atelier" : "Custom Atelier"}
           </span>
         ) : null}
@@ -73,12 +73,12 @@ export function ShoeCard({
       <div className={cn("flex flex-1 flex-col gap-3", isSlider ? "p-5" : "gap-4 p-6")}>
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500 sm:text-xs">
+            <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600 sm:text-xs">
               {shoe.collection?.name ?? "Collection"}
             </p>
             <h3
               className={cn(
-                "mt-1.5 font-display leading-tight text-white",
+                "mt-1.5 font-display leading-tight text-stone-900",
                 isSlider ? "text-xl sm:text-2xl" : "mt-2 text-2xl sm:text-3xl",
               )}
             >
@@ -86,7 +86,7 @@ export function ShoeCard({
             </h3>
           </div>
           <p className="shrink-0 text-right">
-            <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-500">From</span>
+            <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-600">From</span>
             <span className={cn("luxury-gradient font-medium", isSlider ? "text-base sm:text-lg" : "text-lg sm:text-xl")}>
               {formatPrice(shoe.base_price)}
             </span>
@@ -94,7 +94,7 @@ export function ShoeCard({
         </div>
 
         {!isSlider && shoe.description ? (
-          <p className="line-clamp-2 text-sm leading-7 text-stone-400">{shoe.description}</p>
+          <p className="line-clamp-2 text-sm leading-7 text-stone-600">{shoe.description}</p>
         ) : null}
 
         <div className="mt-auto flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">

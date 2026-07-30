@@ -15,7 +15,7 @@ export function TrustStrip() {
   const items = [...highlights, ...highlights];
 
   return (
-    <section className="relative overflow-hidden border-y border-border bg-stone-950/90 py-6">
+    <section className="relative overflow-hidden border-y border-border bg-stone-50/90 py-6">
       <div className="absolute inset-x-0 top-0 gold-divider opacity-70" />
       <Container className="relative">
         <div className="mb-4 flex items-center justify-between gap-4 text-[10px] uppercase tracking-[0.28em] text-stone-600">
@@ -34,7 +34,7 @@ export function TrustStrip() {
                   <span className="h-1.5 w-1.5 rounded-full bg-accent" />
                 </span>
                 <div>
-                  <p className="whitespace-nowrap text-[11px] uppercase tracking-[0.22em] text-stone-300">
+                  <p className="whitespace-nowrap text-[11px] uppercase tracking-[0.22em] text-stone-600">
                     {item.label}
                   </p>
                   <p className="whitespace-nowrap text-[10px] tracking-[0.14em] text-stone-600">

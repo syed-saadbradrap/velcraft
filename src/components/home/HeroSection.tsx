@@ -42,11 +42,11 @@ export function HeroSection({ slides }: HeroSectionProps) {
         style={{ opacity }}
         className="absolute -left-24 top-24 h-72 w-72 rounded-full bg-accent/10 blur-3xl pulse-glow"
       />
-      <div className="absolute -right-16 bottom-16 h-64 w-64 rounded-full bg-white/5 blur-3xl" />
+      <div className="absolute -right-16 bottom-16 h-64 w-64 rounded-full bg-stone-100/5 blur-3xl" />
 
       <Container className="relative grid min-h-[88vh] items-center gap-14 py-24 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <motion.div style={{ y: contentY }} className="space-y-9">
-          <h1 className="font-display text-5xl leading-[1.02] text-white md:text-6xl xl:text-7xl">
+          <h1 className="font-display text-5xl leading-[1.02] text-stone-900 md:text-6xl xl:text-7xl">
             <TextReveal text={titleLead} as="span" className="block" delay={0.15} />
             {titleAccent ? (
               <motion.span
@@ -64,7 +64,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.65 }}
-            className="max-w-xl text-lg leading-8 text-stone-400 md:text-xl md:leading-9"
+            className="max-w-xl text-lg leading-8 text-stone-600 md:text-xl md:leading-9"
           >
             {slide.description ?? homeContent.hero.description}
           </motion.p>

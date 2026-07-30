@@ -21,7 +21,7 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
       href={href}
       className={cn(
         "relative px-4 py-2 text-[11px] uppercase tracking-[0.24em] transition duration-300",
-        active ? "text-accent" : "text-stone-400 hover:text-white",
+        active ? "text-accent" : "text-stone-600 hover:text-stone-900",
       )}
     >
       {label}
@@ -58,7 +58,7 @@ function UserMenu() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex h-11 items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 text-[11px] uppercase tracking-[0.2em] text-stone-300 transition hover:border-accent/30 hover:text-white"
+        className="inline-flex h-11 items-center gap-2 rounded-full border border-stone-200 bg-stone-100/[0.03] px-4 text-[11px] uppercase tracking-[0.2em] text-stone-600 transition hover:border-accent/30 hover:text-stone-900"
       >
         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-accent/15 font-display text-sm text-accent">
           {user.name.charAt(0).toUpperCase()}
@@ -73,15 +73,15 @@ function UserMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 top-[calc(100%+10px)] z-50 min-w-[220px] overflow-hidden rounded-2xl border border-border bg-stone-950/95 p-2 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+            className="absolute right-0 top-[calc(100%+10px)] z-50 min-w-[220px] overflow-hidden rounded-2xl border border-border bg-white/95 p-2 shadow-[0_24px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl"
           >
-            <p className="px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-stone-500">Account</p>
+            <p className="px-3 py-2 text-[10px] uppercase tracking-[0.24em] text-stone-600">Account</p>
             {accountNavigation.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-xl px-3 py-2.5 text-sm text-stone-300 transition hover:bg-white/[0.04] hover:text-white"
+                className="block rounded-xl px-3 py-2.5 text-sm text-stone-600 transition hover:bg-stone-100/[0.04] hover:text-stone-900"
               >
                 {item.label}
               </Link>
@@ -90,7 +90,7 @@ function UserMenu() {
               <Link
                 href="/admin/dashboard"
                 onClick={() => setOpen(false)}
-                className="block rounded-xl px-3 py-2.5 text-sm text-accent transition hover:bg-white/[0.04]"
+                className="block rounded-xl px-3 py-2.5 text-sm text-accent transition hover:bg-stone-100/[0.04]"
               >
                 Admin Dashboard
               </Link>
@@ -102,7 +102,7 @@ function UserMenu() {
                 setOpen(false);
                 void logout();
               }}
-              className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-stone-500 transition hover:bg-white/[0.04] hover:text-white"
+              className="block w-full rounded-xl px-3 py-2.5 text-left text-sm text-stone-600 transition hover:bg-stone-100/[0.04] hover:text-stone-900"
             >
               Sign Out
             </button>
@@ -133,7 +133,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50">
       <div className="header-announcement hidden border-b border-accent/10 bg-[linear-gradient(90deg,rgba(201,169,98,0.08),rgba(201,169,98,0.02),rgba(201,169,98,0.08))] sm:block">
-        <div className="section-shell flex h-9 items-center justify-center gap-3 text-[10px] uppercase tracking-[0.28em] text-stone-400">
+        <div className="section-shell flex h-9 items-center justify-center gap-3 text-[10px] uppercase tracking-[0.28em] text-stone-600">
           <span>Complimentary EU sizing</span>
           <span className="h-1 w-1 rounded-full bg-accent/70" />
           <span>10–14 day atelier delivery</span>
@@ -149,8 +149,8 @@ export function SiteHeader() {
         className={cn(
           "border-b transition duration-500",
           scrolled
-            ? "border-border bg-stone-950/92 shadow-[0_16px_48px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-            : "border-white/5 bg-stone-950/75 backdrop-blur-lg",
+            ? "border-border bg-white/92 shadow-[0_16px_48px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+            : "border-stone-200/70 bg-white/85 backdrop-blur-lg",
         )}
       >
         <div className="absolute inset-x-0 top-0 gold-divider opacity-50" />
@@ -159,7 +159,7 @@ export function SiteHeader() {
           <BrandLogo priority imageClassName="h-11 sm:h-12" />
 
           <nav className="hidden justify-center lg:flex">
-            <div className="inline-flex items-center gap-1 rounded-full border border-white/5 bg-white/[0.02] p-1">
+            <div className="inline-flex items-center gap-1 rounded-full border border-stone-200/70 bg-stone-100/[0.02] p-1">
               {navigation.map((item) => (
                 <NavLink
                   key={item.href}
@@ -194,7 +194,7 @@ export function SiteHeader() {
             ) : (
               <Link
                 href={siteConfig.links.login}
-                className="hidden rounded-full border border-white/10 px-4 py-2.5 text-[11px] uppercase tracking-[0.2em] text-stone-400 transition hover:border-accent/30 hover:text-white sm:inline-flex"
+                className="hidden rounded-full border border-stone-200 px-4 py-2.5 text-[11px] uppercase tracking-[0.2em] text-stone-600 transition hover:border-accent/30 hover:text-stone-900 sm:inline-flex"
               >
                 Sign In
               </Link>
@@ -206,7 +206,7 @@ export function SiteHeader() {
 
             <button
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/10 lg:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-200 lg:hidden"
               aria-label="Toggle menu"
               onClick={() => setOpen((value) => !value)}
             >
@@ -235,14 +235,14 @@ export function SiteHeader() {
               >
                 {navigation.map((item) => (
                   <motion.div key={item.href} variants={fadeUp}>
-                    <Link href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-3 text-sm uppercase tracking-[0.22em] text-stone-300">
+                    <Link href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-3 text-sm uppercase tracking-[0.22em] text-stone-600">
                       {item.label}
                     </Link>
                   </motion.div>
                 ))}
                 <div className="my-3 gold-divider opacity-50" />
                 <motion.div variants={fadeUp} className="grid grid-cols-2 gap-2">
-                  <Link href={siteConfig.links.wishlist} onClick={() => setOpen(false)} className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-300">
+                  <Link href={siteConfig.links.wishlist} onClick={() => setOpen(false)} className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-600">
                     Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ""}
                   </Link>
                   <button
@@ -251,14 +251,14 @@ export function SiteHeader() {
                       setOpen(false);
                       openCart();
                     }}
-                    className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-300"
+                    className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-600"
                   >
                     Cart {cartCount > 0 ? `(${cartCount})` : ""}
                   </button>
                 </motion.div>
                 {!isAuthenticated ? (
                   <motion.div variants={fadeUp}>
-                    <Link href={siteConfig.links.login} onClick={() => setOpen(false)} className="mt-2 block rounded-xl px-3 py-3 text-sm uppercase tracking-[0.2em] text-stone-400">
+                    <Link href={siteConfig.links.login} onClick={() => setOpen(false)} className="mt-2 block rounded-xl px-3 py-3 text-sm uppercase tracking-[0.2em] text-stone-600">
                       Sign In
                     </Link>
                   </motion.div>

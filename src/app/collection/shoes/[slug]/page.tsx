@@ -90,7 +90,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-[1.25rem] border border-border bg-stone-900/[0.03] p-4"
+                className="rounded-[1.25rem] border border-border bg-stone-100/[0.03] p-4"
               >
                 <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600">{item.label}</p>
                 <p className="mt-2 text-sm text-stone-900">{item.value}</p>
@@ -100,7 +100,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
 
           <div className="grid gap-6 sm:grid-cols-2">
             {shoe.materials && shoe.materials.length > 0 ? (
-              <div className="rounded-[1.25rem] border border-border bg-stone-900/[0.03] p-5">
+              <div className="rounded-[1.25rem] border border-border bg-stone-100/[0.03] p-5">
                 <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Materials</p>
                 <ul className="mt-3 space-y-2 text-sm text-stone-600">
                   {shoe.materials.map((material) => (
@@ -111,7 +111,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
             ) : null}
 
             {shoe.colors && shoe.colors.length > 0 ? (
-              <div className="rounded-[1.25rem] border border-border bg-stone-900/[0.03] p-5">
+              <div className="rounded-[1.25rem] border border-border bg-stone-100/[0.03] p-5">
                 <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Colors</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {shoe.colors.slice(0, 8).map((color) => (
@@ -147,7 +147,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
             </div>
           ) : null}
 
-          <div className="rounded-[1.5rem] border border-border bg-stone-900/[0.03] p-6">
+          <div className="rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-6">
             <p className="text-xs uppercase tracking-[0.28em] text-accent">Craftsmanship</p>
             <p className="mt-3 text-sm leading-7 text-stone-700">
               {customizable

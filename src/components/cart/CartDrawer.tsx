@@ -46,7 +46,7 @@ export function CartDrawer() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={closeCart}
-            className="fixed inset-0 z-[70] bg-stone-900/40 backdrop-blur-[2px]"
+            className="fixed inset-0 z-[70] bg-stone-100/40 backdrop-blur-[2px]"
           />
 
           <motion.aside

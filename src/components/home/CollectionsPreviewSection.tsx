@@ -62,11 +62,11 @@ export function CollectionsPreviewSection({ collections }: CollectionsPreviewSec
                     <p className="text-[10px] uppercase tracking-[0.28em] text-accent">
                       {collection.shoes_count ?? 0} styles
                     </p>
-                    <h3 className="mt-2 font-display text-2xl text-white xl:text-3xl">{collection.name}</h3>
+                    <h3 className="mt-2 font-display text-2xl text-stone-900 xl:text-3xl">{collection.name}</h3>
                     {collection.description ? (
-                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-stone-400">{collection.description}</p>
+                      <p className="mt-2 line-clamp-2 text-sm leading-6 text-stone-600">{collection.description}</p>
                     ) : null}
-                    <span className="mt-5 inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-stone-300 transition group-hover:translate-x-1">
+                    <span className="mt-5 inline-flex items-center gap-2 text-xs uppercase tracking-[0.24em] text-stone-600 transition group-hover:translate-x-1">
                       Explore collection
                       <span aria-hidden="true">→</span>
                     </span>
