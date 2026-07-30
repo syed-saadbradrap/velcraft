@@ -8,7 +8,13 @@ export function StructuredData() {
     name: fallbackHomepageData.brand.name,
     description: siteConfig.description,
     url: siteConfig.url,
-    priceRange: "$$$",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: siteConfig.contact.address,
+      addressLocality: "Karachi",
+      addressCountry: siteConfig.defaultCountry,
+    },
+    priceRange: "₨₨₨",
   };
 
   return (

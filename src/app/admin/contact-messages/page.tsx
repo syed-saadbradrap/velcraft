@@ -40,21 +40,21 @@ export default function AdminContactMessagesPage() {
           <article key={message.id} className="glass-panel rounded-[1.5rem] p-6">
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
               <div>
-                <p className="text-xs uppercase tracking-[0.18em] text-stone-500">
+                <p className="text-xs uppercase tracking-[0.18em] text-stone-600">
                   {new Date(message.created_at).toLocaleString()}
                 </p>
-                <h2 className="mt-2 font-display text-2xl text-white">{message.subject || "No subject"}</h2>
-                <p className="mt-2 text-sm text-stone-400">
+                <h2 className="mt-2 font-display text-2xl text-stone-900">{message.subject || "No subject"}</h2>
+                <p className="mt-2 text-sm text-stone-700">
                   {message.name} · {message.email}
                 </p>
-                <p className="mt-4 text-sm leading-7 text-stone-300">{message.message}</p>
+                <p className="mt-4 text-sm leading-7 text-stone-600">{message.message}</p>
               </div>
               <select
                 value={message.status}
                 onChange={(event) =>
                   void handleStatusChange(message.id, event.target.value as ContactMessage["status"])
                 }
-                className="rounded-full border border-border bg-stone-950 px-3 py-2 text-sm capitalize text-white outline-none"
+                className="rounded-full border border-border bg-stone-50 px-3 py-2 text-sm capitalize text-stone-900 outline-none"
               >
                 {statuses.map((status) => (
                   <option key={status} value={status}>

@@ -25,6 +25,9 @@ interface CartContextValue {
   cart: Cart | null;
   isLoading: boolean;
   itemCount: number;
+  isOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
   refreshCart: () => Promise<void>;
   addItem: (payload: AddCartItemPayload) => Promise<void>;
   updateItemQuantity: (itemId: number, quantity: number) => Promise<void>;
@@ -39,6 +42,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [localMode, setLocalMode] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
 
   const refreshCart = useCallback(async () => {
     ensureGuestToken();
@@ -152,13 +159,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
       cart,
       isLoading,
       itemCount: cart?.totals.item_count ?? 0,
+      isOpen,
+      openCart,
+      closeCart,
       refreshCart,
       addItem,
       updateItemQuantity,
       removeItem,
       clearCart,
     }),
-    [cart, isLoading, refreshCart, addItem, updateItemQuantity, removeItem, clearCart],
+    [cart, isLoading, isOpen, openCart, closeCart, refreshCart, addItem, updateItemQuantity, removeItem, clearCart],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

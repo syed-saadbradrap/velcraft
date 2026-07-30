@@ -80,13 +80,13 @@ export default function AdminCouponsPage() {
           onChange={(event) => setForm((current) => ({ ...current, code: event.target.value.toUpperCase() }))}
         />
         <label className="block space-y-2">
-          <span className="text-xs uppercase tracking-[0.28em] text-stone-500">Type</span>
+          <span className="text-xs uppercase tracking-[0.28em] text-stone-600">Type</span>
           <select
             value={form.type}
             onChange={(event) =>
               setForm((current) => ({ ...current, type: event.target.value as AdminCoupon["type"] }))
             }
-            className="h-14 w-full rounded-2xl border border-border bg-stone-950/60 px-5 text-sm text-white outline-none"
+            className="h-14 w-full rounded-2xl border border-border bg-white/80 px-5 text-sm text-stone-900 outline-none"
           >
             <option value="percentage">Percentage</option>
             <option value="fixed">Fixed</option>
@@ -123,7 +123,7 @@ export default function AdminCouponsPage() {
 
       <div className="mt-8 overflow-x-auto rounded-[1.5rem] border border-border">
         <table className="min-w-full text-left text-sm">
-          <thead className="bg-white/5 text-xs uppercase tracking-[0.18em] text-stone-500">
+          <thead className="bg-stone-100/5 text-xs uppercase tracking-[0.18em] text-stone-600">
             <tr>
               <th className="px-4 py-4">Code</th>
               <th className="px-4 py-4">Type</th>
@@ -136,13 +136,13 @@ export default function AdminCouponsPage() {
           <tbody>
             {coupons.map((coupon) => (
               <tr key={coupon.id} className="border-t border-border">
-                <td className="px-4 py-4 font-medium text-white">{coupon.code}</td>
-                <td className="px-4 py-4 capitalize text-stone-300">{coupon.type}</td>
+                <td className="px-4 py-4 font-medium text-stone-900">{coupon.code}</td>
+                <td className="px-4 py-4 capitalize text-stone-600">{coupon.type}</td>
                 <td className="px-4 py-4 text-accent">{coupon.value}</td>
-                <td className="px-4 py-4 text-stone-300">
+                <td className="px-4 py-4 text-stone-600">
                   {coupon.used_count} / {coupon.max_uses}
                 </td>
-                <td className="px-4 py-4 text-stone-300">{coupon.is_active ? "Active" : "Inactive"}</td>
+                <td className="px-4 py-4 text-stone-600">{coupon.is_active ? "Active" : "Inactive"}</td>
                 <td className="px-4 py-4">
                   <button
                     type="button"

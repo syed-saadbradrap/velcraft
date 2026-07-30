@@ -64,12 +64,12 @@ export default function AccountOrdersPage() {
         </div>
 
         {loading ? (
-          <p className="text-sm text-stone-400">Loading orders...</p>
+          <p className="text-sm text-stone-700">Loading orders...</p>
         ) : error ? (
           <p className="text-sm text-red-300">{error}</p>
         ) : orders.length === 0 ? (
           <div className="glass-panel rounded-[1.75rem] p-10 text-center">
-            <p className="text-stone-400">No orders yet.</p>
+            <p className="text-stone-700">No orders yet.</p>
             <Button href="/collection" className="mt-6">
               Start Shopping
             </Button>
@@ -84,11 +84,11 @@ export default function AccountOrdersPage() {
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+                    <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
                       {new Date(order.created_at).toLocaleDateString()}
                     </p>
-                    <h2 className="mt-2 font-display text-2xl text-white">{order.order_number}</h2>
-                    <p className="mt-1 text-sm capitalize text-stone-400">
+                    <h2 className="mt-2 font-display text-2xl text-stone-900">{order.order_number}</h2>
+                    <p className="mt-1 text-sm capitalize text-stone-700">
                       {order.status} · {order.payment_status}
                     </p>
                   </div>

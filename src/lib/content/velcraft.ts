@@ -1,3 +1,5 @@
+import { siteConfig } from "@/config/site";
+
 export const homeContent = {
   hero: {
     title: "Your Shoes. Your Signature.",
@@ -39,6 +41,24 @@ export const homeContent = {
         description:
           "Customize footwear designed for every style, every occasion, and every individual.",
         icon: "people",
+      },
+      {
+        title: "Interactive 3D Customization",
+        description:
+          "Preview every color, fabric, buckle, and sole change instantly in our live 3D designer before you order.",
+        icon: "cube",
+      },
+      {
+        title: "Premium Craftsmanship",
+        description:
+          "Every pair is hand-finished with meticulous attention to detail using carefully selected premium materials.",
+        icon: "craft",
+      },
+      {
+        title: "Secure Ordering & Delivery",
+        description:
+          "Order with confidence through cash on delivery or bank transfer, with reliable delivery across Pakistan.",
+        icon: "shield",
       },
     ],
   },
@@ -263,10 +283,10 @@ export const contactContent = {
     sectionTitle: "Contact Information",
     title: "Get in Touch",
     description: "Reach out through your preferred method, and we'll respond as quickly as possible.",
-    email: "support@[yourdomain].com",
-    phone: "+1 (000) 000-0000",
-    hours: "Monday - Saturday, 12:00 PM - 10:00 PM",
-    address: "Dolmen Center, Tariq Road, Karachi",
+    email: siteConfig.contact.email,
+    phone: siteConfig.contact.phone,
+    hours: siteConfig.contact.hours,
+    address: siteConfig.contact.address,
   },
   form: {
     title: "Send Us a Message",

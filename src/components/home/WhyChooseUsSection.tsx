@@ -14,6 +14,7 @@ const iconLabels: Record<string, string> = {
   size: "Sizing",
   people: "Unisex",
   cube: "3D Atelier",
+  craft: "Craft",
   shield: "Assurance",
 };
 
@@ -43,9 +44,6 @@ export function WhyChooseUsSection({
   title = homeContent.whySettle.title,
   description = homeContent.whySettle.description,
 }: WhyChooseUsSectionProps) {
-  const topRow = items.slice(0, 3);
-  const bottomRow = items.slice(3);
-
   return (
     <SectionShell tone="default" containerClassName="space-y-14">
       <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
@@ -55,35 +53,17 @@ export function WhyChooseUsSection({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
-        className="space-y-6"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
       >
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {topRow.map((item, index) => (
-            <motion.div
-              key={item.title}
-              variants={staggerItem}
-              className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8"
-            >
-              <WhyChooseCard item={item} index={index} />
-            </motion.div>
-          ))}
-        </div>
-
-        {bottomRow.length > 0 ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-6">
-            {bottomRow.map((item, index) => (
-              <motion.div
-                key={item.title}
-                variants={staggerItem}
-                className={`glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8 lg:col-span-2 ${
-                  index === 0 ? "lg:col-start-2" : index === 1 ? "lg:col-start-4" : ""
-                }`}
-              >
-                <WhyChooseCard item={item} index={index + topRow.length} />
-              </motion.div>
-            ))}
-          </div>
-        ) : null}
+        {items.map((item, index) => (
+          <motion.div
+            key={item.title}
+            variants={staggerItem}
+            className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8"
+          >
+            <WhyChooseCard item={item} index={index} />
+          </motion.div>
+        ))}
       </motion.div>
     </SectionShell>
   );

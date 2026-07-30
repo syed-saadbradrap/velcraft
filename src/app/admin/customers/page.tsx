@@ -26,7 +26,7 @@ export default function AdminCustomersPage() {
 
       <div className="mt-8 overflow-x-auto rounded-[1.5rem] border border-border">
         <table className="min-w-full text-left text-sm">
-          <thead className="bg-white/5 text-xs uppercase tracking-[0.18em] text-stone-500">
+          <thead className="bg-stone-100/5 text-xs uppercase tracking-[0.18em] text-stone-600">
             <tr>
               <th className="px-4 py-4">Name</th>
               <th className="px-4 py-4">Email</th>
@@ -38,11 +38,11 @@ export default function AdminCustomersPage() {
           <tbody>
             {customers.map((customer) => (
               <tr key={customer.id} className="border-t border-border">
-                <td className="px-4 py-4 text-white">{customer.name}</td>
-                <td className="px-4 py-4 text-stone-300">{customer.email}</td>
-                <td className="px-4 py-4 text-stone-300">{customer.phone ?? "—"}</td>
+                <td className="px-4 py-4 text-stone-900">{customer.name}</td>
+                <td className="px-4 py-4 text-stone-600">{customer.email}</td>
+                <td className="px-4 py-4 text-stone-600">{customer.phone ?? "—"}</td>
                 <td className="px-4 py-4 text-accent">{customer.orders_count}</td>
-                <td className="px-4 py-4 text-stone-500">
+                <td className="px-4 py-4 text-stone-600">
                   {new Date(customer.created_at).toLocaleDateString()}
                 </td>
               </tr>

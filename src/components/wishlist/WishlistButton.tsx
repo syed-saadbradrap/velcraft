@@ -32,7 +32,7 @@ export function WishlistButton({ shoe, className, size = "md" }: WishlistButtonP
         size === "sm" ? "h-9 w-9" : "h-10 w-10",
         active
           ? "border-accent/40 bg-accent/15 text-accent"
-          : "border-white/10 bg-stone-950/70 text-stone-300 hover:border-accent/30 hover:text-accent",
+          : "border-stone-200 bg-stone-50/70 text-stone-600 hover:border-accent/30 hover:text-accent",
         className,
       )}
     >

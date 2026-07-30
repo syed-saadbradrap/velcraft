@@ -38,8 +38,8 @@ export default function AdminDashboardPage() {
             { label: "Revenue", value: formatPrice(dashboard.revenue.total) },
           ].map((stat) => (
             <div key={stat.label} className="glass-panel rounded-[1.5rem] p-6">
-              <p className="text-xs uppercase tracking-[0.22em] text-stone-500">{stat.label}</p>
-              <p className="mt-3 font-display text-3xl text-white">{stat.value}</p>
+              <p className="text-xs uppercase tracking-[0.22em] text-stone-600">{stat.label}</p>
+              <p className="mt-3 font-display text-3xl text-stone-900">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -48,15 +48,15 @@ export default function AdminDashboardPage() {
       {dashboard ? (
         <div className="mt-6 grid gap-4 lg:grid-cols-3">
           <div className="glass-panel rounded-[1.5rem] p-6">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Processing</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">Processing</p>
             <p className="mt-3 font-display text-3xl text-accent">{dashboard.orders.processing}</p>
           </div>
           <div className="glass-panel rounded-[1.5rem] p-6">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">Shoes</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">Shoes</p>
             <p className="mt-3 font-display text-3xl text-accent">{dashboard.shoes}</p>
           </div>
           <div className="glass-panel rounded-[1.5rem] p-6">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">New Messages</p>
+            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">New Messages</p>
             <p className="mt-3 font-display text-3xl text-accent">
               {dashboard.contact_messages.new} / {dashboard.contact_messages.total}
             </p>

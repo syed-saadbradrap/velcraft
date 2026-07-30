@@ -63,7 +63,7 @@ export function CollectionCatalog({
               "rounded-full border px-5 py-2.5 text-sm uppercase tracking-[0.18em] transition",
               !activeCollection
                 ? "border-accent bg-accent/10 text-accent"
-                : "border-border text-stone-400 hover:text-white",
+                : "border-border text-stone-700 hover:text-stone-900",
             )}
           >
             All
@@ -79,7 +79,7 @@ export function CollectionCatalog({
                 "rounded-full border px-5 py-2.5 text-sm uppercase tracking-[0.18em] transition",
                 activeCollection === collection.slug
                   ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-400 hover:text-white",
+                  : "border-border text-stone-700 hover:text-stone-900",
               )}
             >
               {collection.name}
@@ -91,7 +91,7 @@ export function CollectionCatalog({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-sm text-stone-500"
+          className="text-sm text-stone-600"
         >
           {catalog.pagination.total} styles in the Velcraft collection
         </motion.p>
@@ -119,10 +119,10 @@ export function CollectionCatalog({
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="rounded-[1.5rem] border border-border bg-white/[0.03] p-10 text-center"
+            className="rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-10 text-center"
           >
-            <p className="font-display text-3xl text-white">New arrivals coming soon</p>
-            <p className="mt-3 text-sm text-stone-400">
+            <p className="font-display text-3xl text-stone-900">New arrivals coming soon</p>
+            <p className="mt-3 text-sm text-stone-700">
               Our atelier is preparing the next collection. Contact concierge for private previews.
             </p>
             <Button href="/contact" variant="secondary" size="sm" className="mt-6">
@@ -139,7 +139,7 @@ export function CollectionCatalog({
           transition={{ delay: 0.3 }}
           className="flex flex-wrap items-center justify-between gap-4 border-t border-border pt-8"
         >
-          <p className="text-sm text-stone-500">
+          <p className="text-sm text-stone-600">
             Page {currentPage} of {lastPage}
           </p>
           <div className="flex gap-3">

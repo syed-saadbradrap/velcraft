@@ -28,7 +28,7 @@ export default function WishlistPage() {
       />
 
       {!isAuthenticated ? (
-        <div className="mx-auto max-w-2xl rounded-2xl border border-accent/15 bg-accent/5 px-6 py-4 text-center text-sm text-stone-300">
+        <div className="mx-auto max-w-2xl rounded-2xl border border-accent/15 bg-accent/5 px-6 py-4 text-center text-sm text-stone-600">
           Sign in to sync your wishlist across devices.{" "}
           <Link href="/login?next=/wishlist" className="text-accent hover:underline">
             Sign in
@@ -53,8 +53,8 @@ export default function WishlistPage() {
               <path d="M12 20.5s-7-4.6-7-10a4 4 0 017-2.5 4 4 0 017 2.5c0 5.4-7 10-7 10z" />
             </svg>
           </div>
-          <h2 className="font-display text-3xl text-white">No saved designs yet</h2>
-          <p className="mt-3 text-sm leading-7 text-stone-400">
+          <h2 className="font-display text-3xl text-stone-900">No saved designs yet</h2>
+          <p className="mt-3 text-sm leading-7 text-stone-700">
             Tap the heart on any product to save it here for later.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -93,13 +93,13 @@ export default function WishlistPage() {
               <div className="space-y-4 p-6">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">
+                    <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600">
                       {item.shoe.collection?.name ?? "Collection"}
                     </p>
-                    <h2 className="mt-2 font-display text-2xl text-white">{item.shoe.name}</h2>
+                    <h2 className="mt-2 font-display text-2xl text-stone-900">{item.shoe.name}</h2>
                   </div>
                   <p className="text-right">
-                    <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-500">From</span>
+                    <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-600">From</span>
                     <span className="luxury-gradient text-lg font-medium">{formatPrice(item.shoe.base_price)}</span>
                   </p>
                 </div>
@@ -121,7 +121,7 @@ export default function WishlistPage() {
                   <button
                     type="button"
                     onClick={() => void removeWishlist(item.shoe_id)}
-                    className="rounded-full border border-border px-4 py-2 text-xs uppercase tracking-[0.16em] text-stone-500 transition hover:border-red-400/30 hover:text-red-300"
+                    className="rounded-full border border-border px-4 py-2 text-xs uppercase tracking-[0.16em] text-stone-600 transition hover:border-red-400/30 hover:text-red-300"
                   >
                     Remove
                   </button>
@@ -132,7 +132,7 @@ export default function WishlistPage() {
         </motion.div>
       )}
 
-      <p className="text-center text-sm text-stone-500">
+      <p className="text-center text-sm text-stone-600">
         Ready to purchase?{" "}
         <Link href="/cart" className="text-accent hover:underline">
           View your cart

@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { BrandLogo } from "@/components/layout/BrandLogo";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import { HeaderIconButton } from "@/components/layout/HeaderIconButton";
 import { navigation, siteConfig, accountNavigation } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -117,7 +118,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
-  const { itemCount: cartCount } = useCart();
+  const { itemCount: cartCount, openCart } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
 
   useEffect(() => {
@@ -178,7 +179,7 @@ export function SiteHeader() {
                 </svg>
               </HeaderIconButton>
 
-              <HeaderIconButton href={siteConfig.links.cart} label="Cart" count={cartCount}>
+              <HeaderIconButton onClick={openCart} label="Cart" count={cartCount}>
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <path d="M6 6h15l-1.5 9h-12z" />
                   <path d="M6 6 5 3H2" />
@@ -244,9 +245,16 @@ export function SiteHeader() {
                   <Link href={siteConfig.links.wishlist} onClick={() => setOpen(false)} className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-300">
                     Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ""}
                   </Link>
-                  <Link href={siteConfig.links.cart} onClick={() => setOpen(false)} className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-300">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      openCart();
+                    }}
+                    className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-300"
+                  >
                     Cart {cartCount > 0 ? `(${cartCount})` : ""}
-                  </Link>
+                  </button>
                 </motion.div>
                 {!isAuthenticated ? (
                   <motion.div variants={fadeUp}>
@@ -265,6 +273,7 @@ export function SiteHeader() {
           ) : null}
         </AnimatePresence>
       </motion.div>
+      <CartDrawer />
     </header>
   );
 }

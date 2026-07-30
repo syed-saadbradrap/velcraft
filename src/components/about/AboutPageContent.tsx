@@ -21,15 +21,15 @@ export function AboutPageContent() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(201,169,98,0.16),transparent_35%)]" />
         <Container className="relative max-w-4xl">
           <Reveal>
-            <h1 className="font-display text-5xl leading-tight text-white md:text-6xl">{hero.title}</h1>
-            <p className="mt-6 text-lg leading-8 text-stone-400 md:text-xl md:leading-9">{hero.description}</p>
+            <h1 className="font-display text-5xl leading-tight text-stone-900 md:text-6xl">{hero.title}</h1>
+            <p className="mt-6 text-lg leading-8 text-stone-600 md:text-xl md:leading-9">{hero.description}</p>
           </Reveal>
         </Container>
       </section>
 
       <SectionShell tone="muted" containerClassName="max-w-4xl space-y-8">
         <SectionHeading eyebrow={story.eyebrow} title={story.title} align="center" />
-        <div className="space-y-6 text-base leading-8 text-stone-400 md:text-lg md:leading-9">
+        <div className="space-y-6 text-base leading-8 text-stone-600 md:text-lg md:leading-9">
           {story.paragraphs.map((paragraph) => (
             <Reveal key={paragraph}>
               <p>{paragraph}</p>
@@ -60,10 +60,10 @@ export function AboutPageContent() {
               className="glass-panel glass-panel-hover rounded-[1.75rem] p-8"
             >
               <p className="font-display text-4xl text-accent/70">{String(index + 1).padStart(2, "0")}</p>
-              <h3 className="mt-4 font-display text-2xl text-white md:text-3xl">{step.title}</h3>
-              <p className="mt-4 text-sm leading-7 text-stone-400 md:text-base md:leading-8">{step.description}</p>
+              <h3 className="mt-4 font-display text-2xl text-stone-900 md:text-3xl">{step.title}</h3>
+              <p className="mt-4 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{step.description}</p>
               {"bullets" in step && step.bullets ? (
-                <ul className="mt-4 space-y-2 text-sm leading-7 text-stone-400 md:text-base md:leading-8">
+                <ul className="mt-4 space-y-2 text-sm leading-7 text-stone-600 md:text-base md:leading-8">
                   {step.bullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-2">
                       <span className="text-accent">•</span>
@@ -90,12 +90,12 @@ export function AboutPageContent() {
             <motion.li
               key={item}
               variants={staggerItem}
-              className="flex items-start gap-4 rounded-2xl border border-border bg-white/[0.03] px-6 py-4"
+              className="flex items-start gap-4 rounded-2xl border border-border bg-white px-6 py-4 shadow-sm"
             >
               <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent/10 text-[10px] text-accent">
                 ✓
               </span>
-              <span className="text-sm leading-7 text-stone-300 md:text-base">{item}</span>
+              <span className="text-sm leading-7 text-stone-600 md:text-base">{item}</span>
             </motion.li>
           ))}
         </motion.ul>
@@ -104,9 +104,9 @@ export function AboutPageContent() {
       <FaqSection faqs={faqs} title="Frequently Asked Questions" showSidebar={false} />
 
       <SectionShell tone="default" containerClassName="pb-8">
-        <Reveal className="relative overflow-hidden rounded-[2rem] border border-accent/15 bg-[linear-gradient(135deg,rgba(201,169,98,0.12),rgba(12,10,9,0.92))] p-8 text-center md:p-14">
-          <h2 className="font-display text-4xl leading-tight text-white md:text-5xl">{finalCta.title}</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-400 md:text-lg">{finalCta.description}</p>
+        <Reveal className="relative overflow-hidden rounded-[2rem] border border-accent/20 bg-[linear-gradient(135deg,rgba(184,148,63,0.14),rgba(255,255,255,0.98)_45%,rgba(245,243,239,1))] p-8 text-center shadow-[0_24px_60px_rgba(28,25,23,0.08)] md:p-14">
+          <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{finalCta.title}</h2>
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-stone-600 md:text-lg">{finalCta.description}</p>
           <div className="mt-8">
             <Button href={customizeUrl()} size="lg">
               {finalCta.ctaLabel}

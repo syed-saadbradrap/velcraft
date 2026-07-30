@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse rounded-2xl bg-white/[0.06]", className)} />;
+  return <div className={cn("animate-pulse rounded-2xl bg-stone-200/70", className)} />;
 }
 
 export function ShoeCardSkeleton() {
@@ -24,11 +24,11 @@ export function ShoeCardSkeleton() {
 
 export function ViewerSkeleton() {
   return (
-    <div className="relative h-[100vh] min-h-[100vh] overflow-hidden rounded-[2rem] border border-border bg-[radial-gradient(circle_at_center,#292524_0%,#0c0a09_70%)]">
-      <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-white/[0.04] via-transparent to-accent/10" />
+    <div className="relative h-[100vh] min-h-[100vh] overflow-hidden rounded-[2rem] border border-border bg-[radial-gradient(circle_at_center,#f5f3ef_0%,#faf8f5_70%)]">
+      <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-stone-900/[0.03] via-transparent to-accent/10" />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
         <div className="h-12 w-12 animate-spin rounded-full border-2 border-accent/20 border-t-accent" />
-        <p className="text-xs uppercase tracking-[0.32em] text-stone-500">Preparing Atelier Studio</p>
+        <p className="text-xs uppercase tracking-[0.32em] text-stone-600">Preparing Atelier Studio</p>
       </div>
     </div>
   );

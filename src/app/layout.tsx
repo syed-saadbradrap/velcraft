@@ -4,7 +4,6 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { siteConfig } from "@/config/site";
-import { themeInitScript } from "@/lib/theme";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
@@ -60,10 +59,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-PK" suppressHydrationWarning className={`${display.variable} ${sans.variable} h-full`}>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
-      </head>
+    <html lang="en-PK" className={`${display.variable} ${sans.variable} h-full`}>
       <body className="min-h-full bg-stone-950 text-stone-100 antialiased">
         <StructuredData />
         <AppProviders>

@@ -23,7 +23,7 @@ export function BrandLogo({
       width={siteConfig.logo.width}
       height={siteConfig.logo.height}
       priority={priority}
-      className={cn("h-12 w-auto object-contain sm:h-14", imageClassName)}
+      className={cn("h-16 w-auto object-contain sm:h-[4.5rem]", imageClassName)}
     />
   );
 

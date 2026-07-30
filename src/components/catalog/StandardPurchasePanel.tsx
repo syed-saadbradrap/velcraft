@@ -64,11 +64,11 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
   }
 
   return (
-    <div className="space-y-6 rounded-[1.5rem] border border-border bg-white/[0.03] p-6">
+    <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-6">
       {availableGenders.length > 0 ? (
         <div className="space-y-4">
           <label className="block space-y-2">
-            <span className="text-xs uppercase tracking-[0.22em] text-stone-500">Gender</span>
+            <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
             <select
               value={gender}
               onChange={(event) => {
@@ -77,7 +77,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
                 const nextSizes = shoe.sizes?.filter((size) => size.gender === nextGender) ?? [];
                 setSizeId(nextSizes[0]?.id ?? null);
               }}
-              className="w-full rounded-2xl border border-border bg-stone-950 px-4 py-3 text-sm text-white outline-none transition focus:border-accent"
+              className="w-full rounded-2xl border border-border bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-accent"
             >
               {availableGenders.includes("women") ? <option value="women">Women</option> : null}
               {availableGenders.includes("men") ? <option value="men">Men</option> : null}
@@ -85,7 +85,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
           </label>
 
           <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
               Size ({gender === "women" ? "Women" : "Men"} EU)
             </p>
             <div className="flex flex-wrap gap-2">
@@ -98,7 +98,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
                     "min-w-12 rounded-full border px-3 py-2 text-sm transition",
                     sizeId === size.id
                       ? "border-accent bg-accent/10 text-accent"
-                      : "border-border text-stone-400 hover:text-white",
+                      : "border-border text-stone-700 hover:text-stone-900",
                   )}
                 >
                   {size.label}
@@ -121,12 +121,12 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
       </div>
 
       {customizable ? (
-        <p className="text-xs leading-6 text-stone-500">
+        <p className="text-xs leading-6 text-stone-600">
           Open the atelier studio to personalize material, color, buckle, and sole on this signature
           style.
         </p>
       ) : (
-        <p className="text-xs leading-6 text-stone-500">
+        <p className="text-xs leading-6 text-stone-600">
           Standard atelier finish with curated materials for this silhouette.
         </p>
       )}

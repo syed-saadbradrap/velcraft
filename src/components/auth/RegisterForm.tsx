@@ -70,6 +70,7 @@ export function RegisterForm() {
             label="Phone"
             name="phone"
             type="tel"
+            placeholder="+92 300 1234567"
             value={form.phone}
             onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
           />
@@ -100,7 +101,7 @@ export function RegisterForm() {
 
           {error ? <p className="text-sm text-red-300">{error}</p> : null}
 
-          <p className="text-sm text-stone-400">
+          <p className="text-sm text-stone-700">
             Already have an account?{" "}
             <Link href={`/login?next=${encodeURIComponent(next)}`} className="text-accent hover:underline">
               Sign in

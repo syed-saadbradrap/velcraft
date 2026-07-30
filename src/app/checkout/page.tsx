@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/Input";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Textarea } from "@/components/ui/Textarea";
 import { formatPrice } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 import type {
   CouponValidation,
   Order,
@@ -28,8 +29,13 @@ const emptyAddress: ShippingAddressInput = {
   city: "",
   state: "",
   postal_code: "",
-  country: "US",
+  country: "PK",
 };
+
+const paymentOptions = [
+  { value: "cod" as const, label: siteConfig.payments.cod.label },
+  { value: "bank_transfer" as const, label: siteConfig.payments.bankTransfer.label },
+];
 
 export default function CheckoutPage() {
   const { isAuthenticated, user } = useAuth();
@@ -46,7 +52,6 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
-  const [stripeMessage, setStripeMessage] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -71,6 +76,7 @@ export default function CheckoutPage() {
       ...newAddress,
       full_name: newAddress.full_name || user?.name || "",
       phone: newAddress.phone || user?.phone || "",
+      country: siteConfig.defaultCountry,
     };
   }
 
@@ -103,7 +109,6 @@ export default function CheckoutPage() {
 
     setLoading(true);
     setError("");
-    setStripeMessage("");
 
     try {
       const payload = {
@@ -123,31 +128,11 @@ export default function CheckoutPage() {
       const order = await apiClient.checkout(payload);
       await refreshCart();
 
-      if (paymentMethod === "stripe") {
-        try {
-          const intent = await apiClient.createStripeIntent(order.id);
-          setStripeMessage(
-            "Stripe payment initialized. Complete payment using client secret, then confirm.",
-          );
-
-          const confirmed = await apiClient.confirmPayment({
-            order_id: order.id,
-            payment_method: "stripe",
-            payment_intent_id: intent.payment_intent_id,
-          });
-
-          setCompletedOrder(confirmed);
-        } catch (stripeError) {
-          setCompletedOrder(order);
-          setStripeMessage(getErrorMessage(stripeError, "Order created. Stripe payment pending."));
-        }
-      } else {
-        const confirmed = await apiClient.confirmPayment({
-          order_id: order.id,
-          payment_method: paymentMethod,
-        });
-        setCompletedOrder(confirmed);
-      }
+      const confirmed = await apiClient.confirmPayment({
+        order_id: order.id,
+        payment_method: paymentMethod,
+      });
+      setCompletedOrder(confirmed);
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
@@ -156,6 +141,9 @@ export default function CheckoutPage() {
   }
 
   if (completedOrder) {
+    const isBankTransfer = completedOrder.payment_method === "bank_transfer";
+    const bank = siteConfig.payments.bankTransfer;
+
     return (
       <Container className="py-24">
         <div className="mx-auto max-w-2xl space-y-8 text-center">
@@ -165,20 +153,39 @@ export default function CheckoutPage() {
             description={`Thank you. Your order ${completedOrder.order_number} has been placed.`}
             align="center"
           />
-          <div className="glass-panel rounded-[1.75rem] p-8">
-            <p className="text-sm text-stone-400">
-              Payment status:{" "}
-              <span className="capitalize text-white">{completedOrder.payment_status}</span>
+          <div className="glass-panel rounded-[1.75rem] p-8 text-left">
+            <p className="text-sm text-stone-700">
+              Payment method:{" "}
+              <span className="capitalize text-stone-900">
+                {completedOrder.payment_method.replace("_", " ")}
+              </span>
             </p>
             <p className="mt-2 font-display text-3xl text-accent">
               {formatPrice(completedOrder.total)}
             </p>
+            {isBankTransfer ? (
+              <div className="mt-6 space-y-2 rounded-2xl border border-border bg-stone-50/80 p-5 text-sm text-stone-700">
+                <p className="font-medium text-stone-900">Bank transfer details</p>
+                <p>Bank: {bank.bankName}</p>
+                <p>Account title: {bank.accountTitle}</p>
+                <p>Account number: {bank.accountNumber}</p>
+                <p>IBAN: {bank.iban}</p>
+                <p className="pt-2 text-stone-600">
+                  Transfer {formatPrice(completedOrder.total)} and email payment proof to{" "}
+                  <a href={`mailto:${siteConfig.contact.email}`} className="text-accent hover:underline">
+                    {siteConfig.contact.email}
+                  </a>{" "}
+                  with order number {completedOrder.order_number}.
+                </p>
+              </div>
+            ) : (
+              <p className="mt-4 text-sm text-stone-700">{siteConfig.payments.cod.description}</p>
+            )}
             {completedOrder.guest_email ? (
-              <p className="mt-4 text-sm text-stone-400">
+              <p className="mt-4 text-sm text-stone-700">
                 Confirmation details will be sent to {completedOrder.guest_email}.
               </p>
             ) : null}
-            {stripeMessage ? <p className="mt-4 text-sm text-stone-400">{stripeMessage}</p> : null}
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               {isAuthenticated ? (
                 <Button href={`/account/orders/${completedOrder.id}`}>View Order</Button>
@@ -213,7 +220,7 @@ export default function CheckoutPage() {
         />
 
         {!isAuthenticated ? (
-          <p className="text-sm text-stone-400">
+          <p className="text-sm text-stone-700">
             Already have an account?{" "}
             <Link href="/login?next=/checkout" className="text-accent hover:underline">
               Sign in
@@ -223,7 +230,7 @@ export default function CheckoutPage() {
 
         {!cart || cart.items.length === 0 ? (
           <div className="glass-panel rounded-[1.75rem] p-10 text-center">
-            <p className="text-stone-400">Your cart is empty.</p>
+            <p className="text-stone-700">Your cart is empty.</p>
             <Button href="/cart" className="mt-6">
               Back to Cart
             </Button>
@@ -261,8 +268,8 @@ export default function CheckoutPage() {
                           checked={selectedAddressId === address.id}
                           onChange={() => setSelectedAddressId(address.id)}
                         />
-                        <span className="text-sm text-stone-300">
-                          <span className="block font-medium text-white">{address.full_name}</span>
+                        <span className="text-sm text-stone-600">
+                          <span className="block font-medium text-stone-900">{address.full_name}</span>
                           {address.address_line_1}, {address.city}, {address.postal_code}
                         </span>
                       </label>
@@ -274,7 +281,7 @@ export default function CheckoutPage() {
                         checked={selectedAddressId === "new"}
                         onChange={() => setSelectedAddressId("new")}
                       />
-                      <span className="text-sm text-white">Use a new address</span>
+                      <span className="text-sm text-stone-900">Use a new address</span>
                     </label>
                   </div>
                 ) : null}
@@ -293,6 +300,8 @@ export default function CheckoutPage() {
                     <Input
                       label="Phone"
                       name="phone"
+                      type="tel"
+                      placeholder="+92 300 1234567"
                       value={newAddress.phone || user?.phone || ""}
                       onChange={(event) =>
                         setNewAddress((current) => ({ ...current, phone: event.target.value }))
@@ -335,7 +344,7 @@ export default function CheckoutPage() {
                       }
                     />
                     <Input
-                      label="State"
+                      label="Province"
                       name="state"
                       value={newAddress.state ?? ""}
                       onChange={(event) =>
@@ -354,19 +363,17 @@ export default function CheckoutPage() {
                         }))
                       }
                     />
-                    <Input
-                      label="Country"
-                      name="country"
-                      required
-                      maxLength={2}
-                      value={newAddress.country}
-                      onChange={(event) =>
-                        setNewAddress((current) => ({
-                          ...current,
-                          country: event.target.value.toUpperCase(),
-                        }))
-                      }
-                    />
+                    <div className="sm:col-span-2">
+                      <input type="hidden" name="country" value={siteConfig.defaultCountry} />
+                      <label className="block space-y-2">
+                        <span className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-700">
+                          Country
+                        </span>
+                        <div className="flex h-14 items-center rounded-2xl border border-border bg-stone-50 px-5 text-base text-stone-900">
+                          {siteConfig.countryName}
+                        </div>
+                      </label>
+                    </div>
                   </div>
                 ) : null}
               </section>
@@ -394,13 +401,7 @@ export default function CheckoutPage() {
               <section className="glass-panel space-y-5 rounded-[1.75rem] p-8">
                 <h2 className="text-xs uppercase tracking-[0.28em] text-accent">Payment</h2>
                 <div className="grid gap-3">
-                  {(
-                    [
-                      ["stripe", "Credit Card (Stripe)"],
-                      ["cod", "Cash on Delivery"],
-                      ["bank_transfer", "Bank Transfer"],
-                    ] as const
-                  ).map(([value, label]) => (
+                  {paymentOptions.map(({ value, label }) => (
                     <label
                       key={value}
                       className="flex cursor-pointer items-center gap-3 rounded-2xl border border-border px-4 py-3"
@@ -412,10 +413,22 @@ export default function CheckoutPage() {
                         checked={paymentMethod === value}
                         onChange={() => setPaymentMethod(value)}
                       />
-                      <span className="text-sm text-white">{label}</span>
+                      <span className="text-sm text-stone-900">{label}</span>
                     </label>
                   ))}
                 </div>
+                {paymentMethod === "cod" ? (
+                  <p className="text-sm text-stone-600">{siteConfig.payments.cod.description}</p>
+                ) : (
+                  <div className="space-y-2 rounded-2xl border border-border bg-stone-50/80 p-5 text-sm text-stone-700">
+                    <p className="font-medium text-stone-900">Bank account details</p>
+                    <p>Bank: {siteConfig.payments.bankTransfer.bankName}</p>
+                    <p>Account title: {siteConfig.payments.bankTransfer.accountTitle}</p>
+                    <p>Account number: {siteConfig.payments.bankTransfer.accountNumber}</p>
+                    <p>IBAN: {siteConfig.payments.bankTransfer.iban}</p>
+                    <p className="pt-2 text-stone-600">{siteConfig.payments.bankTransfer.description}</p>
+                  </div>
+                )}
                 <Textarea
                   label="Order Notes"
                   name="notes"
@@ -425,20 +438,20 @@ export default function CheckoutPage() {
               </section>
             </div>
 
-            <aside className="glass-panel h-fit rounded-[1.75rem] p-8">
-              <p className="text-xs uppercase tracking-[0.28em] text-stone-500">Summary</p>
+            <aside className="glass-panel h-fit self-start rounded-[1.75rem] p-8 lg:sticky lg:top-28">
+              <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Summary</p>
               <ul className="mt-6 space-y-4 border-b border-border pb-6">
                 {cart.items.map((item) => (
                   <li key={item.id} className="flex justify-between gap-4 text-sm">
-                    <span className="text-stone-400">
+                    <span className="text-stone-700">
                       {item.shoe.name} × {item.quantity}
                     </span>
-                    <span className="text-white">{formatPrice(item.line_total)}</span>
+                    <span className="text-stone-900">{formatPrice(item.line_total)}</span>
                   </li>
                 ))}
               </ul>
               <dl className="mt-6 space-y-3 text-sm">
-                <div className="flex justify-between text-stone-400">
+                <div className="flex justify-between text-stone-700">
                   <dt>Subtotal</dt>
                   <dd>{formatPrice(totals?.subtotal ?? 0)}</dd>
                 </div>
@@ -448,11 +461,11 @@ export default function CheckoutPage() {
                     <dd>-{formatPrice(discount)}</dd>
                   </div>
                 ) : null}
-                <div className="flex justify-between text-stone-400">
+                <div className="flex justify-between text-stone-700">
                   <dt>Shipping</dt>
                   <dd>{formatPrice(totals?.shipping_amount ?? 0)}</dd>
                 </div>
-                <div className="flex justify-between border-t border-border pt-4 text-white">
+                <div className="flex justify-between border-t border-border pt-4 text-stone-900">
                   <dt>Total</dt>
                   <dd className="font-display text-2xl text-accent">{formatPrice(estimatedTotal)}</dd>
                 </div>

@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { WhatsAppIcon } from "@/components/layout/WhatsAppIcon";
+import { useCart } from "@/context/CartContext";
 import { siteConfig } from "@/config/site";
 import { getWhatsAppUrl } from "@/lib/utils";
 
 export function WhatsAppButton() {
+  const { isOpen: cartOpen } = useCart();
   const [mounted, setMounted] = useState(false);
 
   const href = getWhatsAppUrl(
@@ -18,7 +20,7 @@ export function WhatsAppButton() {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
+  if (!mounted || cartOpen) {
     return null;
   }
 

@@ -77,9 +77,9 @@ export function CustomizationPanel() {
   return (
     <div className="glass-panel flex h-full flex-col rounded-[2rem] p-6 lg:p-8">
       <div className="space-y-2 border-b border-border pb-6">
-        <p className="text-xs uppercase tracking-[0.28em] text-stone-500">Atelier Studio</p>
-        <h1 className="font-display text-4xl text-white">{config.shoeName}</h1>
-        <p className="text-sm text-stone-400">
+        <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Atelier Studio</p>
+        <h1 className="font-display text-4xl text-stone-900">{config.shoeName}</h1>
+        <p className="text-sm text-stone-700">
           Configure materials, silhouette, color, sole, buckle, and size with live 3D preview.
         </p>
       </div>
@@ -95,13 +95,13 @@ export function CustomizationPanel() {
                 className={cn(
                   "rounded-2xl border px-4 py-3 text-left transition",
                   selection.materialId === material.id
-                    ? "border-accent bg-accent/10 text-white"
-                    : "border-border text-stone-400 hover:text-white",
+                    ? "border-accent bg-accent/10 text-stone-900"
+                    : "border-border text-stone-700 hover:text-stone-900",
                 )}
               >
                 <span className="block font-medium">{material.name}</span>
                 {material.price_modifier > 0 ? (
-                  <span className="mt-1 block text-xs text-stone-500">
+                  <span className="mt-1 block text-xs text-stone-600">
                     +{formatPrice(material.price_modifier)}
                   </span>
                 ) : null}
@@ -114,11 +114,11 @@ export function CustomizationPanel() {
           {availableGenders.length > 0 ? (
             <div className="space-y-4">
               <label className="block space-y-2">
-                <span className="text-xs uppercase tracking-[0.22em] text-stone-500">Gender</span>
+                <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
                 <select
                   value={selection.gender}
                   onChange={(event) => setGender(event.target.value as ShoeGender)}
-                  className="w-full rounded-2xl border border-border bg-stone-950 px-4 py-3 text-sm text-white outline-none transition focus:border-accent"
+                  className="w-full rounded-2xl border border-border bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-accent"
                 >
                   {availableGenders.includes("women") ? (
                     <option value="women">Women</option>
@@ -130,7 +130,7 @@ export function CustomizationPanel() {
               </label>
 
               <div className="space-y-3">
-                <p className="text-xs uppercase tracking-[0.22em] text-stone-500">
+                <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
                   Size ({selection.gender === "women" ? "Women" : "Men"} EU)
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -143,7 +143,7 @@ export function CustomizationPanel() {
                         "min-w-12 rounded-full border px-3 py-2 text-sm transition",
                         selection.sizeId === size.id
                           ? "border-accent bg-accent/10 text-accent"
-                          : "border-border text-stone-400 hover:text-white",
+                          : "border-border text-stone-700 hover:text-stone-900",
                       )}
                     >
                       {size.label}
@@ -153,7 +153,7 @@ export function CustomizationPanel() {
               </div>
             </div>
           ) : (
-            <p className="text-sm text-stone-500">Sizes are not available for this style yet.</p>
+            <p className="text-sm text-stone-600">Sizes are not available for this style yet.</p>
           )}
         </OptionGroup>
 
@@ -169,7 +169,7 @@ export function CustomizationPanel() {
                     "rounded-full border px-5 py-2.5 text-sm capitalize transition",
                     selection.shoeType === type
                       ? "border-accent bg-accent/10 text-accent"
-                      : "border-border text-stone-400 hover:text-white",
+                      : "border-border text-stone-700 hover:text-stone-900",
                   )}
                 >
                   {type}
@@ -197,11 +197,11 @@ export function CustomizationPanel() {
                     "h-10 w-10 rounded-full border-2 transition",
                     selection.colorHex === color.hex_code
                       ? "border-accent scale-110"
-                      : "border-transparent group-hover:border-white/30",
+                      : "border-transparent group-hover:border-stone-300/50",
                   )}
                   style={{ backgroundColor: color.hex_code }}
                 />
-                <span className="text-[10px] uppercase tracking-[0.12em] text-stone-500">
+                <span className="text-[10px] uppercase tracking-[0.12em] text-stone-600">
                   {color.name}
                 </span>
               </button>
@@ -219,12 +219,12 @@ export function CustomizationPanel() {
                 className={cn(
                   "inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition",
                   selection.soleColorHex === sole.hex_code
-                    ? "border-accent bg-accent/10 text-white"
-                    : "border-border text-stone-400 hover:text-white",
+                    ? "border-accent bg-accent/10 text-stone-900"
+                    : "border-border text-stone-700 hover:text-stone-900",
                 )}
               >
                 <span
-                  className="h-4 w-4 rounded-full border border-white/20"
+                  className="h-4 w-4 rounded-full border border-stone-300/40"
                   style={{ backgroundColor: sole.hex_code }}
                 />
                 {sole.name}
@@ -243,13 +243,13 @@ export function CustomizationPanel() {
                 className={cn(
                   "rounded-2xl border px-4 py-3 text-left transition",
                   selection.buckleId === buckle.id
-                    ? "border-accent bg-accent/10 text-white"
-                    : "border-border text-stone-400 hover:text-white",
+                    ? "border-accent bg-accent/10 text-stone-900"
+                    : "border-border text-stone-700 hover:text-stone-900",
                 )}
               >
                 <span className="block font-medium">{buckle.name}</span>
                 {buckle.price_modifier > 0 ? (
-                  <span className="mt-1 block text-xs text-stone-500">
+                  <span className="mt-1 block text-xs text-stone-600">
                     +{formatPrice(buckle.price_modifier)}
                   </span>
                 ) : null}
@@ -262,7 +262,7 @@ export function CustomizationPanel() {
       <div className="mt-6 border-t border-border pt-6">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-stone-500">Estimated Total</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Estimated Total</p>
             <p className="mt-2 font-display text-4xl text-accent">{formatPrice(totalPrice)}</p>
           </div>
           <Button size="lg" disabled={adding} onClick={() => void handleAddToCart()}>
@@ -271,7 +271,7 @@ export function CustomizationPanel() {
         </div>
         {feedback ? <p className="mt-3 text-xs text-accent">{feedback}</p> : null}
         {error ? <p className="mt-3 text-xs text-red-300">{error}</p> : null}
-        <p className="mt-3 text-xs text-stone-500">
+        <p className="mt-3 text-xs text-stone-600">
           Checkout as guest or sign in to save order history.
         </p>
       </div>

@@ -1,8 +1,9 @@
+import { siteConfig } from "@/config/site";
 import { fallbackShoes } from "@/lib/fallback/catalog";
 import type { AddCartItemPayload, Cart, CartItem } from "@/types/commerce";
 
-const STORAGE_KEY = "velcraft_local_cart";
-const SHIPPING_FLAT = 25;
+const STORAGE_KEY = "velcraft_local_cart_pkr";
+const SHIPPING_FLAT = siteConfig.shippingFlat;
 
 interface StoredCart {
   nextId: number;

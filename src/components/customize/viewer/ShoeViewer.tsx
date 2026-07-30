@@ -12,7 +12,7 @@ import { ShoeScene } from "@/components/customize/viewer/ShoeScene";
 
 function ViewerFallback() {
   return (
-    <div className="flex h-full min-h-[100vh] items-center justify-center text-sm uppercase tracking-[0.28em] text-stone-500">
+    <div className="flex h-full min-h-[100vh] items-center justify-center text-sm uppercase tracking-[0.28em] text-stone-600">
       Preparing 3D atelier...
     </div>
   );
@@ -62,8 +62,8 @@ export function ShoeViewer() {
         </Canvas>
       </Suspense>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-stone-950/80 to-transparent p-6">
-        <p className="text-xs uppercase tracking-[0.28em] text-stone-500">
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white/95 to-transparent p-6">
+        <p className="text-xs uppercase tracking-[0.28em] text-stone-600">
           Live atelier preview · Drag to rotate · Scroll to zoom
         </p>
       </div>

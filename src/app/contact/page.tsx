@@ -28,8 +28,8 @@ export default async function ContactPage() {
         <div className="absolute inset-0 hero-grid-pattern opacity-30" />
         <Container className="relative max-w-4xl">
           <Reveal>
-            <h1 className="font-display text-5xl leading-tight text-white md:text-6xl">{contactContent.hero.title}</h1>
-            <p className="mt-6 text-lg leading-8 text-stone-400 md:text-xl md:leading-9">
+            <h1 className="font-display text-5xl leading-tight text-stone-900 md:text-6xl">{contactContent.hero.title}</h1>
+            <p className="mt-6 text-lg leading-8 text-stone-700 md:text-xl md:leading-9">
               {contactContent.hero.description}
             </p>
           </Reveal>
