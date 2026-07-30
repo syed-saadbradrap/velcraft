@@ -25,13 +25,22 @@ interface WhyChooseUsSectionProps {
   description?: string;
 }
 
+function getCardGridClass(index: number, total: number) {
+  if (total !== 5) return "lg:col-span-2";
+
+  if (index === 3) return "lg:col-span-2 lg:col-start-2";
+  if (index === 4) return "lg:col-span-2 lg:col-start-4";
+
+  return "lg:col-span-2";
+}
+
 function WhyChooseCard({ item, index }: { item: WhyChooseItem; index: number }) {
   return (
     <>
       <p className="text-xs uppercase tracking-[0.35em] text-accent">
         {iconLabels[item.icon ?? ""] ?? "Atelier"}
       </p>
-      <p className="mt-3 font-display text-5xl text-stone-900/10">{String(index + 1).padStart(2, "0")}</p>
+      <p className="mt-3 font-display text-5xl text-stone-900/10 dark:text-white/30">{String(index + 1).padStart(2, "0")}</p>
       <h3 className="mt-4 font-display text-2xl text-stone-900 md:text-3xl">{item.title}</h3>
       <p className="mt-4 flex-1 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{item.description}</p>
     </>
@@ -53,13 +62,13 @@ export function WhyChooseUsSection({
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-6"
       >
         {items.map((item, index) => (
           <motion.div
             key={item.title}
             variants={staggerItem}
-            className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8"
+            className={`glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8 ${getCardGridClass(index, items.length)}`}
           >
             <WhyChooseCard item={item} index={index} />
           </motion.div>

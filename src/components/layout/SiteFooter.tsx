@@ -46,7 +46,7 @@ export function SiteFooter() {
 
       <Container className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <Reveal className="space-y-4">
-          <BrandLogo linked={false} imageClassName="h-[4.5rem] sm:h-20" />
+          <BrandLogo linked={false} imageClassName="h-[6rem]" />
           <p className="max-w-xs text-sm leading-7 text-stone-700">{siteConfig.description}</p>
           <Button href={siteConfig.links.customize} size="sm">
             Open Atelier

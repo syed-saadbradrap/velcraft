@@ -42,7 +42,7 @@ function NavArrow({ direction, onClick }: { direction: "prev" | "next"; onClick:
       type="button"
       onClick={onClick}
       aria-label={direction === "prev" ? "Previous products" : "Next products"}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white/90 text-stone-600 transition hover:border-accent/30 hover:text-stone-900"
+      className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-600 shadow-sm transition hover:border-accent/40 hover:text-accent hover:shadow-md"
     >
       <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
         {direction === "prev" ? (
@@ -111,40 +111,47 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
 
   return (
     <SectionShell tone="muted" containerClassName="relative">
-      <div className="pointer-events-none absolute -right-20 top-0 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-24 top-1/3 h-80 w-80 rounded-full bg-accent/8 blur-3xl" />
+      <div className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-stone-200/40 blur-3xl" />
 
-      <div className="relative grid gap-12 xl:grid-cols-[minmax(280px,360px)_1fr] xl:items-start xl:gap-14">
+      <div className="relative grid gap-12 xl:grid-cols-[minmax(360px,440px)_1fr] xl:items-start xl:gap-16">
         <Reveal className="space-y-8 xl:sticky xl:top-28">
-          <div className="space-y-5">
+          <div className="accent-bar-left space-y-5">
             <p className="text-xs uppercase tracking-[0.35em] text-accent">{products.eyebrow}</p>
-            <div className="gold-divider w-16" />
-            <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{products.title}</h2>
+            <h2 className="font-display text-4xl leading-[1.05] text-stone-900 md:text-5xl">{products.title}</h2>
             <p className="text-base leading-8 text-stone-600">{products.description}</p>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
             {products.stats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl border border-stone-200/80 bg-white px-3 py-4 text-center shadow-sm">
-                <p className="font-display text-2xl text-stone-900">{stat.value}</p>
-                <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-stone-600">{stat.label}</p>
+              <div
+                key={stat.label}
+                className="group rounded-2xl border border-stone-200/80 bg-white px-2.5 py-4 text-center shadow-[0_8px_24px_rgba(28,25,23,0.05)] transition hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_16px_32px_rgba(28,25,23,0.08)] sm:px-3 sm:py-5"
+              >
+                <p className="font-display text-lg leading-tight text-stone-900 transition group-hover:text-accent sm:text-xl xl:text-2xl">
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-[8px] uppercase tracking-[0.16em] text-stone-600 sm:text-[9px] sm:tracking-[0.2em]">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-3">
-            <Button href="/collection" size="lg">
+          <div className="grid grid-cols-2 gap-3">
+            <Button href="/collection" size="md" className="w-full px-4 text-sm">
               View Full Collection
             </Button>
-            <Button href={homeContent.hero.ctaUrl} variant="secondary" size="lg">
+            <Button href={homeContent.hero.ctaUrl} variant="secondary" size="md" className="w-full px-4 text-sm">
               {homeContent.hero.ctaLabel}
             </Button>
           </div>
         </Reveal>
 
         <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-          <div className="mb-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-[11px] uppercase tracking-[0.24em] text-stone-600">Curated Selection</p>
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-[11px] uppercase tracking-[0.28em] text-stone-500">Curated Selection</p>
               <AnimatePresence mode="wait">
                 <motion.p
                   key={visibleShoes.map((shoe) => shoe.slug).join("-")}
@@ -152,7 +159,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
-                  className="mt-1 font-display text-xl text-stone-900 md:text-2xl"
+                  className="mt-1 truncate font-display text-xl text-stone-900 md:text-2xl"
                 >
                   {visibleShoes.length === 1
                     ? visibleShoes[0]?.name
@@ -161,22 +168,22 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
               </AnimatePresence>
             </div>
 
-            <div className="flex items-center gap-3">
-              {showControls ? (
-                <span className="hidden text-[11px] uppercase tracking-[0.22em] text-stone-600 sm:inline">
+            {showControls ? (
+              <div className="flex shrink-0 items-center gap-3">
+                <span className="hidden text-[11px] uppercase tracking-[0.22em] text-stone-500 sm:inline">
                   {String(active + 1).padStart(2, "0")} / {String(maxIndex + 1).padStart(2, "0")}
                 </span>
-              ) : null}
-              {showControls ? (
                 <div className="hidden items-center gap-2 sm:flex">
                   <NavArrow direction="prev" onClick={prev} />
                   <NavArrow direction="next" onClick={next} />
                 </div>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
           </div>
 
-          <div className="relative overflow-x-clip rounded-[2rem] border border-border/80 bg-white/70 p-3 sm:p-4">
+          <div className="relative overflow-x-clip rounded-[2rem] border border-stone-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8f6f2_100%)] p-3 shadow-[0_24px_60px_rgba(28,25,23,0.07)] sm:p-4">
+            <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
+
             <div className="overflow-x-clip">
               <motion.div
                 className="flex items-stretch"
@@ -192,7 +199,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                 }}
               >
                 {ordered.map((shoe, index) => (
-                  <div key={shoe.id} className="shrink-0 px-2" style={{ width: `${slideShare}%` }}>
+                  <div key={shoe.id} className="shrink-0 px-1.5 sm:px-2" style={{ width: `${slideShare}%` }}>
                     <ShoeCard
                       shoe={shoe}
                       priority={index < 2}
@@ -207,7 +214,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
 
           {showControls ? (
             <>
-              <div className="mt-6 flex items-center justify-center gap-3">
+              <div className="mt-6 flex items-center justify-center gap-2.5">
                 {Array.from({ length: maxIndex + 1 }).map((_, index) => (
                   <button
                     key={index}
@@ -216,8 +223,10 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                     aria-current={index === active ? "true" : undefined}
                     onClick={() => goTo(index)}
                     className={cn(
-                      "h-2 rounded-full transition-all duration-300",
-                      index === active ? "w-8 bg-accent" : "w-2 bg-stone-600 hover:bg-stone-400",
+                      "rounded-full transition-all duration-300",
+                      index === active
+                        ? "h-2 w-10 bg-accent shadow-[0_0_12px_rgba(184,148,63,0.35)]"
+                        : "h-2 w-2 bg-stone-300 hover:bg-stone-400",
                     )}
                   />
                 ))}
@@ -227,7 +236,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                 <button
                   type="button"
                   onClick={prev}
-                  className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-border px-5 text-xs uppercase tracking-[0.2em] text-stone-600"
+                  className="inline-flex h-11 min-w-[110px] items-center justify-center rounded-full border border-stone-200 bg-white px-5 text-xs uppercase tracking-[0.2em] text-stone-600 shadow-sm"
                 >
                   Previous
                 </button>

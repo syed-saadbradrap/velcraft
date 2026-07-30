@@ -26,7 +26,7 @@ export const fallbackShoes: ShoeSummary[] = [
     slug: "ivory-gold-bit-mule",
     description:
       "Cream velvet upper with signature gold horsebit hardware and moc-toe stitching.",
-    base_price: 82900,
+    base_price: 3999,
     thumbnail_url: "/images/shoes/ivory-gold-bit-mule.jpg",
     is_featured: true,
     collection: { id: 1, name: "Signature Mules", slug: "signature" },
@@ -37,7 +37,7 @@ export const fallbackShoes: ShoeSummary[] = [
     slug: "noir-minimal-mule",
     description:
       "Deep black suede slip-on with clean lines and a softly padded insole.",
-    base_price: 74900,
+    base_price: 3499,
     thumbnail_url: "/images/shoes/noir-minimal-mule.jpg",
     is_featured: true,
     collection: { id: 1, name: "Signature Mules", slug: "signature" },
@@ -48,7 +48,7 @@ export const fallbackShoes: ShoeSummary[] = [
     slug: "camel-suede-mule",
     description:
       "Warm camel suede with contrast maroon footbed and a slim black outsole.",
-    base_price: 77900,
+    base_price: 3699,
     thumbnail_url: "/images/shoes/camel-suede-mule.jpg",
     is_featured: true,
     collection: { id: 1, name: "Signature Mules", slug: "signature" },
@@ -59,7 +59,7 @@ export const fallbackShoes: ShoeSummary[] = [
     slug: "espresso-horsebit-mule",
     description:
       "Chocolate leather base with tobacco suede vamp and gunmetal horsebit ornament.",
-    base_price: 89900,
+    base_price: 3899,
     thumbnail_url: "/images/shoes/espresso-horsebit-mule.jpg",
     is_featured: true,
     collection: { id: 2, name: "Heritage Classics", slug: "heritage" },
@@ -114,7 +114,7 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
     },
     materials: [
       { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
-      { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 7000 },
+      { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 200 },
     ],
     colors: [
       { id: 1, name: "Ivory", hex_code: "#F8F4EC" },
@@ -141,14 +141,14 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
         name: "Heritage Square",
         slug: "heritage-square",
         model_url: "/models/buckles/heritage-square.glb",
-        price_modifier: 2800,
+        price_modifier: 100,
       },
       {
         id: 3,
         name: "Minimal Bar",
         slug: "minimal-bar",
         model_url: "/models/buckles/minimal-bar.glb",
-        price_modifier: 5600,
+        price_modifier: 200,
       },
     ],
     sizes: [

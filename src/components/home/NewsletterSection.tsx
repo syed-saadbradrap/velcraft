@@ -48,10 +48,9 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="relative overflow-hidden rounded-[2rem] border border-accent/15 bg-[linear-gradient(135deg,rgba(201,169,98,0.12),rgba(255,255,255,0.02)_45%,rgba(12,10,9,0.9))] p-8 md:p-12"
+          className="luxury-cta-panel rounded-[2rem] p-8 md:p-12"
         >
-          <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/10 blur-3xl" />
-          <div className="absolute inset-x-0 top-0 gold-divider opacity-80" />
+          <div className="absolute inset-x-8 top-0 gold-divider opacity-80" />
 
           <div className="relative grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
             <div className="space-y-6">

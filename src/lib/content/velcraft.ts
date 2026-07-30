@@ -42,24 +42,6 @@ export const homeContent = {
           "Customize footwear designed for every style, every occasion, and every individual.",
         icon: "people",
       },
-      {
-        title: "Interactive 3D Customization",
-        description:
-          "Preview every color, fabric, buckle, and sole change instantly in our live 3D designer before you order.",
-        icon: "cube",
-      },
-      {
-        title: "Premium Craftsmanship",
-        description:
-          "Every pair is hand-finished with meticulous attention to detail using carefully selected premium materials.",
-        icon: "craft",
-      },
-      {
-        title: "Secure Ordering & Delivery",
-        description:
-          "Order with confidence through cash on delivery or bank transfer, with reliable delivery across Pakistan.",
-        icon: "shield",
-      },
     ],
   },
   products: {

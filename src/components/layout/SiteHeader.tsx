@@ -10,6 +10,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { HeaderIconButton } from "@/components/layout/HeaderIconButton";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { navigation, siteConfig, accountNavigation } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -20,7 +21,7 @@ function NavLink({ href, label, active }: { href: string; label: string; active:
     <Link
       href={href}
       className={cn(
-        "relative px-4 py-2 text-[11px] uppercase tracking-[0.24em] transition duration-300",
+        "relative px-4 py-2 text-[11px] font-bold uppercase tracking-[0.24em] transition duration-300",
         active ? "text-accent" : "text-stone-600 hover:text-stone-900",
       )}
     >
@@ -155,8 +156,16 @@ export function SiteHeader() {
       >
         <div className="absolute inset-x-0 top-0 gold-divider opacity-50" />
 
-        <div className="section-shell grid h-[76px] grid-cols-[auto_1fr_auto] items-center gap-4 lg:gap-8">
-          <BrandLogo priority imageClassName="h-11 sm:h-12" />
+        <div
+          className={cn(
+            "section-shell grid grid-cols-[auto_1fr_auto] items-center gap-4 transition-all duration-500 lg:gap-8",
+            scrolled ? "min-h-[4.5rem] py-1" : "min-h-[6.5rem] py-2",
+          )}
+        >
+          <BrandLogo
+            priority
+            imageClassName={cn("transition-all duration-500 ease-out", scrolled ? "h-16" : "h-[6rem]")}
+          />
 
           <nav className="hidden justify-center lg:flex">
             <div className="inline-flex items-center gap-1 rounded-full border border-stone-200/70 bg-stone-100/[0.02] p-1">
@@ -172,6 +181,8 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center justify-end gap-2 sm:gap-3">
+            <ThemeToggle className="hidden sm:inline-flex" />
+
             <div className="hidden items-center gap-2 sm:flex">
               <HeaderIconButton href={siteConfig.links.wishlist} label="Wishlist" count={wishlistCount}>
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -211,9 +222,9 @@ export function SiteHeader() {
               onClick={() => setOpen((value) => !value)}
             >
               <div className="relative h-3 w-5">
-                <motion.span animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} className="absolute left-0 top-0 block h-0.5 w-5 bg-white" />
-                <motion.span animate={open ? { opacity: 0 } : { opacity: 1 }} className="absolute left-0 top-[5px] block h-0.5 w-5 bg-white" />
-                <motion.span animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} className="absolute left-0 bottom-0 block h-0.5 w-5 bg-white" />
+                <motion.span animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }} className="absolute left-0 top-0 block h-0.5 w-5 bg-stone-900 dark:bg-stone-100" />
+                <motion.span animate={open ? { opacity: 0 } : { opacity: 1 }} className="absolute left-0 top-[5px] block h-0.5 w-5 bg-stone-900 dark:bg-stone-100" />
+                <motion.span animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }} className="absolute left-0 bottom-0 block h-0.5 w-5 bg-stone-900 dark:bg-stone-100" />
               </div>
             </button>
           </div>
@@ -235,12 +246,15 @@ export function SiteHeader() {
               >
                 {navigation.map((item) => (
                   <motion.div key={item.href} variants={fadeUp}>
-                    <Link href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-3 text-sm uppercase tracking-[0.22em] text-stone-600">
+                    <Link href={item.href} onClick={() => setOpen(false)} className="block rounded-xl px-3 py-3 text-sm font-bold uppercase tracking-[0.22em] text-stone-600">
                       {item.label}
                     </Link>
                   </motion.div>
                 ))}
                 <div className="my-3 gold-divider opacity-50" />
+                <motion.div variants={fadeUp} className="flex justify-center pb-2 sm:hidden">
+                  <ThemeToggle />
+                </motion.div>
                 <motion.div variants={fadeUp} className="grid grid-cols-2 gap-2">
                   <Link href={siteConfig.links.wishlist} onClick={() => setOpen(false)} className="rounded-xl border border-border px-3 py-3 text-center text-xs uppercase tracking-[0.18em] text-stone-600">
                     Wishlist {wishlistCount > 0 ? `(${wishlistCount})` : ""}

@@ -13,9 +13,9 @@ interface SectionShellProps {
 
 const toneClasses: Record<SectionTone, string> = {
   default: "",
-  muted: "border-y border-border bg-stone-100/70",
+  muted: "border-y border-border bg-surface-elevated/70",
   accent:
-    "border-y border-border bg-[linear-gradient(180deg,rgba(201,169,98,0.06),transparent_60%)]",
+    "border-y border-border bg-[linear-gradient(180deg,rgba(201,169,98,0.06),transparent_60%)] dark:bg-[linear-gradient(180deg,rgba(201,169,98,0.12),transparent_60%)]",
 };
 
 export const SectionShell = forwardRef<HTMLElement, SectionShellProps>(function SectionShell(

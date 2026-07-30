@@ -5,7 +5,6 @@ import { SectionShell } from "@/components/ui/SectionShell";
 import { Button } from "@/components/ui/Button";
 import { customizeUrl } from "@/lib/catalog/purchase";
 import { homeContent } from "@/lib/content/velcraft";
-import { staggerContainer, staggerItem } from "@/lib/motion";
 
 export function HomeFinalCtaSection() {
   const { finalCta } = homeContent;
@@ -16,16 +15,15 @@ export function HomeFinalCtaSection() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="relative overflow-hidden rounded-[2rem] border border-accent/15 bg-[linear-gradient(135deg,rgba(201,169,98,0.12),rgba(255,255,255,0.02)_45%,rgba(12,10,9,0.9))] p-8 text-center md:p-14"
+        className="luxury-cta-panel rounded-[2rem] p-8 text-center md:p-14"
       >
-        <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/10 blur-3xl" />
-        <div className="absolute inset-x-0 top-0 gold-divider opacity-80" />
+        <div className="absolute inset-x-8 top-0 gold-divider opacity-80" />
 
-        <div className="relative mx-auto max-w-3xl space-y-6">
+        <div className="relative mx-auto max-w-3xl space-y-5 md:space-y-6">
           <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{finalCta.title}</h2>
-          <p className="text-base leading-8 text-stone-600 md:text-lg">{finalCta.description}</p>
+          <p className="mx-auto max-w-2xl text-base leading-8 text-stone-600 md:text-lg">{finalCta.description}</p>
           <p className="font-display text-xl text-accent md:text-2xl">{finalCta.subline}</p>
-          <div className="pt-4">
+          <div className="flex justify-center pt-2 md:pt-4">
             <Button href={customizeUrl()} size="lg">
               {finalCta.ctaLabel}
             </Button>

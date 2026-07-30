@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { ThemeScript } from "@/components/providers/ThemeScript";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
@@ -59,8 +60,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-PK" className={`${display.variable} ${sans.variable} h-full`}>
-      <body className="min-h-full bg-background text-foreground antialiased">
+    <html lang="en-PK" className={`${display.variable} ${sans.variable} h-full`} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="min-h-full bg-background text-foreground antialiased transition-colors duration-300">
         <StructuredData />
         <AppProviders>
           <AppShell>{children}</AppShell>

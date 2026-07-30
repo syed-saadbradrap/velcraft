@@ -32,15 +32,20 @@ export function ShoeCard({
     <article
       id={isSlider ? undefined : shoe.slug}
       className={cn(
-        "glass-panel glass-panel-hover group flex h-full flex-col overflow-hidden rounded-[1.75rem]",
-        featured && "border-accent/20",
+        "group flex h-full flex-col overflow-hidden rounded-[1.5rem] border bg-white transition duration-500",
+        isSlider
+          ? "border-stone-200/90 shadow-[0_12px_32px_rgba(28,25,23,0.06)] hover:-translate-y-1 hover:border-accent/25 hover:shadow-[0_20px_48px_rgba(28,25,23,0.1)]"
+          : "glass-panel glass-panel-hover rounded-[1.75rem]",
+        featured && "ring-1 ring-accent/20",
         className,
       )}
     >
       <div
         className={cn(
-          "relative overflow-hidden bg-[linear-gradient(180deg,#f5f0e8_0%,#e8e2d8_100%)]",
-          isSlider ? "h-[220px] sm:h-[240px] xl:h-[252px]" : "aspect-[5/4]",
+          "relative overflow-hidden",
+          isSlider
+            ? "h-[210px] bg-[radial-gradient(circle_at_50%_18%,#ffffff_0%,#f3efe6_42%,#e8e2d8_100%)] sm:h-[228px] xl:h-[240px]"
+            : "bg-[linear-gradient(180deg,#f5f0e8_0%,#e8e2d8_100%)] aspect-[5/4]",
         )}
       >
         <Link href={`/collection/shoes/${shoe.slug}`} className="relative block h-full w-full">
@@ -62,7 +67,7 @@ export function ShoeCard({
         </Link>
 
         {customizable ? (
-          <span className="absolute left-3 top-3 rounded-full border border-accent/30 bg-white/90 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-accent backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:text-[10px]">
+          <span className="absolute left-3 top-3 rounded-full border border-accent/25 bg-white/95 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-accent shadow-sm backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:text-[10px]">
             {featured ? "Signature Atelier" : "Custom Atelier"}
           </span>
         ) : null}
@@ -70,44 +75,70 @@ export function ShoeCard({
         <WishlistButton shoe={shoe} size="sm" className="absolute right-3 top-3 sm:right-4 sm:top-4" />
       </div>
 
-      <div className={cn("flex flex-1 flex-col gap-3", isSlider ? "p-5" : "gap-4 p-6")}>
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600 sm:text-xs">
-              {shoe.collection?.name ?? "Collection"}
-            </p>
-            <h3
-              className={cn(
-                "mt-1.5 font-display leading-tight text-stone-900",
-                isSlider ? "text-xl sm:text-2xl" : "mt-2 text-2xl sm:text-3xl",
-              )}
-            >
-              {shoe.name}
-            </h3>
-          </div>
-          <p className="shrink-0 text-right">
-            <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-600">From</span>
-            <span className={cn("luxury-gradient font-medium", isSlider ? "text-base sm:text-lg" : "text-lg sm:text-xl")}>
-              {formatPrice(shoe.base_price)}
-            </span>
-          </p>
-        </div>
+      <div className={cn("flex flex-1 flex-col", isSlider ? "gap-3 p-4 sm:gap-4 sm:p-5" : "gap-4 p-6")}>
+        {isSlider ? (
+          <>
+            <div className="min-w-0 space-y-2">
+              <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">
+                {shoe.collection?.name ?? "Collection"}
+              </p>
+              <h3 className="font-display text-lg leading-tight text-stone-900 sm:text-xl">
+                <Link href={`/collection/shoes/${shoe.slug}`} className="transition hover:text-accent">
+                  {shoe.name}
+                </Link>
+              </h3>
+            </div>
 
-        {!isSlider && shoe.description ? (
-          <p className="line-clamp-2 text-sm leading-7 text-stone-600">{shoe.description}</p>
-        ) : null}
+            <div className="flex items-center justify-between border-t border-stone-100 pt-3">
+              <span className="text-[10px] uppercase tracking-[0.22em] text-stone-500">Starting at</span>
+              <span className="luxury-gradient font-display text-lg font-medium sm:text-xl">
+                {formatPrice(shoe.base_price)}
+              </span>
+            </div>
 
-        <div className="mt-auto flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
-          <AddToCartButton shoe={shoe} size="sm" variant="primary" />
-          <Button href={`/collection/shoes/${shoe.slug}`} variant="secondary" size="sm">
-            View Product
-          </Button>
-          {customizable ? (
-            <Button href={customizeUrl()} variant="ghost" size="sm">
-              Open Atelier
-            </Button>
-          ) : null}
-        </div>
+            <div className="mt-auto grid grid-cols-2 gap-2 pt-1">
+              <AddToCartButton shoe={shoe} size="sm" variant="primary" fullWidth />
+              <Button href={`/collection/shoes/${shoe.slug}`} variant="secondary" size="sm" className="w-full">
+                View Product
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600 sm:text-xs">
+                  {shoe.collection?.name ?? "Collection"}
+                </p>
+                <h3 className="mt-1.5 font-display text-2xl leading-tight text-stone-900 sm:text-3xl">
+                  <Link href={`/collection/shoes/${shoe.slug}`} className="transition hover:text-accent">
+                    {shoe.name}
+                  </Link>
+                </h3>
+              </div>
+              <p className="shrink-0 text-right">
+                <span className="block text-[10px] uppercase tracking-[0.2em] text-stone-600">From</span>
+                <span className="luxury-gradient text-lg font-medium sm:text-xl">{formatPrice(shoe.base_price)}</span>
+              </p>
+            </div>
+
+            {shoe.description ? (
+              <p className="line-clamp-2 text-sm leading-7 text-stone-600">{shoe.description}</p>
+            ) : null}
+
+            <div className="mt-auto flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
+              <AddToCartButton shoe={shoe} size="sm" variant="primary" />
+              <Button href={`/collection/shoes/${shoe.slug}`} variant="secondary" size="sm">
+                View Product
+              </Button>
+              {customizable ? (
+                <Button href={customizeUrl()} variant="ghost" size="sm">
+                  Open Atelier
+                </Button>
+              ) : null}
+            </div>
+          </>
+        )}
       </div>
     </article>
   );

@@ -22,10 +22,10 @@ interface ButtonProps
 
 const variants = {
   primary:
-    "bg-accent text-stone-950 hover:bg-[#dfc07a] shadow-[0_10px_40px_rgba(201,169,98,0.25)]",
+    "bg-accent text-white hover:bg-[#b8943f] shadow-[0_10px_40px_rgba(201,169,98,0.25)]",
   secondary:
-    "border border-border bg-white text-stone-800 shadow-sm hover:bg-stone-50",
-  ghost: "text-stone-600 hover:text-stone-900 hover:bg-stone-100/80",
+    "border border-stone-800 bg-stone-800 text-white shadow-sm hover:bg-stone-900 hover:border-stone-900",
+  ghost: "bg-stone-700 text-white hover:bg-stone-800",
 };
 
 const sizes = {
@@ -56,8 +56,10 @@ export function Button({
   );
 
   if (href) {
+    const fullWidth = className?.includes("w-full");
+
     return (
-      <motion.div className="inline-flex" {...motionProps}>
+      <motion.div className={cn(fullWidth ? "flex w-full" : "inline-flex")} {...motionProps}>
         <Link href={href} className={classes}>
           {children}
         </Link>
