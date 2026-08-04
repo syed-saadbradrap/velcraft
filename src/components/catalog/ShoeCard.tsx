@@ -53,7 +53,7 @@ export function ShoeCard({
     <article
       id={isSlider ? undefined : shoe.slug}
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-[1.5rem] border bg-white transition duration-500",
+        "group flex h-full min-w-0 max-w-full flex-col overflow-hidden rounded-[1.5rem] border bg-white transition duration-500",
         isSlider
           ? "border-stone-200/90 shadow-[0_12px_32px_rgba(28,25,23,0.06)] hover:-translate-y-1 hover:border-accent/25 hover:shadow-[0_20px_48px_rgba(28,25,23,0.1)]"
           : "glass-panel glass-panel-hover rounded-[1.75rem]",
@@ -103,22 +103,22 @@ export function ShoeCard({
               <p className="text-[10px] uppercase tracking-[0.24em] text-stone-500">
                 {shoe.collection?.name ?? "Collection"}
               </p>
-              <h3 className="font-display text-lg leading-tight text-stone-900 sm:text-xl">
+              <h3 className="break-words font-display text-lg leading-tight text-stone-900 sm:text-xl">
                 <Link href={productHref} className="transition hover:text-accent">
                   {shoe.name}
                 </Link>
               </h3>
             </div>
 
-            <div className="flex items-center justify-between border-t border-stone-100 pt-3">
-              <span className="text-[10px] uppercase tracking-[0.22em] text-stone-500">Starting at</span>
-              <span className="luxury-gradient font-display text-lg font-medium sm:text-xl">
+            <div className="flex items-center justify-between gap-2 border-t border-stone-100 pt-3">
+              <span className="shrink-0 text-[10px] uppercase tracking-[0.22em] text-stone-500">Starting at</span>
+              <span className="luxury-gradient truncate font-display text-lg font-medium sm:text-xl">
                 {formatPrice(shoe.base_price)}
               </span>
             </div>
 
-            <div className="mt-auto flex items-center gap-2 pt-1">
-              <AddToCartButton shoe={shoe} size="sm" variant="primary" className="flex-1" fullWidth />
+            <div className="mt-auto flex min-w-0 items-center gap-2 pt-1">
+              <AddToCartButton shoe={shoe} size="sm" variant="primary" className="min-w-0 flex-1" fullWidth />
               <IconLinkButton href={productHref} label="View product">
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />

@@ -110,35 +110,37 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
   const trackOffset = (active / count) * 100;
 
   return (
-    <SectionShell tone="muted" containerClassName="relative">
+    <SectionShell tone="muted" containerClassName="relative min-w-0 overflow-x-clip">
       <div className="pointer-events-none absolute -left-24 top-1/3 h-80 w-80 rounded-full bg-accent/8 blur-3xl" />
       <div className="pointer-events-none absolute -right-16 bottom-0 h-64 w-64 rounded-full bg-stone-200/40 blur-3xl" />
 
-      <div className="relative grid gap-12 xl:grid-cols-[minmax(360px,440px)_1fr] xl:items-start xl:gap-16">
-        <Reveal className="space-y-8 xl:sticky xl:top-28">
-          <div className="accent-bar-left space-y-5">
+      <div className="relative grid min-w-0 gap-10 sm:gap-12 xl:grid-cols-[minmax(0,440px)_minmax(0,1fr)] xl:items-start xl:gap-16">
+        <Reveal className="min-w-0 space-y-6 sm:space-y-8 xl:sticky xl:top-28">
+          <div className="accent-bar-left min-w-0 space-y-4 sm:space-y-5">
             <p className="text-xs uppercase tracking-[0.35em] text-accent">{products.eyebrow}</p>
-            <h2 className="font-display text-4xl leading-[1.05] text-stone-900 md:text-5xl">{products.title}</h2>
-            <p className="text-base leading-8 text-stone-600">{products.description}</p>
+            <h2 className="break-words font-display text-[clamp(1.75rem,6vw,3rem)] leading-[1.08] text-stone-900">
+              {products.title}
+            </h2>
+            <p className="max-w-full text-base leading-7 text-stone-600 sm:leading-8">{products.description}</p>
           </div>
 
-          <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+          <div className="grid min-w-0 grid-cols-3 gap-2 sm:gap-3">
             {products.stats.map((stat) => (
               <div
                 key={stat.label}
-                className="group rounded-2xl border border-stone-200/80 bg-white px-2.5 py-4 text-center shadow-[0_8px_24px_rgba(28,25,23,0.05)] transition hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_16px_32px_rgba(28,25,23,0.08)] sm:px-3 sm:py-5"
+                className="group min-w-0 rounded-2xl border border-stone-200/80 bg-white px-2 py-3.5 text-center shadow-[0_8px_24px_rgba(28,25,23,0.05)] transition hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_16px_32px_rgba(28,25,23,0.08)] sm:px-3 sm:py-5"
               >
-                <p className="font-display text-lg leading-tight text-stone-900 transition group-hover:text-accent sm:text-xl xl:text-2xl">
+                <p className="font-display text-base leading-tight text-stone-900 transition group-hover:text-accent sm:text-xl xl:text-2xl">
                   {stat.value}
                 </p>
-                <p className="mt-2 text-[8px] uppercase tracking-[0.16em] text-stone-600 sm:text-[9px] sm:tracking-[0.2em]">
+                <p className="mt-1.5 break-words text-[7px] uppercase leading-tight tracking-[0.12em] text-stone-600 sm:mt-2 sm:text-[9px] sm:tracking-[0.2em]">
                   {stat.label}
                 </p>
               </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
             <Button href="/collection" size="md" className="w-full px-4 text-sm">
               View Full Collection
             </Button>
@@ -148,7 +150,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
           </div>
         </Reveal>
 
-        <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div className="min-w-0 overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
           <div className="mb-6 flex items-end justify-between gap-4">
             <div className="min-w-0">
               <p className="text-[11px] uppercase tracking-[0.28em] text-stone-500">Curated Selection</p>
@@ -181,12 +183,12 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
             ) : null}
           </div>
 
-          <div className="relative overflow-x-clip rounded-[2rem] border border-stone-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8f6f2_100%)] p-3 shadow-[0_24px_60px_rgba(28,25,23,0.07)] sm:p-4">
+          <div className="relative w-full min-w-0 overflow-hidden rounded-[1.5rem] border border-stone-200/80 bg-[linear-gradient(180deg,#ffffff_0%,#f8f6f2_100%)] p-2 shadow-[0_24px_60px_rgba(28,25,23,0.07)] sm:rounded-[2rem] sm:p-4">
             <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-accent/30 to-transparent" />
 
-            <div className="overflow-x-clip">
+            <div className="w-full min-w-0 overflow-hidden">
               <motion.div
-                className="flex items-stretch"
+                className="flex min-w-0"
                 style={{ width: `${(count * 100) / itemsPerView}%` }}
                 animate={{ x: `-${trackOffset}%` }}
                 transition={{ duration: 0.55, ease: luxuryEase }}
@@ -199,12 +201,17 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                 }}
               >
                 {ordered.map((shoe, index) => (
-                  <div key={shoe.id} className="shrink-0 px-1.5 sm:px-2" style={{ width: `${slideShare}%` }}>
+                  <div
+                    key={shoe.id}
+                    className="min-w-0 shrink-0 grow-0 px-1 sm:px-2"
+                    style={{ flexBasis: `${slideShare}%`, maxWidth: `${slideShare}%` }}
+                  >
                     <ShoeCard
                       shoe={shoe}
                       priority={index < 2}
                       featured={index === 0 && isCustomizableShoe(shoe.slug)}
                       variant="slider"
+                      className="w-full min-w-0"
                     />
                   </div>
                 ))}

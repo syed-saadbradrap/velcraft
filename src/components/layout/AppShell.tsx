@@ -21,7 +21,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <ScrollProgress />
       <SiteHeader />
       <AnimatePresence mode="wait">
-        <motion.main key={pathname} className="flex-1" {...pageTransition}>
+        <motion.main key={pathname} className="min-w-0 flex-1 overflow-x-clip" {...pageTransition}>
           {children}
         </motion.main>
       </AnimatePresence>
