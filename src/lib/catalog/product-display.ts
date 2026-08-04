@@ -19,7 +19,7 @@ export interface ProductDisplayInfo {
   highlights: string[];
 }
 
-const catalogSlugSet = new Set(catalogProducts.map((product) => product.slug));
+const catalogSlugSet = new Set<string>(catalogProducts.map((product) => product.slug));
 
 export function isCatalogProduct(slug: string) {
   return catalogSlugSet.has(slug);
@@ -69,6 +69,6 @@ export function getProductDisplayInfo(
     silhouette: formatSilhouette(product.supported_types),
     sizing: product.sizing,
     delivery: siteConfig.deliveryTimeline,
-    highlights: product.highlights,
+    highlights: [...product.highlights],
   };
 }

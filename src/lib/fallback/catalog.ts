@@ -50,12 +50,22 @@ export const fallbackPaginatedShoes: PaginatedShoes = {
   },
 };
 
-const backlessSlugs = new Set(
-  catalogProducts.filter((p) => p.supported_types.length === 1 && p.supported_types[0] === "backless").map((p) => p.slug),
+const backlessSlugs = new Set<string>(
+  catalogProducts
+    .filter((p) => {
+      const types = p.supported_types as readonly string[];
+      return types.length === 1 && types[0] === "backless";
+    })
+    .map((p) => p.slug),
 );
 
-const dualTypeSlugs = new Set(
-  catalogProducts.filter((p) => p.supported_types.includes("backless") && p.supported_types.includes("covered")).map((p) => p.slug),
+const dualTypeSlugs = new Set<string>(
+  catalogProducts
+    .filter((p) => {
+      const types = p.supported_types as readonly string[];
+      return types.includes("backless") && types.includes("covered");
+    })
+    .map((p) => p.slug),
 );
 
 function getModelSlug(slug: string) {
