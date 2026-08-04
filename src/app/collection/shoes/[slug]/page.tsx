@@ -56,7 +56,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
   const customizable = isCustomizableShoe(shoe.slug);
 
   return (
-    <Container className="py-12 sm:py-16 lg:py-24">
+    <Container className="py-12 pb-28 sm:py-16 sm:pb-32 lg:py-24 lg:pb-24">
       <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-12">
         <ShoeGallery images={galleryImages} alt={shoe.name} />
 

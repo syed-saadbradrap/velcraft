@@ -42,6 +42,8 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
   const [feedback, setFeedback] = useState("");
   const [error, setError] = useState("");
 
+  const selectedSize = activeSizes.find((size) => size.id === sizeId);
+
   async function handleAddToCart() {
     if (!sizeId) {
       setError("Please select a size.");
@@ -68,81 +70,118 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
   }
 
   return (
-    <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-4 sm:p-6">
-      {availableGenders.length > 0 ? (
-        <div className="space-y-4">
-          {!catalogProduct && availableGenders.length > 1 ? (
-          <label className="block space-y-2">
-            <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
-            <select
-              value={gender}
-              onChange={(event) => {
-                const nextGender = event.target.value as ShoeGender;
-                setGender(nextGender);
-                const nextSizes = shoe.sizes?.filter((size) => size.gender === nextGender) ?? [];
-                setSizeId(nextSizes[0]?.id ?? null);
-              }}
-              className="w-full rounded-2xl border border-border bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-accent"
-            >
-              {availableGenders.includes("women") ? <option value="women">Women</option> : null}
-              {availableGenders.includes("men") ? <option value="men">Men</option> : null}
-            </select>
-          </label>
-          ) : (
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
-              Men&apos;s sizing · EU 40–45
-            </p>
-          )}
+    <>
+      <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-4 sm:p-6">
+        {availableGenders.length > 0 ? (
+          <div className="space-y-4">
+            {!catalogProduct && availableGenders.length > 1 ? (
+            <label className="block space-y-2">
+              <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
+              <select
+                value={gender}
+                onChange={(event) => {
+                  const nextGender = event.target.value as ShoeGender;
+                  setGender(nextGender);
+                  const nextSizes = shoe.sizes?.filter((size) => size.gender === nextGender) ?? [];
+                  setSizeId(nextSizes[0]?.id ?? null);
+                }}
+                className="w-full rounded-2xl border border-border bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-accent"
+              >
+                {availableGenders.includes("women") ? <option value="women">Women</option> : null}
+                {availableGenders.includes("men") ? <option value="men">Men</option> : null}
+              </select>
+            </label>
+            ) : (
+              <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
+                Men&apos;s sizing · EU 40–45
+              </p>
+            )}
 
-          <div className="space-y-3">
-            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
-              Size ({catalogProduct || gender === "men" ? "Men" : "Women"} EU)
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {activeSizes.map((size) => (
-                <button
-                  key={size.id}
-                  type="button"
-                  onClick={() => setSizeId(size.id)}
-                  className={cn(
-                    "min-h-11 min-w-11 rounded-full border px-3 py-2.5 text-sm transition",
-                    sizeId === size.id
-                      ? "border-accent bg-accent/10 text-accent"
-                      : "border-border text-stone-700 hover:text-stone-900",
-                  )}
-                >
-                  {size.label}
-                </button>
-              ))}
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
+                Size ({catalogProduct || gender === "men" ? "Men" : "Women"} EU)
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {activeSizes.map((size) => (
+                  <button
+                    key={size.id}
+                    type="button"
+                    onClick={() => setSizeId(size.id)}
+                    className={cn(
+                      "min-h-11 min-w-11 rounded-full border px-3 py-2.5 text-sm transition",
+                      sizeId === size.id
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-border text-stone-700 hover:text-stone-900",
+                    )}
+                  >
+                    {size.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
-
-      <div className="flex flex-wrap gap-4">
-        {customizable ? (
-          <Button href={customizeUrl()} size="lg">
-            Customize Now
-          </Button>
         ) : null}
-        <Button size="lg" variant={customizable ? "secondary" : "primary"} disabled={adding} onClick={() => void handleAddToCart()}>
-          {adding ? "Adding..." : `Add to Cart · ${formatPrice(shoe.base_price)}`}
-        </Button>
+
+        <div className="hidden flex-wrap gap-4 lg:flex">
+          {customizable ? (
+            <Button href={customizeUrl()} size="lg">
+              Customize Now
+            </Button>
+          ) : null}
+          <Button size="lg" variant={customizable ? "secondary" : "primary"} disabled={adding} onClick={() => void handleAddToCart()}>
+            {adding ? "Adding..." : `Add to Cart · ${formatPrice(shoe.base_price)}`}
+          </Button>
+        </div>
+
+        {customizable ? (
+          <div className="flex flex-wrap gap-3 lg:hidden">
+            <Button href={customizeUrl()} size="md" className="w-full sm:w-auto">
+              Customize Now
+            </Button>
+          </div>
+        ) : null}
+
+        {customizable ? (
+          <p className="text-xs leading-6 text-stone-600">
+            Open the customization studio to personalize fabric, color, buckle, and sole on this signature
+            style.
+          </p>
+        ) : (
+          <p className="text-xs leading-6 text-stone-600">
+            Standard finish with curated fabrics for this silhouette.
+          </p>
+        )}
+
+        {feedback ? <p className="hidden text-xs text-accent lg:block">{feedback}</p> : null}
+        {error ? <p className="hidden text-xs text-red-600 lg:block">{error}</p> : null}
       </div>
 
-      {customizable ? (
-        <p className="text-xs leading-6 text-stone-600">
-          Open the customization studio to personalize fabric, color, buckle, and sole on this signature
-          style.
-        </p>
-      ) : (
-        <p className="text-xs leading-6 text-stone-600">
-          Standard finish with curated fabrics for this silhouette.
-        </p>
-      )}
-
-      {feedback ? <p className="text-xs text-accent">{feedback}</p> : null}
-      {error ? <p className="text-xs text-red-300">{error}</p> : null}
-    </div>
+      <div
+        className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-white/95 backdrop-blur-xl lg:hidden"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
+        <div className="section-shell flex items-center gap-3 py-3 pr-16">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[10px] uppercase tracking-[0.22em] text-stone-600">
+              {selectedSize ? `EU ${selectedSize.label}` : "Select your size above"}
+            </p>
+            <p className="font-display text-xl leading-tight text-accent sm:text-2xl">
+              {formatPrice(shoe.base_price)}
+            </p>
+          </div>
+          <Button
+            size="lg"
+            variant="primary"
+            disabled={adding}
+            className="shrink-0 px-5 sm:px-8"
+            onClick={() => void handleAddToCart()}
+          >
+            {adding ? "Adding..." : "Add to Cart"}
+          </Button>
+        </div>
+        {feedback ? <p className="section-shell pb-2 text-xs text-accent">{feedback}</p> : null}
+        {error ? <p className="section-shell pb-2 text-xs text-red-600">{error}</p> : null}
+      </div>
+    </>
   );
 }
