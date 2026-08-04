@@ -13,6 +13,7 @@ import { cn, formatPrice } from "@/lib/utils";
 import type { ShoeDetail } from "@/types/api";
 import type { ShoeGender } from "@/types/customization";
 import { Button } from "@/components/ui/Button";
+import { ProductMobilePurchaseBar } from "@/components/catalog/ProductMobilePurchaseBar";
 
 interface StandardPurchasePanelProps {
   shoe: ShoeDetail;
@@ -156,32 +157,14 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
         {error ? <p className="hidden text-xs text-red-600 lg:block">{error}</p> : null}
       </div>
 
-      <div
-        className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-white/95 backdrop-blur-xl lg:hidden"
-        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
-      >
-        <div className="section-shell flex items-center gap-3 py-3 pr-16">
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[10px] uppercase tracking-[0.22em] text-stone-600">
-              {selectedSize ? `EU ${selectedSize.label}` : "Select your size above"}
-            </p>
-            <p className="font-display text-xl leading-tight text-accent sm:text-2xl">
-              {formatPrice(shoe.base_price)}
-            </p>
-          </div>
-          <Button
-            size="lg"
-            variant="primary"
-            disabled={adding}
-            className="shrink-0 px-5 sm:px-8"
-            onClick={() => void handleAddToCart()}
-          >
-            {adding ? "Adding..." : "Add to Cart"}
-          </Button>
-        </div>
-        {feedback ? <p className="section-shell pb-2 text-xs text-accent">{feedback}</p> : null}
-        {error ? <p className="section-shell pb-2 text-xs text-red-600">{error}</p> : null}
-      </div>
+      <ProductMobilePurchaseBar
+        price={shoe.base_price}
+        selectedSizeLabel={selectedSize?.label}
+        adding={adding}
+        feedback={feedback}
+        error={error}
+        onAddToCart={() => void handleAddToCart()}
+      />
     </>
   );
 }
