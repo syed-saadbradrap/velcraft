@@ -16,15 +16,18 @@ export const siteConfig = {
   currency: "PKR",
   currencyLocale: "en-PK",
   shippingFlat: 2500,
+  deliveryTimeline: "7–10 business days",
   defaultCountry: "PK",
   countryName: "Pakistan",
   contact: {
-    email: "support@velcraftpk.com",
-    phone: "+92 300 0000000",
-    whatsapp: "+92 300 0000000",
+    email: "ajshoes@velcraftpk.com",
+    phone: "+92 304 2568744",
+    whatsapp: "+92 304 2568744",
     whatsappMessage: "Hi Velcraft, I would like to know more about your custom shoes.",
     hours: "Monday - Saturday, 12:00 PM - 10:00 PM (PKT)",
     address: "Dolmen Center, Tariq Road, Karachi, Pakistan",
+    mapUrl:
+      "https://maps.google.com/maps?vet=10CAAQoqAOahcKEwiAzum62PyVAxUAAAAAHQAAAAAQCQ..i&pvq=CgwvZy8xaGY4OGY2anQiEwoNZG9sbWVuIGNlbnRlchACGAM&lqi=Cg1kb2xtZW4gY2VudGVySJm0moS1j4CACFoXEAAQARgAGAEiDWRvbG1lbiBjZW50ZXIqAUGSAQ9zaG9wcGluZ19jZW50ZXI&fvr=1&cs=0&um=1&ie=UTF-8&fb=1&gl=pk&sa=X&ftid=0x3eb33e93b2bc48ed:0x9389faf655333bd2",
   },
   payments: {
     cod: {
@@ -57,11 +60,18 @@ export const siteConfig = {
   },
 } as const;
 
+/** Collection page filter tabs — current catalog is men's; women's line coming soon. */
+export const collectionFilters = [
+  { label: "Men", slug: "men", enabled: true },
+  { label: "Women", slug: "women", enabled: true },
+  { label: "Impression", slug: "signature", enabled: false },
+] as const;
+
 export const navigation = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
   { label: "Collection", href: "/collection" },
-  { label: "Atelier", href: customizeUrl() },
+  { label: "Customization", href: customizeUrl() },
   { label: "Contact", href: "/contact" },
 ] as const;
 

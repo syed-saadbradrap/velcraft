@@ -25,7 +25,8 @@ const variants = {
     "bg-accent text-white hover:bg-[#b8943f] shadow-[0_10px_40px_rgba(201,169,98,0.25)]",
   secondary:
     "border border-stone-800 bg-stone-800 text-white shadow-sm hover:bg-stone-900 hover:border-stone-900",
-  ghost: "bg-stone-700 text-white hover:bg-stone-800",
+  ghost:
+    "border border-border bg-transparent text-stone-700 hover:border-accent/35 hover:bg-stone-100 hover:text-stone-900",
 };
 
 const sizes = {

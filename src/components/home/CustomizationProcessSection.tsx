@@ -51,7 +51,7 @@ export function CustomizationProcessSection({ steps }: CustomizationProcessSecti
       <SectionHeading
         eyebrow="The Process"
         title="From concept to crafted pair in three refined steps"
-        description="Our workflow mirrors a private atelier consultation — intuitive online, meticulous in production."
+        description="Our workflow mirrors a private design consultation — intuitive online, meticulous in production."
         align="center"
       />
 

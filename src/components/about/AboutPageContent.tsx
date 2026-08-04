@@ -52,23 +52,16 @@ function ProcessStepIcon({ index }: { index: number }) {
   );
 }
 
-function getWhyChooseGridClass(index: number, total: number) {
-  if (total !== 7) return "lg:col-span-2";
-
-  if (index === 6) return "lg:col-span-2 lg:col-start-3";
-
-  return "lg:col-span-2";
-}
-
 export function AboutPageContent() {
   const { hero, story, process, whyChoose, faqs, finalCta } = aboutContent;
   const heroTitleParts = hero.title.split(".");
   const heroLead = heroTitleParts[0]?.trim() ? `${heroTitleParts[0]?.trim()}.` : hero.title;
   const heroAccent = heroTitleParts.slice(1).join(".").trim();
+  const combinedStory = story.paragraphs.join(" ");
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border py-24 md:py-32">
+      <section className="relative overflow-hidden border-b border-border py-16 md:py-24">
         <div className="absolute inset-0 hero-grid-pattern opacity-30" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(201,169,98,0.18),transparent_34%),radial-gradient(circle_at_82%_12%,rgba(255,255,255,0.5),transparent_28%)]" />
         <div className="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
@@ -90,34 +83,20 @@ export function AboutPageContent() {
       </section>
 
       <SectionShell tone="muted">
-        <div className="grid gap-12 lg:grid-cols-[minmax(280px,360px)_1fr] lg:items-start lg:gap-16">
+        <div className="grid gap-10 lg:grid-cols-[minmax(280px,360px)_1fr] lg:items-start lg:gap-14">
           <Reveal className="lg:sticky lg:top-28">
             <SectionHeading eyebrow={story.eyebrow} title={story.title} align="left" />
           </Reveal>
 
-          <motion.div
-            variants={staggerContainer(0.08, 0.06)}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="relative space-y-6"
-          >
-            <div className="pointer-events-none absolute bottom-8 left-4 top-8 hidden w-px bg-gradient-to-b from-transparent via-accent/25 to-transparent md:block" />
-
-            {story.paragraphs.map((paragraph, index) => (
-              <motion.div key={paragraph} variants={staggerItem} className="relative md:pl-10">
-                <span className="absolute left-0 top-8 hidden h-3 w-3 -translate-x-1/2 rounded-full border border-accent/30 bg-white shadow-[0_0_0_4px_rgba(201,169,98,0.12)] md:block" />
-                <div className="glass-panel glass-panel-hover rounded-[1.75rem] p-8 md:p-10">
-                  <p className="font-display text-3xl text-stone-900/10 dark:text-white/30">{String(index + 1).padStart(2, "0")}</p>
-                  <p className="mt-4 text-base leading-8 text-stone-600 md:text-lg md:leading-9">{paragraph}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <Reveal>
+            <div className="glass-panel glass-panel-hover rounded-[1.75rem] p-8 md:p-10">
+              <p className="text-base leading-8 text-stone-600 md:text-lg md:leading-9">{combinedStory}</p>
+            </div>
+          </Reveal>
         </div>
       </SectionShell>
 
-      <SectionShell tone="default" containerClassName="space-y-14">
+      <SectionShell tone="default" containerClassName="space-y-12">
         <SectionHeading
           eyebrow={process.eyebrow}
           title={process.title}
@@ -138,7 +117,7 @@ export function AboutPageContent() {
             <motion.div
               key={step.title}
               variants={staggerItem}
-              className="glass-panel glass-panel-hover relative flex h-full flex-col rounded-[1.75rem] p-8 md:min-h-[320px]"
+              className="glass-panel glass-panel-hover relative flex h-full flex-col rounded-[1.75rem] p-8 md:min-h-[300px]"
             >
               <div className="mb-6 flex items-center justify-between gap-4">
                 <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/25 bg-accent/10">
@@ -153,7 +132,7 @@ export function AboutPageContent() {
               <h3 className="font-display text-2xl text-stone-900 md:text-3xl">{step.title}</h3>
               <p className="mt-4 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{step.description}</p>
 
-              {"bullets" in step && step.bullets ? (
+              {"bullets" in step && Array.isArray(step.bullets) && step.bullets.length > 0 ? (
                 <ul className="mt-5 space-y-3 border-t border-border pt-5">
                   {step.bullets.map((bullet) => (
                     <li key={bullet} className="flex items-start gap-3 text-sm leading-7 text-stone-600 md:text-base">
@@ -170,7 +149,7 @@ export function AboutPageContent() {
         </motion.div>
       </SectionShell>
 
-      <SectionShell tone="accent" containerClassName="space-y-14">
+      <SectionShell tone="accent" containerClassName="space-y-12">
         <SectionHeading eyebrow={whyChoose.eyebrow} title={whyChoose.title} align="center" />
 
         <motion.div
@@ -178,25 +157,25 @@ export function AboutPageContent() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-5 md:grid-cols-2 lg:grid-cols-6"
+          className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"
         >
           {whyChoose.items.map((item, index) => (
             <motion.div
               key={item}
               variants={staggerItem}
-              className={`glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-7 md:p-8 ${getWhyChooseGridClass(index, whyChoose.items.length)}`}
+              className="glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-7 md:p-8"
             >
-              <p className="font-display text-5xl text-stone-900/10 dark:text-white/30">{String(index + 1).padStart(2, "0")}</p>
+              <p className="font-display text-5xl text-stone-900/25 dark:text-white/45">{String(index + 1).padStart(2, "0")}</p>
               <p className="mt-4 flex-1 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{item}</p>
             </motion.div>
           ))}
         </motion.div>
       </SectionShell>
 
-      <FaqSection faqs={faqs} title="Frequently Asked Questions" showSidebar />
+      <FaqSection faqs={faqs} title="Frequently Asked Questions" showSidebar={false} />
 
-      <SectionShell tone="default" containerClassName="pb-8">
-        <Reveal className="luxury-cta-panel rounded-[2rem] p-8 text-center md:p-14">
+      <SectionShell tone="default" containerClassName="pb-6">
+        <Reveal className="luxury-cta-panel rounded-[2rem] p-8 text-center md:p-12">
           <div className="absolute inset-x-8 top-0 gold-divider opacity-80" />
           <div className="relative mx-auto max-w-3xl space-y-5 md:space-y-6">
             <h2 className="font-display text-4xl leading-tight text-stone-900 md:text-5xl">{finalCta.title}</h2>

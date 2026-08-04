@@ -1,11 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ShoeSummary } from "@/types/api";
-import { isCustomizableShoe, customizeUrl } from "@/lib/catalog/purchase";
+import { isCustomizableShoe } from "@/lib/catalog/purchase";
 import { shoeImageUrl } from "@/lib/media";
 import { formatPrice } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/Button";
 import { AddToCartButton } from "@/components/catalog/AddToCartButton";
 import { WishlistButton } from "@/components/wishlist/WishlistButton";
 
@@ -15,6 +14,27 @@ interface ShoeCardProps {
   priority?: boolean;
   featured?: boolean;
   variant?: "default" | "slider";
+}
+
+function IconLinkButton({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-label={label}
+      title={label}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 bg-white text-stone-700 transition hover:border-accent/30 hover:text-accent"
+    >
+      {children}
+    </Link>
+  );
 }
 
 export function ShoeCard({
@@ -27,6 +47,7 @@ export function ShoeCard({
   const imageUrl = shoeImageUrl(shoe);
   const customizable = isCustomizableShoe(shoe.slug);
   const isSlider = variant === "slider";
+  const productHref = `/collection/shoes/${shoe.slug}`;
 
   return (
     <article
@@ -44,11 +65,11 @@ export function ShoeCard({
         className={cn(
           "relative overflow-hidden",
           isSlider
-            ? "h-[210px] bg-[radial-gradient(circle_at_50%_18%,#ffffff_0%,#f3efe6_42%,#e8e2d8_100%)] sm:h-[228px] xl:h-[240px]"
-            : "bg-[linear-gradient(180deg,#f5f0e8_0%,#e8e2d8_100%)] aspect-[5/4]",
+            ? "h-[210px] bg-white sm:h-[228px] xl:h-[240px]"
+            : "aspect-[5/4] bg-white",
         )}
       >
-        <Link href={`/collection/shoes/${shoe.slug}`} className="relative block h-full w-full">
+        <Link href={productHref} className="relative block h-full w-full">
           <Image
             src={imageUrl}
             alt={shoe.name}
@@ -68,7 +89,7 @@ export function ShoeCard({
 
         {customizable ? (
           <span className="absolute left-3 top-3 rounded-full border border-accent/25 bg-white/95 px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] text-accent shadow-sm backdrop-blur sm:left-4 sm:top-4 sm:px-3 sm:text-[10px]">
-            {featured ? "Signature Atelier" : "Custom Atelier"}
+            {featured ? "Signature Style" : "Customizable"}
           </span>
         ) : null}
 
@@ -83,7 +104,7 @@ export function ShoeCard({
                 {shoe.collection?.name ?? "Collection"}
               </p>
               <h3 className="font-display text-lg leading-tight text-stone-900 sm:text-xl">
-                <Link href={`/collection/shoes/${shoe.slug}`} className="transition hover:text-accent">
+                <Link href={productHref} className="transition hover:text-accent">
                   {shoe.name}
                 </Link>
               </h3>
@@ -96,11 +117,14 @@ export function ShoeCard({
               </span>
             </div>
 
-            <div className="mt-auto grid grid-cols-2 gap-2 pt-1">
-              <AddToCartButton shoe={shoe} size="sm" variant="primary" fullWidth />
-              <Button href={`/collection/shoes/${shoe.slug}`} variant="secondary" size="sm" className="w-full">
-                View Product
-              </Button>
+            <div className="mt-auto flex items-center gap-2 pt-1">
+              <AddToCartButton shoe={shoe} size="sm" variant="primary" className="flex-1" fullWidth />
+              <IconLinkButton href={productHref} label="View product">
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </IconLinkButton>
             </div>
           </>
         ) : (
@@ -111,7 +135,7 @@ export function ShoeCard({
                   {shoe.collection?.name ?? "Collection"}
                 </p>
                 <h3 className="mt-1.5 font-display text-2xl leading-tight text-stone-900 sm:text-3xl">
-                  <Link href={`/collection/shoes/${shoe.slug}`} className="transition hover:text-accent">
+                  <Link href={productHref} className="transition hover:text-accent">
                     {shoe.name}
                   </Link>
                 </h3>
@@ -126,16 +150,14 @@ export function ShoeCard({
               <p className="line-clamp-2 text-sm leading-7 text-stone-600">{shoe.description}</p>
             ) : null}
 
-            <div className="mt-auto flex flex-wrap items-center gap-2 pt-1 sm:gap-3 sm:pt-2">
-              <AddToCartButton shoe={shoe} size="sm" variant="primary" />
-              <Button href={`/collection/shoes/${shoe.slug}`} variant="secondary" size="sm">
-                View Product
-              </Button>
-              {customizable ? (
-                <Button href={customizeUrl()} variant="ghost" size="sm">
-                  Open Atelier
-                </Button>
-              ) : null}
+            <div className="mt-auto flex items-center gap-2 pt-1 sm:pt-2">
+              <AddToCartButton shoe={shoe} size="sm" variant="primary" className="flex-1" fullWidth />
+              <IconLinkButton href={productHref} label="View product">
+                <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </IconLinkButton>
             </div>
           </>
         )}

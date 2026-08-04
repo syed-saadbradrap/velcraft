@@ -60,7 +60,7 @@ export default function WishlistPage() {
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button href="/collection">Explore Collection</Button>
             <Button href={customizeUrl()} variant="secondary">
-              Open Atelier
+              Start Customizing
             </Button>
           </div>
         </motion.div>
@@ -77,7 +77,7 @@ export default function WishlistPage() {
               variants={staggerItem}
               className="glass-panel glass-panel-hover group overflow-hidden rounded-[1.75rem]"
             >
-              <div className="relative h-[220px] bg-[linear-gradient(180deg,#f5f0e8_0%,#e8e2d8_100%)]">
+              <div className="relative h-[220px] bg-white">
                 <Link href={`/collection/shoes/${item.shoe.slug}`} className="relative block h-full w-full">
                   <Image
                     src={shoeImageUrl(item.shoe)}
@@ -111,7 +111,7 @@ export default function WishlistPage() {
                 <div className="flex flex-wrap gap-2 pt-1">
                   {isCustomizableShoe(item.shoe.slug) ? (
                     <Button href={customizeUrl()} size="sm">
-                      Open Atelier
+                      Start Customizing
                     </Button>
                   ) : (
                     <Button href={`/collection/shoes/${item.shoe.slug}`} size="sm">

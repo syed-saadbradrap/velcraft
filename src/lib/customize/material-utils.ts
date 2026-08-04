@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
-const BACKLESS_HIDE_PATTERN = /cover|strap|back|heel/i;
+const BACKLESS_HIDE_PATTERN = /cover|strap|back|counter|collar/i;
+const HEEL_COLOR_PARTS = new Set(["Heel", "HeelCounter", "Back", "BackPart"]);
 
 export function cloneScene(scene: THREE.Object3D) {
   return scene.clone(true);
@@ -188,26 +189,37 @@ export function applyImportedShoeCustomization(
     child.geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
 
     child.material = new THREE.MeshStandardMaterial({
-      map: options.photoTexture ?? null,
+      map: null,
       vertexColors: true,
-      roughness: isSuede ? 0.86 : 0.4,
-      metalness: isSuede ? 0.03 : 0.1,
+      roughness: isSuede ? 0.94 : 0.72,
+      metalness: isSuede ? 0 : 0.02,
+      envMapIntensity: 0.15,
     });
   });
 }
 
 export const PRODUCTION_SHOE_GLB_VERSION = "external-9ebff9b9";
 
-const UPPER_PARTS = new Set(["Body", "Upper"]);
+const UPPER_PARTS = new Set(["Body"]);
+
+function createFabricMaterial(colorHex: string, materialSlug: string) {
+  const isSuede = materialSlug.includes("suede");
+  const isLeather = materialSlug.includes("leather");
+
+  return new THREE.MeshStandardMaterial({
+    name: isSuede ? "Suede_Material" : "Leather_Material",
+    color: new THREE.Color(colorHex),
+    roughness: isSuede ? 0.94 : isLeather ? 0.72 : 0.68,
+    metalness: isSuede ? 0 : 0.02,
+    envMapIntensity: isSuede ? 0.15 : 0.25,
+  });
+}
 
 export function applyProductionUpperMaterial(
   root: THREE.Object3D,
   colorHex: string,
   materialSlug: string,
 ) {
-  const isSuede = materialSlug.includes("suede");
-  const color = new THREE.Color(colorHex);
-
   for (const partName of UPPER_PARTS) {
     const part = root.getObjectByName(partName);
     if (!part) {
@@ -219,11 +231,27 @@ export function applyProductionUpperMaterial(
         return;
       }
 
+      child.material = createFabricMaterial(colorHex, materialSlug);
+    });
+  }
+
+  for (const partName of HEEL_COLOR_PARTS) {
+    const part = root.getObjectByName(partName);
+    if (!part) {
+      continue;
+    }
+
+    part.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) {
+        return;
+      }
+
       child.material = new THREE.MeshStandardMaterial({
-        name: isSuede ? "Suede_Material" : "Leather_Material",
-        color,
-        roughness: isSuede ? 0.86 : 0.38,
-        metalness: isSuede ? 0.03 : 0.1,
+        name: "Heel_Material",
+        color: new THREE.Color("#2a2420"),
+        roughness: 0.82,
+        metalness: 0,
+        envMapIntensity: 0.1,
       });
     });
   }
@@ -243,8 +271,9 @@ export function applyProductionSoleMaterial(root: THREE.Object3D, colorHex: stri
     child.material = new THREE.MeshStandardMaterial({
       name: "Sole_Material",
       color: new THREE.Color(colorHex),
-      roughness: 0.62,
-      metalness: 0.04,
+      roughness: 0.78,
+      metalness: 0,
+      envMapIntensity: 0.12,
     });
   });
 }

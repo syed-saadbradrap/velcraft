@@ -1,6 +1,7 @@
 import {
   authFetch,
   authFetchMessage,
+  authUpload,
   clearToken,
   setToken,
 } from "@/lib/api/auth-client";
@@ -32,6 +33,10 @@ import type {
   AdminCustomer,
   AdminCustomerDetail,
   AdminDashboard,
+  AdminProductOptions,
+  AdminShoe,
+  AdminShoeInput,
+  AdminUploadResult,
   AuthPayload,
   Cart,
   CheckoutPayload,
@@ -54,15 +59,15 @@ import type {
 class ApiClient {
   private readonly baseUrl = siteConfig.apiUrl;
 
-  private async request<T>(path: string, init?: RequestInit): Promise<T> {
+  private async request<T>(path: string, init?: RequestInit, cache: RequestCache = "no-store"): Promise<T> {
     const response = await fetch(`${this.baseUrl}${path}`, {
       ...init,
+      cache: init?.method && init.method !== "GET" ? undefined : cache,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         ...init?.headers,
       },
-      next: init?.method && init.method !== "GET" ? undefined : { revalidate: 60 },
     });
 
     if (!response.ok) {
@@ -418,6 +423,58 @@ class ApiClient {
 
   async deleteAdminCoupon(id: number): Promise<void> {
     await authFetch<null>(`/admin/coupons/${id}`, { method: "DELETE" });
+  }
+
+  async getAdminCollections(): Promise<CollectionSummary[]> {
+    return authFetch<CollectionSummary[]>("/admin/collections");
+  }
+
+  async getAdminProductOptions(): Promise<AdminProductOptions> {
+    return authFetch<AdminProductOptions>("/admin/product-options");
+  }
+
+  async getAdminShoes(params?: {
+    search?: string;
+    collection_id?: number;
+    page?: number;
+    per_page?: number;
+  }): Promise<PaginatedAdmin<AdminShoe>> {
+    const query = new URLSearchParams();
+    if (params?.search) query.set("search", params.search);
+    if (params?.collection_id) query.set("collection_id", String(params.collection_id));
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.per_page) query.set("per_page", String(params.per_page));
+
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return authFetch<PaginatedAdmin<AdminShoe>>(`/admin/shoes${suffix}`);
+  }
+
+  async getAdminShoe(id: number): Promise<AdminShoe> {
+    return authFetch<AdminShoe>(`/admin/shoes/${id}`);
+  }
+
+  async createAdminShoe(payload: AdminShoeInput): Promise<AdminShoe> {
+    return authFetch<AdminShoe>("/admin/shoes", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateAdminShoe(id: number, payload: Partial<AdminShoeInput>): Promise<AdminShoe> {
+    return authFetch<AdminShoe>(`/admin/shoes/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminShoe(id: number): Promise<void> {
+    await authFetch<null>(`/admin/shoes/${id}`, { method: "DELETE" });
+  }
+
+  async uploadAdminImage(file: File): Promise<AdminUploadResult> {
+    const formData = new FormData();
+    formData.append("image", file);
+    return authUpload<AdminUploadResult>("/admin/uploads/image", formData);
   }
 }
 

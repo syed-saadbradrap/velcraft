@@ -28,7 +28,7 @@ export function ViewerSkeleton() {
       <div className="absolute inset-0 animate-pulse bg-gradient-to-br from-stone-900/[0.03] via-transparent to-accent/10" />
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
         <div className="h-12 w-12 animate-spin rounded-full border-2 border-accent/20 border-t-accent" />
-        <p className="text-xs uppercase tracking-[0.32em] text-stone-600">Preparing Atelier Studio</p>
+        <p className="text-xs uppercase tracking-[0.32em] text-stone-600">Preparing 3D Studio</p>
       </div>
     </div>
   );

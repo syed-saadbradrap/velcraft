@@ -39,7 +39,7 @@ export function TextReveal({
         <motion.span
           key={`${word}-${index}`}
           variants={staggerItem}
-          className="mr-[0.28em] inline-block"
+          className="mr-[0.28em] inline-block overflow-visible pb-[0.06em]"
         >
           {word}
         </motion.span>

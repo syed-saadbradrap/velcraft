@@ -46,7 +46,7 @@ export function RegisterForm() {
       <div className="mx-auto max-w-xl space-y-10">
         <SectionHeading
           eyebrow="Account"
-          title="Join the Atelier"
+          title="Create Your Account"
           description="Create your account to save designs, manage orders, and checkout bespoke footwear."
         />
 

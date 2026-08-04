@@ -77,7 +77,7 @@ export function LoginForm({ redirectTo = "/account/orders" }: { redirectTo?: str
           {error ? <p className="text-sm text-red-300">{error}</p> : null}
 
           <p className="text-sm text-stone-700">
-            New to the atelier?{" "}
+            New here?{" "}
             <Link href={`/register?next=${encodeURIComponent(next)}`} className="text-accent hover:underline">
               Create an account
             </Link>

@@ -43,7 +43,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
   return (
     <Container className="py-10 lg:py-16">
       <div className="mb-8 space-y-2">
-        <p className="text-xs uppercase tracking-[0.32em] text-accent">Atelier Studio</p>
+        <p className="text-xs uppercase tracking-[0.32em] text-accent">Customization Studio</p>
         <h1 className="font-display text-4xl text-stone-900 md:text-5xl">{shoe.name}</h1>
         <p className="max-w-2xl text-sm leading-7 text-stone-700">
           Personalize material, color, buckle, sole, and fit with live preview. This studio is

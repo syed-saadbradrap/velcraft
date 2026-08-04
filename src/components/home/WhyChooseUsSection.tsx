@@ -10,10 +10,10 @@ import { staggerContainer, staggerItem } from "@/lib/motion";
 const iconLabels: Record<string, string> = {
   gem: "Fabrics",
   palette: "Colors",
-  buckle: "Hardware",
+  buckle: "Buckles",
   size: "Sizing",
   people: "Unisex",
-  cube: "3D Atelier",
+  cube: "3D Studio",
   craft: "Craft",
   shield: "Assurance",
 };
@@ -38,9 +38,9 @@ function WhyChooseCard({ item, index }: { item: WhyChooseItem; index: number }) 
   return (
     <>
       <p className="text-xs uppercase tracking-[0.35em] text-accent">
-        {iconLabels[item.icon ?? ""] ?? "Atelier"}
+        {iconLabels[item.icon ?? ""] ?? "Customization"}
       </p>
-      <p className="mt-3 font-display text-5xl text-stone-900/10 dark:text-white/30">{String(index + 1).padStart(2, "0")}</p>
+      <p className="mt-3 font-display text-5xl text-stone-900/25 dark:text-white/45">{String(index + 1).padStart(2, "0")}</p>
       <h3 className="mt-4 font-display text-2xl text-stone-900 md:text-3xl">{item.title}</h3>
       <p className="mt-4 flex-1 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{item.description}</p>
     </>

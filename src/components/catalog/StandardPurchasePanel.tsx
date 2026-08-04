@@ -7,6 +7,7 @@ import {
   customizeUrl,
   isCustomizableShoe,
 } from "@/lib/catalog/purchase";
+import { isCatalogProduct } from "@/lib/catalog/product-display";
 import { getErrorMessage } from "@/lib/api/auth-client";
 import { cn, formatPrice } from "@/lib/utils";
 import type { ShoeDetail } from "@/types/api";
@@ -20,15 +21,18 @@ interface StandardPurchasePanelProps {
 export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
   const { addItem } = useCart();
   const customizable = isCustomizableShoe(shoe.slug);
+  const catalogProduct = isCatalogProduct(shoe.slug);
 
-  const womenSizes = shoe.sizes?.filter((size) => size.gender === "women") ?? [];
+  const womenSizes = catalogProduct ? [] : shoe.sizes?.filter((size) => size.gender === "women") ?? [];
   const menSizes = shoe.sizes?.filter((size) => size.gender === "men") ?? [];
-  const availableGenders: ShoeGender[] = [
-    ...(womenSizes.length > 0 ? (["women"] as const) : []),
-    ...(menSizes.length > 0 ? (["men"] as const) : []),
-  ];
+  const availableGenders: ShoeGender[] = catalogProduct
+    ? ["men"]
+    : [
+        ...(womenSizes.length > 0 ? (["women"] as const) : []),
+        ...(menSizes.length > 0 ? (["men"] as const) : []),
+      ];
 
-  const [gender, setGender] = useState<ShoeGender>(availableGenders[0] ?? "women");
+  const [gender, setGender] = useState<ShoeGender>(catalogProduct ? "men" : availableGenders[0] ?? "men");
   const activeSizes = useMemo(
     () => shoe.sizes?.filter((size) => size.gender === gender) ?? [],
     [gender, shoe.sizes],
@@ -67,6 +71,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
     <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-6">
       {availableGenders.length > 0 ? (
         <div className="space-y-4">
+          {!catalogProduct && availableGenders.length > 1 ? (
           <label className="block space-y-2">
             <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
             <select
@@ -83,10 +88,15 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
               {availableGenders.includes("men") ? <option value="men">Men</option> : null}
             </select>
           </label>
+          ) : (
+            <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
+              Men&apos;s sizing · EU 40–45
+            </p>
+          )}
 
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
-              Size ({gender === "women" ? "Women" : "Men"} EU)
+              Size ({catalogProduct || gender === "men" ? "Men" : "Women"} EU)
             </p>
             <div className="flex flex-wrap gap-2">
               {activeSizes.map((size) => (
@@ -112,7 +122,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
       <div className="flex flex-wrap gap-4">
         {customizable ? (
           <Button href={customizeUrl()} size="lg">
-            Customize in Atelier
+            Customize Now
           </Button>
         ) : null}
         <Button size="lg" variant={customizable ? "secondary" : "primary"} disabled={adding} onClick={() => void handleAddToCart()}>
@@ -122,12 +132,12 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
 
       {customizable ? (
         <p className="text-xs leading-6 text-stone-600">
-          Open the atelier studio to personalize material, color, buckle, and sole on this signature
+          Open the customization studio to personalize fabric, color, buckle, and sole on this signature
           style.
         </p>
       ) : (
         <p className="text-xs leading-6 text-stone-600">
-          Standard atelier finish with curated materials for this silhouette.
+          Standard finish with curated fabrics for this silhouette.
         </p>
       )}
 

@@ -58,7 +58,7 @@ export function AtelierShowcaseSection() {
 
           <motion.div
             variants={staggerItem}
-            className="glass-panel rounded-[2rem] border border-border bg-white p-8 shadow-[0_16px_40px_rgba(28,25,23,0.06)] dark:border-stone-700/80 dark:bg-stone-900/90 dark:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
+            className="rounded-[2rem] border border-border bg-white/80 p-8 shadow-[0_16px_40px_rgba(28,25,23,0.06)] dark:border-stone-700/80 dark:bg-stone-900/90 dark:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
           >
             <p className="text-xs uppercase tracking-[0.35em] text-accent">{craftedStyle.whyCustomersLoveUs}</p>
             <ul className="mt-6 space-y-4">

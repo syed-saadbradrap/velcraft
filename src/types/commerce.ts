@@ -234,6 +234,69 @@ export interface PaginatedAdmin<T> {
   pagination: PaginationMeta;
 }
 
+export interface AdminShoe {
+  id: number;
+  name: string;
+  slug: string;
+  description?: string | null;
+  base_price: number;
+  thumbnail_url?: string | null;
+  thumbnail_path?: string | null;
+  is_featured: boolean;
+  is_active?: boolean;
+  sort_order?: number;
+  collection_id?: number | null;
+  collection?: {
+    id: number;
+    name: string;
+    slug: string;
+  } | null;
+  supported_types?: string[];
+  body_model_path?: string | null;
+  sole_model_path?: string | null;
+  logo_model_path?: string | null;
+  inner_model_path?: string | null;
+  default_buckle_model_path?: string | null;
+  material_ids?: number[];
+  color_ids?: number[];
+  buckle_ids?: number[];
+  size_ids?: number[];
+}
+
+export interface AdminShoeInput {
+  collection_id?: number | null;
+  name: string;
+  slug?: string;
+  description?: string | null;
+  base_price: number;
+  thumbnail_path?: string | null;
+  body_model_path: string;
+  sole_model_path: string;
+  logo_model_path?: string | null;
+  inner_model_path?: string | null;
+  default_buckle_model_path?: string | null;
+  supported_types?: string[];
+  is_featured?: boolean;
+  is_active?: boolean;
+  sort_order?: number;
+  material_ids?: number[];
+  color_ids?: number[];
+  buckle_ids?: number[];
+  size_ids?: number[];
+}
+
+export interface AdminProductOptions {
+  materials: Array<{ id: number; name: string; slug: string }>;
+  colors: Array<{ id: number; name: string; hex_code: string }>;
+  buckles: Array<{ id: number; name: string; slug: string }>;
+  sizes: Array<{ id: number; gender: string; label: string; value: number }>;
+}
+
+export interface AdminUploadResult {
+  path: string;
+  url: string;
+}
+
 export function selectionToApiCustomization(
   selection: CustomizationSelection,
 ): ApiCustomization {

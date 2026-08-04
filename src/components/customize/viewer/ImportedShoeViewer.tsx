@@ -34,12 +34,69 @@ function usesMultiPartPipeline(root: THREE.Object3D) {
     hasNamedPart(root, "Sole") ||
     hasNamedPart(root, "Inner") ||
     hasNamedPart(root, "Logo") ||
-    hasNamedPart(root, "Upper")
+    hasNamedPart(root, "Upper") ||
+    hasNamedPart(root, "Body")
   );
+}
+
+function buildShoeGroup(
+  shoeScene: THREE.Object3D,
+  buckleScene: THREE.Object3D,
+  builtInBuckle: boolean,
+  selection: {
+    colorHex: string;
+    soleColorHex: string;
+    shoeType: "backless" | "covered";
+  },
+  materialSlug: string,
+) {
+  const group = new THREE.Group();
+  group.name = "ImportedShoe";
+
+  const shoeRoot = shoeScene.clone(true);
+  shoeRoot.name = "ShoeRoot";
+  prepareImportedMesh(shoeRoot);
+
+  const hasBuckleNode = hasNamedPart(shoeRoot, "Buckle");
+  if (hasBuckleNode) {
+    if (builtInBuckle) {
+      const buckle = shoeRoot.getObjectByName("Buckle");
+      if (buckle) {
+        applyProductionBuckleMaterial(buckle);
+      }
+    } else {
+      const buckle = buckleScene.clone(true);
+      prepareImportedMesh(buckle);
+      applyProductionBuckleMaterial(buckle);
+      replaceBuckleWithAlignment(shoeRoot, buckle);
+    }
+  }
+
+  group.add(shoeRoot);
+  centerAndScale(group, 2.8);
+
+  if (usesMultiPartPipeline(shoeRoot)) {
+    applyProductionUpperMaterial(shoeRoot, selection.colorHex, materialSlug);
+    applyProductionSoleMaterial(shoeRoot, selection.soleColorHex);
+    applyProductionInnerMaterial(shoeRoot);
+    applyProductionLogoMaterial(shoeRoot);
+  } else {
+    applyImportedShoeCustomization(shoeRoot, {
+      upperColorHex: selection.colorHex,
+      soleColorHex: selection.soleColorHex,
+      materialSlug,
+    });
+  }
+
+  applyShoeTypeVisibility(shoeRoot, selection.shoeType);
+
+  return group;
 }
 
 export function ImportedShoeViewer() {
   const groupRef = useRef<THREE.Group>(null);
+  const cameraFittedRef = useRef(false);
+  const lastShoeSlugRef = useRef<string | null>(null);
   const { camera, controls } = useThree();
   const { config, selection } = useCustomization();
   const material = config.materials.find((item) => item.id === selection.materialId);
@@ -56,60 +113,38 @@ export function ImportedShoeViewer() {
   const shoeGltf = useGLTF(combinedUrl);
   const buckleGltf = useGLTF(`${buckleUrl}?v=${PRODUCTION_SHOE_GLB_VERSION}`);
 
-  const shoeGroup = useMemo(() => {
-    const group = new THREE.Group();
-    group.name = "ImportedShoe";
-
-    const shoeRoot = shoeGltf.scene.clone(true);
-    shoeRoot.name = "ShoeRoot";
-    prepareImportedMesh(shoeRoot);
-
-    const hasBuckleNode = hasNamedPart(shoeRoot, "Buckle");
-    if (hasBuckleNode) {
-      if (builtInBuckle) {
-        const buckle = shoeRoot.getObjectByName("Buckle");
-        if (buckle) {
-          applyProductionBuckleMaterial(buckle);
-        }
-      } else {
-        const buckle = buckleGltf.scene.clone(true);
-        prepareImportedMesh(buckle);
-        applyProductionBuckleMaterial(buckle);
-        replaceBuckleWithAlignment(shoeRoot, buckle);
-      }
-    }
-
-    group.add(shoeRoot);
-    centerAndScale(group, 2.8);
-
-    if (usesMultiPartPipeline(shoeRoot)) {
-      applyProductionUpperMaterial(shoeRoot, selection.colorHex, materialSlug);
-      applyProductionSoleMaterial(shoeRoot, selection.soleColorHex);
-      applyProductionInnerMaterial(shoeRoot);
-      applyProductionLogoMaterial(shoeRoot);
-    } else {
-      applyImportedShoeCustomization(shoeRoot, {
-        upperColorHex: selection.colorHex,
-        soleColorHex: selection.soleColorHex,
+  const shoeGroup = useMemo(
+    () =>
+      buildShoeGroup(
+        shoeGltf.scene,
+        buckleGltf.scene,
+        builtInBuckle,
+        {
+          colorHex: selection.colorHex,
+          soleColorHex: selection.soleColorHex,
+          shoeType: selection.shoeType,
+        },
         materialSlug,
-      });
-    }
-
-    applyShoeTypeVisibility(shoeRoot, selection.shoeType);
-
-    return group;
-  }, [
-    builtInBuckle,
-    buckleGltf.scene,
-    materialSlug,
-    selection.colorHex,
-    selection.shoeType,
-    selection.soleColorHex,
-    shoeGltf.scene,
-  ]);
+      ),
+    [
+      builtInBuckle,
+      buckleGltf.scene,
+      materialSlug,
+      selection.buckleId,
+      selection.colorHex,
+      selection.shoeType,
+      selection.soleColorHex,
+      shoeGltf.scene,
+    ],
+  );
 
   useLayoutEffect(() => {
-    if (!groupRef.current) {
+    if (lastShoeSlugRef.current !== config.shoeSlug) {
+      cameraFittedRef.current = false;
+      lastShoeSlugRef.current = config.shoeSlug;
+    }
+
+    if (cameraFittedRef.current || !groupRef.current) {
       return;
     }
 
@@ -118,10 +153,11 @@ export function ImportedShoeViewer() {
       controls as { target: THREE.Vector3; update: () => void } | null,
       groupRef.current,
     );
-  }, [camera, controls, shoeGroup]);
+    cameraFittedRef.current = true;
+  }, [camera, controls, config.shoeSlug, shoeGroup]);
 
   return (
-    <group ref={groupRef} rotation={[0, -0.42, 0]}>
+    <group ref={groupRef}>
       <primitive object={shoeGroup} />
     </group>
   );

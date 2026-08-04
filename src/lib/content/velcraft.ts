@@ -2,11 +2,21 @@ import { siteConfig } from "@/config/site";
 
 export const homeContent = {
   hero: {
-    title: "Your Shoes. Your Signature.",
+    eyebrow: "Bespoke Luxury Footwear",
+    title: "Your Shoes.",
+    titleAccent: "Your Signature.",
     description:
-      "Design footwear that's made to match your style-not someone else's. Customize every detail in our interactive 3D designer, from colors and premium fabrics to buckles, soles, sizes, and shoe styles for both men and women.",
-    ctaLabel: "Customize Your Pair",
+      "Design footwear that's made to match your style—not someone else's. Configure materials, colors, buckles, and soles in real time with our interactive 3D atelier.",
+    ctaLabel: "Start Customizing",
+    ctaSecondaryLabel: "Browse Collection",
     ctaUrl: "/customize/ivory-gold-bit-mule",
+    ctaSecondaryUrl: "/collection",
+    image: "/images/hero/grey-loafer-hero.png",
+    stats: [
+      { value: "20+", label: "Premium colors" },
+      { value: "10+", label: "Buckle designs" },
+      { value: "7–10 days", label: "Delivery" },
+    ],
   },
   whySettle: {
     eyebrow: "Why Settle for Ordinary?",
@@ -17,7 +27,7 @@ export const homeContent = {
       {
         title: "Premium Shoe Fabrics",
         description:
-          "Crafted with high-quality materials for exceptional comfort, durability, and style.",
+          "Crafted with high-quality leather and suede materials for exceptional comfort, durability, and style.",
         icon: "gem",
       },
       {
@@ -38,8 +48,7 @@ export const homeContent = {
       },
       {
         title: "For Men & Women",
-        description:
-          "Customize footwear designed for every style, every occasion, and every individual.",
+        description: "Customized footwear for every style, occasion, and individual.",
         icon: "people",
       },
     ],
@@ -48,7 +57,7 @@ export const homeContent = {
     eyebrow: "Shop Collection",
     title: "Signature Styles, Ready to Wear",
     description:
-      "Explore our curated mule collection with premium fabrics, signature hardware, and sizes for men and women. Add to cart instantly or open the atelier to customize your pair.",
+      "Explore our curated mule collection with premium fabrics, signature buckles, and sizes for men and women. Add to cart instantly or open customization to personalize your pair.",
     stats: [
       { label: "Premium colors", value: "20+" },
       { label: "Buckle designs", value: "10+" },
@@ -62,7 +71,7 @@ export const homeContent = {
       "Experience your design before it reaches your doorstep. Our real-time 3D configurator lets you visualize every change instantly, ensuring every pair feels truly yours.",
     whyCustomersLoveUs: "Why Customers Love Us",
     features: [
-      "Interactive 3D customization",
+      "5+ customizations",
       "Premium craftsmanship",
       "Personalized to your preferences",
       "Stylish, comfortable, and built to last",
@@ -166,14 +175,8 @@ export const aboutContent = {
       },
       {
         title: "Personalize Every Detail",
-        description: "Bring your design to life by choosing from:",
-        bullets: [
-          "20+ premium colors",
-          "Premium fabric options",
-          "10+ distinctive buckle designs",
-          "Sole color and style",
-          "Complete men's and women's size ranges",
-        ],
+        description:
+          "Bring your design to life by choosing from 20+ colors, premium fabric options, 10+ distinctive buckle designs, sole color and style, and a complete men's and women's size ranges.",
       },
       {
         title: "Preview in Real Time",
@@ -197,7 +200,6 @@ export const aboutContent = {
       "Premium-quality materials and finishes",
       "Personalized designs made exclusively for you",
       "Footwear for both men and women",
-      "Every pair handcrafted with precision and care",
     ],
   },
   faqs: [

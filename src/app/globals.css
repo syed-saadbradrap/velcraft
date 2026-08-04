@@ -197,6 +197,107 @@ body {
   mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
 }
 
+.hero-premium {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(201, 169, 98, 0.16), transparent 36%),
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.75), transparent 32%),
+    linear-gradient(180deg, #faf8f4 0%, #f7f3eb 52%, #f3eee4 100%);
+}
+
+.dark .hero-premium {
+  background:
+    radial-gradient(circle at 14% 18%, rgba(201, 169, 98, 0.14), transparent 36%),
+    radial-gradient(circle at 88% 12%, rgba(255, 255, 255, 0.04), transparent 32%),
+    linear-gradient(180deg, #171412 0%, #12100e 52%, #0c0a09 100%);
+}
+
+.hero-premium-grid {
+  background-image:
+    linear-gradient(rgba(28, 25, 23, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(28, 25, 23, 0.035) 1px, transparent 1px);
+  background-size: 88px 88px;
+  mask-image: radial-gradient(circle at 50% 40%, black 24%, transparent 78%);
+}
+
+.dark .hero-premium-grid {
+  background-image:
+    linear-gradient(rgba(250, 250, 249, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 250, 249, 0.04) 1px, transparent 1px);
+}
+
+.hero-premium-glow {
+  background:
+    radial-gradient(circle at 72% 42%, rgba(201, 169, 98, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(201, 169, 98, 0.08), transparent 42%);
+}
+
+.hero-shoe-scene {
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+.hero-shoe-3d-stage {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.hero-product-stage {
+  isolation: isolate;
+}
+
+.hero-product-spotlight {
+  background: radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.55) 42%, transparent 72%);
+  box-shadow: inset 0 0 80px rgba(201, 169, 98, 0.08);
+}
+
+.hero-product-frame {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.hero-visual-backdrop {
+  transform: translateZ(0);
+}
+
+.hero-visual-pedestal {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(201, 169, 98, 0.28) 0%,
+    rgba(201, 169, 98, 0.1) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+}
+
+.dark .hero-product-spotlight {
+  background: radial-gradient(circle at 50% 62%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 42%, transparent 72%);
+}
+
+.hero-product-ring {
+  animation: hero-ring-spin 24s linear infinite;
+}
+
+.hero-product-ring--delayed {
+  animation-direction: reverse;
+  animation-duration: 32s;
+}
+
+@keyframes hero-ring-spin {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+.hero-product-pedestal {
+  border-radius: 999px;
+  background:
+    radial-gradient(ellipse at center, rgba(201, 169, 98, 0.22) 0%, rgba(201, 169, 98, 0.08) 42%, transparent 72%);
+  filter: blur(8px);
+}
+
 .dark .hero-grid-pattern {
   background-image:
     linear-gradient(rgba(250, 250, 249, 0.05) 1px, transparent 1px),

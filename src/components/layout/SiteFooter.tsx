@@ -13,7 +13,7 @@ import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const highlights = [
   { title: "Complimentary sizing guidance", body: "EU men & women sizing with concierge support." },
-  { title: "Artisan production", body: "Hand-finished pairs delivered in 10–14 atelier days." },
+  { title: "Artisan production", body: `Hand-finished pairs delivered in ${siteConfig.deliveryTimeline}.` },
   { title: "Secure checkout", body: "Cash on delivery and bank transfer available across Pakistan." },
 ] as const;
 
@@ -49,7 +49,7 @@ export function SiteFooter() {
           <BrandLogo linked={false} imageClassName="h-[6rem]" />
           <p className="max-w-xs text-sm leading-7 text-stone-700">{siteConfig.description}</p>
           <Button href={siteConfig.links.customize} size="sm">
-            Open Atelier
+            Start Customizing
           </Button>
         </Reveal>
 
@@ -91,7 +91,7 @@ export function SiteFooter() {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Atelier</p>
+          <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Contact</p>
           <p className="text-sm leading-7 text-stone-700">
             Mon–Sat, 12:00 PM – 10:00 PM
             <br />
@@ -99,7 +99,18 @@ export function SiteFooter() {
               {siteConfig.contact.email}
             </a>
             <br />
-            {siteConfig.contact.phone}
+            <a href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`} className="transition hover:text-accent">
+              {siteConfig.contact.phone}
+            </a>
+            <br />
+            <a
+              href={siteConfig.contact.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition hover:text-accent"
+            >
+              {siteConfig.contact.address}
+            </a>
             <br />
             <a
               href={getWhatsAppUrl(siteConfig.contact.whatsapp, siteConfig.contact.whatsappMessage)}

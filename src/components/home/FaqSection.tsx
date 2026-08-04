@@ -48,12 +48,12 @@ function FaqItem({
       >
         <span className="font-display text-xl text-stone-900 md:text-2xl">{question}</span>
         <motion.span
-          animate={{ rotate: open ? 45 : 0 }}
+          animate={{ rotate: 0 }}
           transition={{ duration: 0.25 }}
-          className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 text-accent"
+          className="mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-accent/25 text-lg leading-none text-accent"
           aria-hidden
         >
-          +
+          {open ? "−" : "+"}
         </motion.span>
       </button>
 
@@ -86,7 +86,7 @@ export function FaqSection({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="relative border-y border-border py-24 md:py-28">
+    <section id="faq" className="relative border-y border-border py-14 md:py-20">
       <div className="absolute inset-0 section-glow" />
       <Container className="relative">
         <div

@@ -23,7 +23,7 @@ export const SectionShell = forwardRef<HTMLElement, SectionShellProps>(function 
   ref,
 ) {
   return (
-    <section ref={ref} className={cn("relative py-24 md:py-28", toneClasses[tone], className)}>
+    <section ref={ref} className={cn("relative py-14 md:py-20", toneClasses[tone], className)}>
       <Container className={cn("relative", containerClassName)}>{children}</Container>
     </section>
   );

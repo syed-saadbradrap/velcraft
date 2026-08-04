@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/Container";
 
 const highlights = [
   { label: "Hand-finished mules", detail: "Artisan made" },
-  { label: "Live 3D customization", detail: "Real-time atelier" },
+  { label: "Live 3D customization", detail: "Real-time preview" },
   { label: "Premium suede & leather", detail: "Curated materials" },
   { label: "Signature hardware", detail: "Gold & silver bits" },
   { label: "EU sizing for men & women", detail: "Concierge fit" },

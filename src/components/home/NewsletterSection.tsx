@@ -11,7 +11,7 @@ interface NewsletterSectionProps {
   content: NewsletterSection;
 }
 
-const perks = ["Early collection access", "Atelier drops", "No spam, ever"] as const;
+const perks = ["Early collection access", "New drops", "No spam, ever"] as const;
 
 export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
       }
 
       setStatus("success");
-      setMessage("Welcome to the atelier list. We will be in touch.");
+      setMessage("Welcome to the Velcraft list. We will be in touch.");
       setEmail("");
     } catch {
       setStatus("error");
@@ -84,7 +84,7 @@ export function NewsletterSectionBlock({ content }: NewsletterSectionProps) {
                   />
                 </label>
                 <Button type="submit" size="lg" className="w-full" disabled={status === "loading"}>
-                  {status === "loading" ? "Joining..." : "Join the Atelier List"}
+                  {status === "loading" ? "Joining..." : "Join the List"}
                 </Button>
               </form>
 

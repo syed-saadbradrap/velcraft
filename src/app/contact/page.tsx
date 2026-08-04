@@ -24,7 +24,7 @@ export default async function ContactPage() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border py-24 md:py-28">
+      <section className="relative overflow-hidden border-b border-border py-14 md:py-20">
         <div className="absolute inset-0 hero-grid-pattern opacity-30" />
         <Container className="relative max-w-4xl">
           <Reveal>
@@ -36,7 +36,7 @@ export default async function ContactPage() {
         </Container>
       </section>
 
-      <Container className="py-20 md:py-24">
+      <Container className="py-14 md:py-20">
         <ContactForm content={contact} />
       </Container>
     </>

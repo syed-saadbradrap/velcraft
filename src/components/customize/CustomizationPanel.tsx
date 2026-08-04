@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useCustomization } from "@/context/CustomizationContext";
 import { getErrorMessage } from "@/lib/api/auth-client";
+import { siteConfig } from "@/config/site";
 import { cn, formatPrice } from "@/lib/utils";
 import { isCustomizationComplete, selectionToApiCustomization } from "@/types/commerce";
 import type { ShoeGender } from "@/types/customization";
@@ -77,15 +78,42 @@ export function CustomizationPanel() {
   return (
     <div className="glass-panel flex h-full flex-col rounded-[2rem] p-6 lg:p-8">
       <div className="space-y-2 border-b border-border pb-6">
-        <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Atelier Studio</p>
+        <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Customization Studio</p>
         <h1 className="font-display text-4xl text-stone-900">{config.shoeName}</h1>
         <p className="text-sm text-stone-700">
-          Configure materials, silhouette, color, sole, buckle, and size with live 3D preview.
+          Configure gender, fabric, style, color, sole, buckle, and size with live 3D preview.
+        </p>
+        <p className="text-xs text-stone-600">
+          Estimated delivery: {siteConfig.deliveryTimeline}
         </p>
       </div>
 
       <div className="custom-scrollbar mt-6 flex-1 space-y-6 overflow-y-auto pr-1">
-        <OptionGroup title="Material">
+        <OptionGroup title="Gender">
+          {availableGenders.length > 0 ? (
+            <div className="flex flex-wrap gap-3">
+              {availableGenders.map((gender) => (
+                <button
+                  key={gender}
+                  type="button"
+                  onClick={() => setGender(gender)}
+                  className={cn(
+                    "rounded-full border px-5 py-2.5 text-sm capitalize transition",
+                    selection.gender === gender
+                      ? "border-accent bg-accent/10 text-accent"
+                      : "border-border text-stone-700 hover:text-stone-900",
+                  )}
+                >
+                  {gender}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-stone-600">Sizes are not available for this style yet.</p>
+          )}
+        </OptionGroup>
+
+        <OptionGroup title="Fabric">
           <div className="grid gap-3">
             {config.materials.map((material) => (
               <button
@@ -110,55 +138,8 @@ export function CustomizationPanel() {
           </div>
         </OptionGroup>
 
-        <OptionGroup title="Fit">
-          {availableGenders.length > 0 ? (
-            <div className="space-y-4">
-              <label className="block space-y-2">
-                <span className="text-xs uppercase tracking-[0.22em] text-stone-600">Gender</span>
-                <select
-                  value={selection.gender}
-                  onChange={(event) => setGender(event.target.value as ShoeGender)}
-                  className="w-full rounded-2xl border border-border bg-stone-50 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-accent"
-                >
-                  {availableGenders.includes("women") ? (
-                    <option value="women">Women</option>
-                  ) : null}
-                  {availableGenders.includes("men") ? (
-                    <option value="men">Men</option>
-                  ) : null}
-                </select>
-              </label>
-
-              <div className="space-y-3">
-                <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
-                  Size ({selection.gender === "women" ? "Women" : "Men"} EU)
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {activeSizes.map((size) => (
-                    <button
-                      key={size.id}
-                      type="button"
-                      onClick={() => setSize(size.id)}
-                      className={cn(
-                        "min-w-12 rounded-full border px-3 py-2 text-sm transition",
-                        selection.sizeId === size.id
-                          ? "border-accent bg-accent/10 text-accent"
-                          : "border-border text-stone-700 hover:text-stone-900",
-                      )}
-                    >
-                      {size.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <p className="text-sm text-stone-600">Sizes are not available for this style yet.</p>
-          )}
-        </OptionGroup>
-
         {config.supportedTypes.length > 1 ? (
-          <OptionGroup title="Type">
+          <OptionGroup title="Style">
             <div className="flex flex-wrap gap-3">
               {config.supportedTypes.map((type) => (
                 <button
@@ -233,7 +214,7 @@ export function CustomizationPanel() {
           </div>
         </OptionGroup>
 
-        <OptionGroup title="Buckles">
+        <OptionGroup title="Buckle">
           <div className="grid gap-3">
             {config.buckles.map((buckle) => (
               <button
@@ -256,6 +237,35 @@ export function CustomizationPanel() {
               </button>
             ))}
           </div>
+        </OptionGroup>
+
+        <OptionGroup title="Size">
+          {activeSizes.length > 0 ? (
+            <div className="space-y-3">
+              <p className="text-xs uppercase tracking-[0.22em] text-stone-600">
+                {selection.gender === "women" ? "Women" : "Men"} EU
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {activeSizes.map((size) => (
+                  <button
+                    key={size.id}
+                    type="button"
+                    onClick={() => setSize(size.id)}
+                    className={cn(
+                      "min-w-12 rounded-full border px-3 py-2 text-sm transition",
+                      selection.sizeId === size.id
+                        ? "border-accent bg-accent/10 text-accent"
+                        : "border-border text-stone-700 hover:text-stone-900",
+                    )}
+                  >
+                    {size.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-stone-600">Select a gender to view available sizes.</p>
+          )}
         </OptionGroup>
       </div>
 

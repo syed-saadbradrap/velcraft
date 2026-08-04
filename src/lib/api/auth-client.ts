@@ -115,6 +115,34 @@ export async function authFetchMessage<T>(
   return { data: body.data, message: body.message };
 }
 
+export async function authUpload<T>(path: string, formData: FormData): Promise<T> {
+  const token = getToken();
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    ...buildGuestHeaders(),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${siteConfig.apiUrl}${path}`, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  const body = (await response.json()) as ApiResponse<T> & {
+    errors?: Record<string, string[]>;
+  };
+
+  if (!response.ok || !body.success) {
+    throw parseErrorBody(body, response.status);
+  }
+
+  return body.data;
+}
+
 export function getFieldError(error: unknown, field: string): string | undefined {
   if (error instanceof ApiError && error.errors?.[field]?.[0]) {
     return error.errors[field][0];

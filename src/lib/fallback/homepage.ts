@@ -10,13 +10,14 @@ export const fallbackHomepageData: HomepageData = {
   hero: [
     {
       title: homeContent.hero.title,
+      subtitle: homeContent.hero.titleAccent,
       description: homeContent.hero.description,
-      image_url: "/images/hero/main.jpg",
+      image_url: homeContent.hero.image,
       cta_label: homeContent.hero.ctaLabel,
       cta_url: homeContent.hero.ctaUrl,
     },
   ],
-  featured_shoes: fallbackShoes,
+  featured_shoes: fallbackShoes.filter((shoe) => shoe.is_featured),
   process_steps: [],
   why_choose_us: homeContent.whySettle.highlights.map((item) => ({
     title: item.title,

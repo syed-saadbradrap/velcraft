@@ -96,7 +96,16 @@ export function ContactForm({ content }: ContactFormProps) {
             </div>
             <div>
               <dt className="text-[10px] uppercase tracking-[0.24em] text-stone-600">Address</dt>
-              <dd className="mt-2 text-stone-900">{content.address}</dd>
+              <dd className="mt-2 text-stone-900">
+                <a
+                  href={siteConfig.contact.mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition hover:text-accent"
+                >
+                  {content.address}
+                </a>
+              </dd>
             </div>
           </dl>
         </div>

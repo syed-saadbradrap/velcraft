@@ -134,10 +134,10 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50">
       <div className="header-announcement hidden border-b border-accent/10 bg-[linear-gradient(90deg,rgba(201,169,98,0.08),rgba(201,169,98,0.02),rgba(201,169,98,0.08))] sm:block">
-        <div className="section-shell flex h-9 items-center justify-center gap-3 text-[10px] uppercase tracking-[0.28em] text-stone-600">
+        <div className="section-shell flex h-7 items-center justify-center gap-2.5 text-[9px] uppercase tracking-[0.22em] text-stone-600">
           <span>Complimentary EU sizing</span>
           <span className="h-1 w-1 rounded-full bg-accent/70" />
-          <span>10–14 day atelier delivery</span>
+          <span>{siteConfig.deliveryTimeline} delivery</span>
           <span className="h-1 w-1 rounded-full bg-accent/70" />
           <span>Live 3D customization</span>
         </div>
@@ -212,7 +212,7 @@ export function SiteHeader() {
             )}
 
             <Button href={siteConfig.links.customize} size="sm" className="hidden md:inline-flex">
-              Atelier
+              Customization
             </Button>
 
             <button
@@ -279,7 +279,7 @@ export function SiteHeader() {
                 ) : null}
                 <motion.div variants={fadeUp} className="pt-2">
                   <Button href={siteConfig.links.customize} size="sm" className="w-full">
-                    Open Atelier
+                    Customization
                   </Button>
                 </motion.div>
               </motion.div>

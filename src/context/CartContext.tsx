@@ -91,6 +91,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         try {
           const nextCart = await apiClient.addCartItem(payload);
           setCart(nextCart);
+          setIsOpen(true);
           return;
         } catch {
           setLocalMode(true);
@@ -99,6 +100,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       const nextCart = addLocalCartItem(payload);
       setCart(nextCart);
+      setIsOpen(true);
     },
     [localMode],
   );

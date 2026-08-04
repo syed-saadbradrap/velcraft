@@ -72,7 +72,7 @@ export function CartDrawer() {
                 aria-label="Close cart panel"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-stone-200 text-stone-600 transition hover:border-accent/30 hover:text-stone-900"
               >
-                ✕
+                −
               </button>
             </div>
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { CollectionSummary, PaginatedShoes } from "@/types/api";
 import { ShoeCard } from "@/components/catalog/ShoeCard";
 import { Button } from "@/components/ui/Button";
+import { collectionFilters } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
@@ -23,6 +24,18 @@ export function CollectionCatalog({
   const searchParams = useSearchParams();
   const { current_page: currentPage, last_page: lastPage } = catalog.pagination;
 
+  const enabledFilters = collectionFilters.filter((filter) => filter.enabled);
+  const defaultSlug = enabledFilters[0]?.slug;
+  const resolvedCollection = activeCollection ?? defaultSlug;
+
+  function getCollectionCount(slug: string) {
+    return collections.find((collection) => collection.slug === slug)?.shoes_count ?? 0;
+  }
+
+  function isComingSoon(slug: string) {
+    return getCollectionCount(slug) === 0;
+  }
+
   function updateParams(next: Record<string, string | undefined>) {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -37,12 +50,21 @@ export function CollectionCatalog({
     router.push(`/collection?${params.toString()}`);
   }
 
-  function setCollection(slug?: string) {
+  function setCollection(slug: string) {
     updateParams({ collection: slug, page: undefined });
   }
 
   function setPage(page: number) {
     updateParams({ page: String(page) });
+  }
+
+  function getFilterLabel(slug: string) {
+    const configured = enabledFilters.find((filter) => filter.slug === slug);
+    if (configured) {
+      return configured.label;
+    }
+
+    return collections.find((collection) => collection.slug === slug)?.name ?? slug;
   }
 
   return (
@@ -54,37 +76,34 @@ export function CollectionCatalog({
           transition={{ duration: 0.45 }}
           className="flex flex-wrap gap-3"
         >
-          <motion.button
-            type="button"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => setCollection()}
-            className={cn(
-              "rounded-full border px-5 py-2.5 text-sm uppercase tracking-[0.18em] transition",
-              !activeCollection
-                ? "border-accent bg-accent/10 text-accent"
-                : "border-border text-stone-700 hover:text-stone-900",
-            )}
-          >
-            All
-          </motion.button>
-          {collections.map((collection) => (
+          {enabledFilters.map((filter) => {
+            const comingSoon = isComingSoon(filter.slug);
+
+            return (
             <motion.button
-              key={collection.id}
+              key={filter.slug}
               type="button"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => setCollection(collection.slug)}
+              whileHover={{ scale: comingSoon ? 1 : 1.03 }}
+              whileTap={{ scale: comingSoon ? 1 : 0.97 }}
+              onClick={() => setCollection(filter.slug)}
               className={cn(
                 "rounded-full border px-5 py-2.5 text-sm uppercase tracking-[0.18em] transition",
-                activeCollection === collection.slug
+                resolvedCollection === filter.slug
                   ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-700 hover:text-stone-900",
+                  : comingSoon
+                    ? "border-border/70 text-stone-500"
+                    : "border-border text-stone-700 hover:text-stone-900",
               )}
             >
-              {collection.name}
+              {filter.label}
+              {comingSoon ? (
+                <span className="ml-2 text-[10px] normal-case tracking-[0.12em] text-stone-500">
+                  Soon
+                </span>
+              ) : null}
             </motion.button>
-          ))}
+            );
+          })}
         </motion.div>
 
         <motion.p
@@ -93,14 +112,14 @@ export function CollectionCatalog({
           transition={{ delay: 0.2 }}
           className="text-sm text-stone-600"
         >
-          {catalog.pagination.total} styles in the Velcraft collection
+          {catalog.pagination.total} styles in {getFilterLabel(resolvedCollection ?? "")}
         </motion.p>
       </div>
 
       <AnimatePresence mode="wait">
         {catalog.items.length > 0 ? (
           <motion.div
-            key={`${activeCollection ?? "all"}-${currentPage}`}
+            key={`${resolvedCollection ?? "all"}-${currentPage}`}
             variants={staggerContainer(0.06, 0.02)}
             initial="hidden"
             animate="visible"
@@ -123,10 +142,10 @@ export function CollectionCatalog({
           >
             <p className="font-display text-3xl text-stone-900">New arrivals coming soon</p>
             <p className="mt-3 text-sm text-stone-700">
-              Our atelier is preparing the next collection. Contact concierge for private previews.
+              Our studio is preparing the next collection. Contact us for private previews.
             </p>
             <Button href="/contact" variant="secondary" size="sm" className="mt-6">
-              Contact Concierge
+              Contact Us
             </Button>
           </motion.div>
         )}
