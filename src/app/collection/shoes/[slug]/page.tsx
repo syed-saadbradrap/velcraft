@@ -5,6 +5,7 @@ import { apiClient } from "@/lib/api/client";
 import { shoeGalleryUrls, shoeImageUrl } from "@/lib/media";
 import { formatPrice } from "@/lib/utils";
 import { StandardPurchasePanel } from "@/components/catalog/StandardPurchasePanel";
+import { RecentProductsSection } from "@/components/catalog/RecentProductsSection";
 import { ShoeGallery } from "@/components/catalog/ShoeGallery";
 import { ShoeProductDetails } from "@/components/catalog/ShoeProductDetails";
 import { getProductDisplayInfo } from "@/lib/catalog/product-display";
@@ -54,6 +55,10 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
     collection: shoe.collection?.name ?? "Impression",
   });
   const customizable = isCustomizableShoe(shoe.slug);
+
+  const collectionSlug = shoe.collection?.slug ?? "men";
+  const catalog = await apiClient.getShoes(collectionSlug, 1);
+  const recentProducts = catalog.items.filter((item) => item.slug !== shoe.slug).slice(0, 4);
 
   return (
     <Container className="py-12 pb-[calc(9.5rem+env(safe-area-inset-bottom))] sm:py-16 lg:py-24 lg:pb-24">
@@ -172,6 +177,11 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
           </Button>
         </div>
       </div>
+
+      <RecentProductsSection
+        products={recentProducts}
+        collectionName={shoe.collection?.name ?? undefined}
+      />
     </Container>
   );
 }
