@@ -42,7 +42,7 @@ export default function AccountOrdersPage() {
   }
 
   return (
-    <Container className="py-24">
+    <Container className="py-12 sm:py-16 lg:py-24">
       <div className="space-y-10">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading

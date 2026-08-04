@@ -56,8 +56,8 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
   const customizable = isCustomizableShoe(shoe.slug);
 
   return (
-    <Container className="py-24">
-      <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+    <Container className="py-12 sm:py-16 lg:py-24">
+      <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-12">
         <ShoeGallery images={galleryImages} alt={shoe.name} />
 
         <div className="space-y-8">
@@ -71,9 +71,11 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
             <p className="mt-6 text-xs uppercase tracking-[0.28em] text-accent">
               {shoe.collection?.name ?? "Collection"}
             </p>
-            <h1 className="mt-3 font-display text-5xl text-stone-900 md:text-6xl">{shoe.name}</h1>
+            <h1 className="mt-3 break-words font-display text-[clamp(2rem,7vw,3.75rem)] leading-[1.05] text-stone-900">
+              {shoe.name}
+            </h1>
             <p className="mt-4">
-              <span className="luxury-gradient text-3xl">{formatPrice(shoe.base_price)}</span>
+              <span className="luxury-gradient text-2xl sm:text-3xl">{formatPrice(shoe.base_price)}</span>
             </p>
           </div>
 

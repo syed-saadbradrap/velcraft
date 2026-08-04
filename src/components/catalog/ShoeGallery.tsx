@@ -20,8 +20,8 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="glass-panel relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-white">
+    <div className="space-y-3 sm:space-y-4">
+      <div className="glass-panel relative aspect-square overflow-hidden rounded-[1.5rem] bg-white sm:aspect-[4/5] sm:rounded-[2rem]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeImage}
@@ -37,7 +37,7 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
               fill
               priority={activeIndex === 0}
               sizes="(max-width: 1024px) 100vw, 45vw"
-              className="object-contain p-8 md:p-10"
+              className="object-contain p-4 sm:p-8 md:p-10"
             />
           </motion.div>
         </AnimatePresence>
@@ -48,7 +48,7 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
               type="button"
               aria-label="Previous image"
               onClick={() => setActiveIndex((index) => (index === 0 ? gallery.length - 1 : index - 1))}
-              className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-700 shadow-sm transition hover:border-accent/35 hover:text-stone-900"
+              className="absolute left-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-700 shadow-sm transition hover:border-accent/35 hover:text-stone-900 sm:left-4"
             >
               ←
             </button>
@@ -56,7 +56,7 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
               type="button"
               aria-label="Next image"
               onClick={() => setActiveIndex((index) => (index === gallery.length - 1 ? 0 : index + 1))}
-              className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-700 shadow-sm transition hover:border-accent/35 hover:text-stone-900"
+              className="absolute right-2 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-white/90 text-stone-700 shadow-sm transition hover:border-accent/35 hover:text-stone-900 sm:right-4"
             >
               →
             </button>
@@ -68,7 +68,7 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
       </div>
 
       {gallery.length > 1 ? (
-        <div className="grid grid-cols-4 gap-3 sm:grid-cols-5">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-3 md:grid-cols-5">
           {gallery.map((image, index) => (
             <button
               key={`${image}-${index}`}

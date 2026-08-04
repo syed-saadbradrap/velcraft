@@ -61,7 +61,7 @@ export function AboutPageContent() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-border py-16 md:py-24">
+      <section className="relative overflow-hidden border-b border-border py-12 sm:py-16 md:py-24">
         <div className="absolute inset-0 hero-grid-pattern opacity-30" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(201,169,98,0.18),transparent_34%),radial-gradient(circle_at_82%_12%,rgba(255,255,255,0.5),transparent_28%)]" />
         <div className="pointer-events-none absolute -left-20 top-20 h-72 w-72 rounded-full bg-accent/10 blur-3xl" />
@@ -70,7 +70,7 @@ export function AboutPageContent() {
         <Container className="relative max-w-5xl">
           <Reveal>
             <div className="accent-bar-left max-w-4xl space-y-6">
-              <h1 className="font-display text-5xl leading-[1.04] text-stone-900 md:text-6xl xl:text-7xl">
+              <h1 className="font-display text-[clamp(2.25rem,8vw,4.5rem)] leading-[1.04] text-stone-900 xl:text-7xl">
                 <span className="block">{heroLead}</span>
                 {heroAccent ? (
                   <span className="mt-3 block luxury-gradient">{heroAccent.endsWith(".") ? heroAccent : `${heroAccent}.`}</span>

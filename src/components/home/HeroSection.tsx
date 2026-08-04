@@ -81,19 +81,21 @@ export function HeroSection({ slides }: HeroSectionProps) {
         className="pointer-events-none absolute right-0 top-1/3 h-96 w-96 rounded-full bg-[radial-gradient(circle,rgba(201,169,98,0.14),transparent_70%)] blur-2xl"
       />
 
-      <Container className="relative z-10 grid min-h-[82vh] items-center gap-10 py-16 lg:grid-cols-2 lg:gap-12 lg:py-20 xl:gap-16">
-        <motion.div style={{ y: contentY }} className="order-2 space-y-8 lg:order-1">
+      <Container className="relative z-10 grid min-h-0 items-center gap-8 py-10 sm:gap-10 sm:py-14 md:min-h-[72vh] lg:grid-cols-2 lg:gap-12 lg:py-20 xl:min-h-[82vh] xl:gap-16">
+        <motion.div style={{ y: contentY }} className="order-2 space-y-6 sm:space-y-8 lg:order-1">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.05 }}
-            className="inline-flex items-center gap-3 rounded-full border border-accent/25 bg-white/70 px-4 py-2 shadow-[0_8px_30px_rgba(28,25,23,0.04)] backdrop-blur-sm dark:bg-stone-900/60"
+            className="inline-flex max-w-full items-center gap-2 rounded-full border border-accent/25 bg-white/70 px-3 py-2 shadow-[0_8px_30px_rgba(28,25,23,0.04)] backdrop-blur-sm dark:bg-stone-900/60 sm:gap-3 sm:px-4"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-            <span className="text-[10px] uppercase tracking-[0.32em] text-stone-600">{copy.eyebrow}</span>
+            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+            <span className="text-[9px] uppercase tracking-[0.22em] text-stone-600 sm:text-[10px] sm:tracking-[0.32em]">
+              {copy.eyebrow}
+            </span>
           </motion.div>
 
-          <h1 className="overflow-visible font-display text-[clamp(2.75rem,6vw,4.75rem)] leading-[1.02] text-stone-900">
+          <h1 className="overflow-visible font-display text-[clamp(2.25rem,8vw,4.75rem)] leading-[1.04] text-stone-900">
             <TextReveal text={copy.lead} as="span" className="block overflow-visible pb-1" delay={0.12} />
             <motion.span
               initial={{ opacity: 0, y: 24 }}
@@ -118,14 +120,14 @@ export function HeroSection({ slides }: HeroSectionProps) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.68 }}
-            className="flex flex-wrap items-center gap-4"
+            className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
           >
-            <Button href={primaryCta} size="lg">
+            <Button href={primaryCta} size="lg" className="w-full sm:w-auto">
               {primaryLabel}
             </Button>
             <Link
               href={homeContent.hero.ctaSecondaryUrl}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-4 text-sm font-medium text-stone-700 transition hover:border-accent/35 hover:text-stone-900"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-border px-6 py-4 text-sm font-medium text-stone-700 transition hover:border-accent/35 hover:text-stone-900 sm:w-auto"
             >
               {homeContent.hero.ctaSecondaryLabel}
               <span aria-hidden="true">→</span>
@@ -136,15 +138,17 @@ export function HeroSection({ slides }: HeroSectionProps) {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.65, delay: 0.78 }}
-            className="grid max-w-xl grid-cols-3 gap-3 pt-2"
+            className="grid max-w-xl grid-cols-1 gap-3 min-[420px]:grid-cols-3 pt-2"
           >
             {homeContent.hero.stats.map((stat) => (
               <div
                 key={stat.label}
-                className="rounded-[1.25rem] border border-border/80 bg-white/60 px-4 py-4 backdrop-blur-sm dark:bg-stone-900/50"
+                className="rounded-[1.25rem] border border-border/80 bg-white/60 px-3 py-3 backdrop-blur-sm dark:bg-stone-900/50 sm:px-4 sm:py-4"
               >
-                <p className="font-display text-2xl text-stone-900">{stat.value}</p>
-                <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-stone-500">{stat.label}</p>
+                <p className="font-display text-xl text-stone-900 sm:text-2xl">{stat.value}</p>
+                <p className="mt-1 text-[9px] uppercase tracking-[0.18em] text-stone-500 sm:text-[10px] sm:tracking-[0.22em]">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </motion.div>

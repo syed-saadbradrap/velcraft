@@ -158,13 +158,16 @@ export function SiteHeader() {
 
         <div
           className={cn(
-            "section-shell grid grid-cols-[auto_1fr_auto] items-center gap-4 transition-all duration-500 lg:gap-8",
-            scrolled ? "min-h-[4.5rem] py-1" : "min-h-[6.5rem] py-2",
+            "section-shell grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 transition-all duration-500 sm:gap-4 lg:grid-cols-[auto_1fr_auto] lg:gap-8",
+            scrolled ? "min-h-[4.25rem] py-1 sm:min-h-[4.5rem]" : "min-h-[4.75rem] py-2 sm:min-h-[5.5rem] lg:min-h-[6.5rem]",
           )}
         >
           <BrandLogo
             priority
-            imageClassName={cn("transition-all duration-500 ease-out", scrolled ? "h-16" : "h-[6rem]")}
+            imageClassName={cn(
+              "transition-all duration-500 ease-out",
+              scrolled ? "h-12 sm:h-14 lg:h-16" : "h-14 sm:h-16 lg:h-[6rem]",
+            )}
           />
 
           <nav className="hidden justify-center lg:flex">

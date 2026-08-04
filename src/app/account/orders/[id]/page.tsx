@@ -43,7 +43,7 @@ export default function AccountOrderDetailPage() {
   }
 
   return (
-    <Container className="py-24">
+    <Container className="py-12 sm:py-16 lg:py-24">
       <div className="space-y-10">
         <div className="flex flex-wrap items-center gap-4">
           <Button href="/account/orders" variant="secondary" size="sm">

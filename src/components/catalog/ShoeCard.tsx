@@ -96,7 +96,7 @@ export function ShoeCard({
         <WishlistButton shoe={shoe} size="sm" className="absolute right-3 top-3 sm:right-4 sm:top-4" />
       </div>
 
-      <div className={cn("flex flex-1 flex-col", isSlider ? "gap-3 p-4 sm:gap-4 sm:p-5" : "gap-4 p-6")}>
+      <div className={cn("flex flex-1 flex-col", isSlider ? "gap-3 p-4 sm:gap-4 sm:p-5" : "gap-4 p-4 sm:p-6")}>
         {isSlider ? (
           <>
             <div className="min-w-0 space-y-2">
@@ -134,7 +134,7 @@ export function ShoeCard({
                 <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600 sm:text-xs">
                   {shoe.collection?.name ?? "Collection"}
                 </p>
-                <h3 className="mt-1.5 font-display text-2xl leading-tight text-stone-900 sm:text-3xl">
+                <h3 className="mt-1.5 font-display text-xl leading-tight text-stone-900 sm:text-2xl md:text-3xl">
                   <Link href={productHref} className="transition hover:text-accent">
                     {shoe.name}
                   </Link>

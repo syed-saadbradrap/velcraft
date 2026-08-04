@@ -117,7 +117,67 @@ export default function AdminProductsPage() {
 
       {error ? <p className="mt-6 text-sm text-red-600">{error}</p> : null}
 
-      <div className="mt-8 overflow-x-auto rounded-[1.5rem] border border-border">
+      <div className="mt-8 space-y-4 lg:hidden">
+        {products.map((product) => (
+          <article
+            key={product.id}
+            className="rounded-[1.5rem] border border-border bg-white p-4 shadow-sm sm:p-5"
+          >
+            <div className="flex items-start gap-4">
+              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-border bg-stone-100">
+                <AdminProductThumbnail product={product} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <Link
+                  href={`/admin/products/${product.id}`}
+                  className="block truncate font-medium text-stone-900 hover:text-accent"
+                >
+                  {product.name}
+                </Link>
+                <p className="mt-1 truncate text-xs text-stone-500">{product.slug}</p>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                  <span className="text-accent">{formatPrice(product.base_price)}</span>
+                  <span className="text-stone-400">•</span>
+                  <span className="text-stone-600">{product.collection?.name ?? "Unassigned"}</span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <span className={product.is_active ? "text-emerald-700" : "text-stone-500"}>
+                    {product.is_active ? "Active" : "Hidden"}
+                  </span>
+                  {product.is_featured ? (
+                    <span className="text-accent">Featured</span>
+                  ) : null}
+                </div>
+              </div>
+            </div>
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => router.push(`/admin/products/${product.id}`)}
+                className="rounded-full border border-border px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-stone-700"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleToggleActive(product)}
+                className="rounded-full border border-border px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-stone-700"
+              >
+                {product.is_active ? "Hide" : "Show"}
+              </button>
+              <button
+                type="button"
+                onClick={() => void handleDelete(product)}
+                className="rounded-full border border-red-200 px-3 py-2.5 text-[10px] uppercase tracking-[0.14em] text-red-600"
+              >
+                Delete
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="mt-8 hidden overflow-x-auto rounded-[1.5rem] border border-border lg:block">
         <table className="min-w-full text-left text-sm">
           <thead className="bg-stone-100/5 text-xs uppercase tracking-[0.18em] text-stone-600">
             <tr>

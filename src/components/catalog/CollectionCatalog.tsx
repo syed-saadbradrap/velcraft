@@ -87,7 +87,7 @@ export function CollectionCatalog({
               whileTap={{ scale: comingSoon ? 1 : 0.97 }}
               onClick={() => setCollection(filter.slug)}
               className={cn(
-                "rounded-full border px-5 py-2.5 text-sm uppercase tracking-[0.18em] transition",
+                "rounded-full border px-4 py-2 text-xs uppercase tracking-[0.16em] transition sm:px-5 sm:py-2.5 sm:text-sm sm:tracking-[0.18em]",
                 resolvedCollection === filter.slug
                   ? "border-accent bg-accent/10 text-accent"
                   : comingSoon

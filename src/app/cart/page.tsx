@@ -33,7 +33,7 @@ export default function CartPage() {
 
   return (
 
-    <Container className="py-24">
+    <Container className="py-12 sm:py-16 lg:py-24">
 
       <div className="space-y-10">
 

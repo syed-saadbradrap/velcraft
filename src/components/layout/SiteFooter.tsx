@@ -44,9 +44,9 @@ export function SiteFooter() {
         </Container>
       </div>
 
-      <Container className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+      <Container className="grid gap-10 py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-4">
         <Reveal className="space-y-4">
-          <BrandLogo linked={false} imageClassName="h-[6rem]" />
+          <BrandLogo linked={false} imageClassName="h-14 sm:h-16 lg:h-[6rem]" />
           <p className="max-w-xs text-sm leading-7 text-stone-700">{siteConfig.description}</p>
           <Button href={siteConfig.links.customize} size="sm">
             Start Customizing

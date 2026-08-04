@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 
 export default function TermsPage() {
   return (
-    <Container className="prose prose-invert max-w-3xl py-24 prose-headings:font-display">
+    <Container className="prose prose-invert max-w-3xl py-12 sm:py-16 lg:py-24 prose-headings:font-display">
       <h1>Terms of Service</h1>
       <p>
         By accessing Velcraft, you agree to these terms governing use of our website,

@@ -126,7 +126,7 @@ export function ImageUploadField({
           dragging ? "border-accent ring-2 ring-accent/20" : "border-border",
         )}
       >
-        <div className="relative aspect-[4/5] w-full sm:aspect-square">
+        <div className="relative aspect-square max-h-[320px] w-full sm:max-h-none sm:aspect-[4/5]">
           {previewUrl && !showMissingState ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}

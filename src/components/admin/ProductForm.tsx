@@ -100,7 +100,7 @@ export function ProductForm({
     <form onSubmit={handleSubmit} className="mt-8 space-y-8">
       {error ? <p className="text-sm text-red-600">{error}</p> : null}
 
-      <div className="glass-panel grid gap-8 rounded-[1.5rem] p-6 lg:grid-cols-[minmax(280px,340px)_1fr]">
+      <div className="glass-panel grid gap-6 rounded-[1.5rem] p-4 sm:gap-8 sm:p-6 lg:grid-cols-[minmax(280px,340px)_1fr]">
         <ImageUploadField
           value={form.thumbnail_path ?? ""}
           slug={form.slug ?? ""}

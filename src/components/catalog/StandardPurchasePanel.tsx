@@ -68,7 +68,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
   }
 
   return (
-    <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-6">
+    <div className="space-y-6 rounded-[1.5rem] border border-border bg-stone-100/[0.03] p-4 sm:p-6">
       {availableGenders.length > 0 ? (
         <div className="space-y-4">
           {!catalogProduct && availableGenders.length > 1 ? (
@@ -105,7 +105,7 @@ export function StandardPurchasePanel({ shoe }: StandardPurchasePanelProps) {
                   type="button"
                   onClick={() => setSizeId(size.id)}
                   className={cn(
-                    "min-w-12 rounded-full border px-3 py-2 text-sm transition",
+                    "min-h-11 min-w-11 rounded-full border px-3 py-2.5 text-sm transition",
                     sizeId === size.id
                       ? "border-accent bg-accent/10 text-accent"
                       : "border-border text-stone-700 hover:text-stone-900",

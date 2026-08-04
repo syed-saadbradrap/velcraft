@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 
 export default function PrivacyPage() {
   return (
-    <Container className="prose prose-invert max-w-3xl py-24 prose-headings:font-display">
+    <Container className="prose prose-invert max-w-3xl py-12 sm:py-16 lg:py-24 prose-headings:font-display">
       <h1>Privacy Policy</h1>
       <p>
         Velcraft respects your privacy. This policy describes how personal data is collected,

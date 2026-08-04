@@ -145,7 +145,7 @@ export default function CheckoutPage() {
     const bank = siteConfig.payments.bankTransfer;
 
     return (
-      <Container className="py-24">
+      <Container className="py-12 sm:py-16 lg:py-24">
         <div className="mx-auto max-w-2xl space-y-8 text-center">
           <SectionHeading
             eyebrow="Checkout"
@@ -207,7 +207,7 @@ export default function CheckoutPage() {
   const estimatedTotal = (totals?.subtotal ?? 0) - discount + (totals?.shipping_amount ?? 0);
 
   return (
-    <Container className="py-24">
+    <Container className="py-12 sm:py-16 lg:py-24">
       <div className="space-y-10">
         <SectionHeading
           eyebrow="Checkout"

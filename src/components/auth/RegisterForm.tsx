@@ -42,7 +42,7 @@ export function RegisterForm() {
   }
 
   return (
-    <Container className="py-24">
+    <Container className="py-12 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-xl space-y-10">
         <SectionHeading
           eyebrow="Account"
