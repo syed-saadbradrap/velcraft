@@ -108,7 +108,7 @@ export type ShippingAddressInput = Omit<ShippingAddress, "id" | "is_default"> & 
   is_default?: boolean;
 };
 
-export type PaymentMethod = "stripe" | "cod" | "bank_transfer";
+export type PaymentMethod = "stripe" | "payfast" | "cod" | "bank_transfer";
 
 export type OrderStatus =
   | "pending"
@@ -183,12 +183,62 @@ export interface PaymentConfirmPayload {
   payment_intent_id?: string;
 }
 
+export interface PayFastCheckoutPayload {
+  order_id: number;
+  customer_email: string;
+  customer_mobile: string;
+}
+
+export interface PayFastCheckoutSession {
+  checkout_url: string;
+  basket_id: string;
+  amount: number;
+  fields: Record<string, string>;
+}
+
+export interface PayFastVerifyPayload {
+  order_number: string;
+  signature?: string;
+  status: "success" | "failure";
+  transaction_id?: string;
+}
+
+export interface PayFastStatusPayload {
+  enabled: boolean;
+  mode: string;
+}
+
 export interface AdminDashboard {
-  orders: { total: number; pending: number; processing: number };
+  orders: {
+    total: number;
+    pending: number;
+    processing: number;
+    shipped: number;
+    delivered: number;
+  };
   customers: number;
   shoes: number;
+  active_shoes: number;
+  coupons: { total: number; active: number };
   contact_messages: { total: number; new: number };
-  revenue: { total: number };
+  revenue: { total: number; month: number };
+  recent_orders: Array<{
+    id: number;
+    order_number: string;
+    customer_name: string;
+    total: number;
+    status: string;
+    payment_status: string;
+    created_at: string;
+  }>;
+  recent_messages: Array<{
+    id: number;
+    name: string;
+    email: string;
+    subject?: string | null;
+    status: "new" | "read" | "replied" | "archived";
+    created_at: string;
+  }>;
 }
 
 export interface AdminCustomer {
@@ -222,7 +272,7 @@ export interface AdminCoupon {
   type: "percentage" | "fixed";
   value: number;
   min_order_amount: number;
-  max_uses: number;
+  max_uses: number | null;
   used_count: number;
   is_active: boolean;
   expires_at?: string | null;

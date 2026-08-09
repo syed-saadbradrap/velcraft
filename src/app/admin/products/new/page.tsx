@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getErrorMessage } from "@/lib/api/auth-client";
 import { apiClient } from "@/lib/api/client";
+import { AdminLoading } from "@/components/admin/AdminFeedback";
+import { AdminPage, AdminPageHeader } from "@/components/admin/AdminPage";
 import { ProductForm, createEmptyShoeForm } from "@/components/admin/ProductForm";
-import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { AdminProductOptions } from "@/types/commerce";
 import type { CollectionSummary } from "@/types/api";
 
@@ -27,17 +27,17 @@ export default function AdminNewProductPage() {
 
   if (error) {
     return (
-      <Container className="py-10 lg:py-14">
+      <AdminPage>
         <p className="text-sm text-red-600">{error}</p>
-      </Container>
+      </AdminPage>
     );
   }
 
   if (!options) {
     return (
-      <Container className="py-10 lg:py-14">
-        <p className="text-sm text-stone-600">Loading product form...</p>
-      </Container>
+      <AdminPage>
+        <AdminLoading label="Loading product form..." />
+      </AdminPage>
     );
   }
 
@@ -48,12 +48,8 @@ export default function AdminNewProductPage() {
   }
 
   return (
-    <Container className="py-10 lg:py-14">
-      <SectionHeading
-        eyebrow="Admin"
-        title="Add Product"
-        description="Create a new catalog product and assign it to a collection."
-      />
+    <AdminPage>
+      <AdminPageHeader title="Add Product" description="Create a new catalog product and assign it to a collection." />
 
       <ProductForm
         collections={collections}
@@ -61,11 +57,15 @@ export default function AdminNewProductPage() {
         initialValues={defaultForm}
         submitLabel="Create Product"
         onCancel={() => router.push("/admin/products")}
+        onRefreshOptions={async () => {
+          const productOptions = await apiClient.getAdminProductOptions();
+          setOptions(productOptions);
+        }}
         onSubmit={async (values) => {
           const created = await apiClient.createAdminShoe(values);
           router.push(`/admin/products/${created.id}`);
         }}
       />
-    </Container>
+    </AdminPage>
   );
 }

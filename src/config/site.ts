@@ -42,6 +42,12 @@ export const siteConfig = {
       accountNumber: "01234567890123",
       iban: "PK00MEZN0000123456789012",
     },
+    card: {
+      label: "Debit / Credit Card",
+      description:
+        "Pay securely with card via PayFast. Payment settles to our Meezan Bank merchant account.",
+      provider: "PayFast",
+    },
   },
   links: {
     collection: "/collection",
@@ -50,6 +56,10 @@ export const siteConfig = {
     contact: "/contact",
     privacy: "/privacy",
     terms: "/terms",
+    refundPolicy: "/refund-policy",
+    returnsPolicy: "/returns-policy",
+    shippingPolicy: "/shipping-policy",
+    paymentPolicy: "/payment-policy",
     cart: "/cart",
     wishlist: "/wishlist",
     login: "/login",

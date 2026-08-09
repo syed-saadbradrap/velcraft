@@ -11,7 +11,7 @@ export const homeContent = {
     ctaSecondaryLabel: "Browse Collection",
     ctaUrl: "/customize/ivory-gold-bit-mule",
     ctaSecondaryUrl: "/collection",
-    image: "/images/hero/grey-loafer-hero.png",
+    image: "/images/shoes/dark-blue-covered/main.png",
     stats: [
       { value: "20+", label: "Premium colors" },
       { value: "10+", label: "Buckle designs" },

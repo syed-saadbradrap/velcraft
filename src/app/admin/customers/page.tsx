@@ -1,55 +1,68 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AdminAlert, AdminEmptyState, AdminLoading } from "@/components/admin/AdminFeedback";
+import { AdminPage, AdminPageHeader } from "@/components/admin/AdminPage";
+import { AdminTable, AdminTableCell, AdminTableHead, AdminTableRow } from "@/components/admin/AdminTable";
 import { getErrorMessage } from "@/lib/api/auth-client";
+import { getAdminListItems } from "@/lib/admin/list-items";
 import { apiClient } from "@/lib/api/client";
-import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { AdminCustomer } from "@/types/commerce";
 
 export default function AdminCustomersPage() {
   const [customers, setCustomers] = useState<AdminCustomer[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     void apiClient
       .getAdminCustomers()
-      .then((response) => setCustomers(response.items))
-      .catch((err) => setError(getErrorMessage(err)));
+      .then((response) => {
+        setCustomers(getAdminListItems(response));
+        setError("");
+      })
+      .catch((err) => setError(getErrorMessage(err)))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
-    <Container className="py-10 lg:py-14">
-      <SectionHeading eyebrow="Admin" title="Customers" description="Registered customer accounts." />
+    <AdminPage>
+      <AdminPageHeader title="Customers" description="Registered customer accounts and order activity." />
 
-      {error ? <p className="mt-6 text-sm text-red-300">{error}</p> : null}
+      <div className="mt-8 space-y-6">
+        {error ? <AdminAlert message={error} /> : null}
+        {loading ? <AdminLoading label="Loading customers..." /> : null}
+        {!loading && customers.length === 0 ? (
+          <AdminEmptyState title="No customers yet" description="Customer accounts will appear after registration." />
+        ) : null}
 
-      <div className="mt-8 overflow-x-auto rounded-[1.5rem] border border-border">
-        <table className="min-w-full text-left text-sm">
-          <thead className="bg-stone-100/5 text-xs uppercase tracking-[0.18em] text-stone-600">
-            <tr>
-              <th className="px-4 py-4">Name</th>
-              <th className="px-4 py-4">Email</th>
-              <th className="px-4 py-4">Phone</th>
-              <th className="px-4 py-4">Orders</th>
-              <th className="px-4 py-4">Joined</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map((customer) => (
-              <tr key={customer.id} className="border-t border-border">
-                <td className="px-4 py-4 text-stone-900">{customer.name}</td>
-                <td className="px-4 py-4 text-stone-600">{customer.email}</td>
-                <td className="px-4 py-4 text-stone-600">{customer.phone ?? "—"}</td>
-                <td className="px-4 py-4 text-accent">{customer.orders_count}</td>
-                <td className="px-4 py-4 text-stone-600">
-                  {new Date(customer.created_at).toLocaleDateString()}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {!loading && customers.length > 0 ? (
+          <AdminTable>
+            <AdminTableHead>
+              <AdminTableRow>
+                <AdminTableCell header>Name</AdminTableCell>
+                <AdminTableCell header>Email</AdminTableCell>
+                <AdminTableCell header>Phone</AdminTableCell>
+                <AdminTableCell header>Orders</AdminTableCell>
+                <AdminTableCell header>Joined</AdminTableCell>
+              </AdminTableRow>
+            </AdminTableHead>
+            <tbody>
+              {customers.map((customer) => (
+                <AdminTableRow key={customer.id}>
+                  <AdminTableCell className="font-medium text-stone-900">{customer.name}</AdminTableCell>
+                  <AdminTableCell className="text-stone-600">{customer.email}</AdminTableCell>
+                  <AdminTableCell className="text-stone-600">{customer.phone ?? "—"}</AdminTableCell>
+                  <AdminTableCell className="font-medium text-accent">{customer.orders_count}</AdminTableCell>
+                  <AdminTableCell className="text-stone-600">
+                    {new Date(customer.created_at).toLocaleDateString()}
+                  </AdminTableCell>
+                </AdminTableRow>
+              ))}
+            </tbody>
+          </AdminTable>
+        ) : null}
       </div>
-    </Container>
+    </AdminPage>
   );
 }

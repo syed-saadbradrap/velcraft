@@ -13,10 +13,12 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Textarea } from "@/components/ui/Textarea";
 import { formatPrice } from "@/lib/utils";
 import { siteConfig } from "@/config/site";
+import { PayFastCheckoutForm } from "@/components/checkout/PayFastCheckoutForm";
 import type {
   CouponValidation,
   Order,
   PaymentMethod,
+  PayFastCheckoutSession,
   ShippingAddress,
   ShippingAddressInput,
 } from "@/types/commerce";
@@ -32,10 +34,20 @@ const emptyAddress: ShippingAddressInput = {
   country: "PK",
 };
 
-const paymentOptions = [
-  { value: "cod" as const, label: siteConfig.payments.cod.label },
-  { value: "bank_transfer" as const, label: siteConfig.payments.bankTransfer.label },
-];
+function buildPaymentOptions(payfastEnabled: boolean) {
+  const options: Array<{ value: PaymentMethod; label: string }> = [];
+
+  if (payfastEnabled) {
+    options.push({ value: "payfast", label: siteConfig.payments.card.label });
+  }
+
+  options.push(
+    { value: "cod", label: siteConfig.payments.cod.label },
+    { value: "bank_transfer", label: siteConfig.payments.bankTransfer.label },
+  );
+
+  return options;
+}
 
 export default function CheckoutPage() {
   const { isAuthenticated, user } = useAuth();
@@ -46,12 +58,26 @@ export default function CheckoutPage() {
   const [newAddress, setNewAddress] = useState<ShippingAddressInput>(emptyAddress);
   const [guestEmail, setGuestEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
+  const [payfastEnabled, setPayfastEnabled] = useState(false);
+  const [payfastSession, setPayfastSession] = useState<PayFastCheckoutSession | null>(null);
   const [couponCode, setCouponCode] = useState("");
   const [coupon, setCoupon] = useState<CouponValidation | null>(null);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
+
+  useEffect(() => {
+    void apiClient
+      .getPayfastStatus()
+      .then((status) => {
+        setPayfastEnabled(status.enabled);
+        if (status.enabled) {
+          setPaymentMethod("payfast");
+        }
+      })
+      .catch(() => setPayfastEnabled(false));
+  }, []);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -107,6 +133,20 @@ export default function CheckoutPage() {
       return;
     }
 
+    if (paymentMethod === "payfast") {
+      const shipping = !isAuthenticated
+        ? resolveNewAddress()
+        : selectedAddressId === "new"
+          ? resolveNewAddress()
+          : addresses.find((address) => address.id === selectedAddressId);
+
+      const mobile = shipping?.phone || user?.phone || newAddress.phone || "";
+      if (!mobile.trim()) {
+        setError("Phone number is required for card payments.");
+        return;
+      }
+    }
+
     setLoading(true);
     setError("");
 
@@ -128,6 +168,28 @@ export default function CheckoutPage() {
       const order = await apiClient.checkout(payload);
       await refreshCart();
 
+      if (paymentMethod === "payfast") {
+        const shipping = !isAuthenticated
+          ? resolveNewAddress()
+          : selectedAddressId === "new"
+            ? resolveNewAddress()
+            : addresses.find((address) => address.id === selectedAddressId);
+
+        const session = await apiClient.createPayfastCheckout({
+          order_id: order.id,
+          customer_email: isAuthenticated ? user?.email ?? guestEmail.trim() : guestEmail.trim(),
+          customer_mobile: shipping?.phone || user?.phone || newAddress.phone || "",
+        });
+
+        await apiClient.confirmPayment({
+          order_id: order.id,
+          payment_method: "payfast",
+        });
+
+        setPayfastSession(session);
+        return;
+      }
+
       const confirmed = await apiClient.confirmPayment({
         order_id: order.id,
         payment_method: paymentMethod,
@@ -140,8 +202,17 @@ export default function CheckoutPage() {
     }
   }
 
+  if (payfastSession) {
+    return (
+      <Container className="py-12 sm:py-16 lg:py-24">
+        <PayFastCheckoutForm session={payfastSession} />
+      </Container>
+    );
+  }
+
   if (completedOrder) {
     const isBankTransfer = completedOrder.payment_method === "bank_transfer";
+    const isPayfast = completedOrder.payment_method === "payfast";
     const bank = siteConfig.payments.bankTransfer;
 
     return (
@@ -178,6 +249,8 @@ export default function CheckoutPage() {
                   with order number {completedOrder.order_number}.
                 </p>
               </div>
+            ) : isPayfast ? (
+              <p className="mt-4 text-sm text-stone-700">{siteConfig.payments.card.description}</p>
             ) : (
               <p className="mt-4 text-sm text-stone-700">{siteConfig.payments.cod.description}</p>
             )}
@@ -205,6 +278,7 @@ export default function CheckoutPage() {
   const totals = cart?.totals;
   const discount = coupon?.discount_amount ?? totals?.discount_amount ?? 0;
   const estimatedTotal = (totals?.subtotal ?? 0) - discount + (totals?.shipping_amount ?? 0);
+  const paymentOptions = buildPaymentOptions(payfastEnabled);
 
   return (
     <Container className="py-12 sm:py-16 lg:py-24">
@@ -417,7 +491,13 @@ export default function CheckoutPage() {
                     </label>
                   ))}
                 </div>
-                {paymentMethod === "cod" ? (
+                {paymentMethod === "payfast" ? (
+                  <div className="space-y-2 rounded-2xl border border-accent/20 bg-accent/5 p-5 text-sm text-stone-700">
+                    <p className="font-medium text-stone-900">{siteConfig.payments.card.provider} secure checkout</p>
+                    <p>{siteConfig.payments.card.description}</p>
+                    <p className="text-xs text-stone-500">Settlement account: {siteConfig.payments.bankTransfer.bankName}</p>
+                  </div>
+                ) : paymentMethod === "cod" ? (
                   <p className="text-sm text-stone-600">{siteConfig.payments.cod.description}</p>
                 ) : (
                   <div className="space-y-2 rounded-2xl border border-border bg-stone-50/80 p-5 text-sm text-stone-700">
@@ -471,9 +551,30 @@ export default function CheckoutPage() {
                 </div>
               </dl>
               <Button type="submit" size="lg" className="mt-8 w-full" disabled={loading}>
-                {loading ? "Placing order..." : isAuthenticated ? "Place Order" : "Place Guest Order"}
+                {loading
+                  ? "Placing order..."
+                  : paymentMethod === "payfast"
+                    ? "Continue to Secure Payment"
+                    : isAuthenticated
+                      ? "Place Order"
+                      : "Place Guest Order"}
               </Button>
               {error ? <p className="mt-4 text-sm text-red-300">{error}</p> : null}
+              <p className="mt-4 text-xs leading-6 text-stone-500">
+                By placing your order, you agree to our{" "}
+                <Link href={siteConfig.links.terms} className="text-accent hover:underline">
+                  Terms of Service
+                </Link>
+                ,{" "}
+                <Link href={siteConfig.links.refundPolicy} className="text-accent hover:underline">
+                  Refund Policy
+                </Link>
+                , and{" "}
+                <Link href={siteConfig.links.paymentPolicy} className="text-accent hover:underline">
+                  Payment Policy
+                </Link>
+                .
+              </p>
             </aside>
           </form>
         )}

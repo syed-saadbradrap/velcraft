@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getErrorMessage } from "@/lib/api/auth-client";
 import { apiClient } from "@/lib/api/client";
+import { AdminLoading } from "@/components/admin/AdminFeedback";
+import { AdminPage, AdminPageHeader } from "@/components/admin/AdminPage";
 import { ProductForm, shoeToForm } from "@/components/admin/ProductForm";
-import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import type { AdminProductOptions, AdminShoe } from "@/types/commerce";
 import type { CollectionSummary } from "@/types/api";
 
@@ -41,24 +41,23 @@ export default function AdminEditProductPage() {
 
   if (error) {
     return (
-      <Container className="py-10 lg:py-14">
+      <AdminPage>
         <p className="text-sm text-red-600">{error}</p>
-      </Container>
+      </AdminPage>
     );
   }
 
   if (!product || !options) {
     return (
-      <Container className="py-10 lg:py-14">
-        <p className="text-sm text-stone-600">Loading product...</p>
-      </Container>
+      <AdminPage>
+        <AdminLoading label="Loading product..." />
+      </AdminPage>
     );
   }
 
   return (
-    <Container className="py-10 lg:py-14">
-      <SectionHeading
-        eyebrow="Admin"
+    <AdminPage>
+      <AdminPageHeader
         title="Edit Product"
         description={`Update ${product.name} pricing, collection, thumbnail, and options.`}
       />
@@ -69,12 +68,16 @@ export default function AdminEditProductPage() {
         initialValues={shoeToForm(product)}
         submitLabel="Save Changes"
         onCancel={() => router.push("/admin/products")}
+        onRefreshOptions={async () => {
+          const productOptions = await apiClient.getAdminProductOptions();
+          setOptions(productOptions);
+        }}
         onSubmit={async (values) => {
           const updated = await apiClient.updateAdminShoe(product.id, values);
           setProduct(updated);
           router.push("/admin/products");
         }}
       />
-    </Container>
+    </AdminPage>
   );
 }

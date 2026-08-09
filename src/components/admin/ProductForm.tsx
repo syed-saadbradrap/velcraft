@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import { getErrorMessage } from "@/lib/api/auth-client";
 import { ImageUploadField } from "@/components/admin/ImageUploadField";
+import { ProductOptionsPanel } from "@/components/admin/ProductOptionsPanel";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/Textarea";
@@ -44,25 +45,11 @@ interface ProductFormProps {
   submitLabel: string;
   onSubmit: (values: AdminShoeInput) => Promise<void>;
   onCancel: () => void;
+  onRefreshOptions?: () => Promise<void>;
 }
 
 function toggleId(list: number[], id: number): number[] {
   return list.includes(id) ? list.filter((entry) => entry !== id) : [...list, id];
-}
-
-function OptionGroup({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-3">
-      <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-700">{title}</p>
-      <div className="flex flex-wrap gap-2">{children}</div>
-    </div>
-  );
 }
 
 export function ProductForm({
@@ -72,6 +59,7 @@ export function ProductForm({
   submitLabel,
   onSubmit,
   onCancel,
+  onRefreshOptions,
 }: ProductFormProps) {
   const [form, setForm] = useState<AdminShoeInput>(initialValues);
   const [saving, setSaving] = useState(false);
@@ -202,115 +190,55 @@ export function ProductForm({
         </label>
       </div>
 
-      <div className="glass-panel space-y-6 rounded-[1.5rem] p-6">
-        <OptionGroup title="Materials">
-          {options.materials.map((material) => (
-            <label
-              key={material.id}
-              className={`rounded-full border px-4 py-2 text-sm ${
-                form.material_ids?.includes(material.id)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-700"
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={form.material_ids?.includes(material.id) ?? false}
-                onChange={() =>
-                  setForm((current) => ({
-                    ...current,
-                    material_ids: toggleId(current.material_ids ?? [], material.id),
-                  }))
-                }
-              />
-              {material.name}
-            </label>
-          ))}
-        </OptionGroup>
-
-        <OptionGroup title="Colors">
-          {options.colors.map((color) => (
-            <label
-              key={color.id}
-              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm ${
-                form.color_ids?.includes(color.id)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-700"
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={form.color_ids?.includes(color.id) ?? false}
-                onChange={() =>
-                  setForm((current) => ({
-                    ...current,
-                    color_ids: toggleId(current.color_ids ?? [], color.id),
-                  }))
-                }
-              />
-              <span
-                className="h-3 w-3 rounded-full border border-border"
-                style={{ backgroundColor: color.hex_code }}
-              />
-              {color.name}
-            </label>
-          ))}
-        </OptionGroup>
-
-        <OptionGroup title="Sizes">
-          {options.sizes.map((size) => (
-            <label
-              key={size.id}
-              className={`rounded-full border px-4 py-2 text-sm capitalize ${
-                form.size_ids?.includes(size.id)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-700"
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={form.size_ids?.includes(size.id) ?? false}
-                onChange={() =>
-                  setForm((current) => ({
-                    ...current,
-                    size_ids: toggleId(current.size_ids ?? [], size.id),
-                  }))
-                }
-              />
-              {size.label} ({size.gender})
-            </label>
-          ))}
-        </OptionGroup>
-
-        <OptionGroup title="Buckles">
-          {options.buckles.map((buckle) => (
-            <label
-              key={buckle.id}
-              className={`rounded-full border px-4 py-2 text-sm ${
-                form.buckle_ids?.includes(buckle.id)
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-border text-stone-700"
-              }`}
-            >
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={form.buckle_ids?.includes(buckle.id) ?? false}
-                onChange={() =>
-                  setForm((current) => ({
-                    ...current,
-                    buckle_ids: toggleId(current.buckle_ids ?? [], buckle.id),
-                  }))
-                }
-              />
-              {buckle.name}
-            </label>
-          ))}
-        </OptionGroup>
-      </div>
+      {onRefreshOptions ? (
+        <ProductOptionsPanel
+          options={options}
+          materialIds={form.material_ids ?? []}
+          colorIds={form.color_ids ?? []}
+          sizeIds={form.size_ids ?? []}
+          buckleIds={form.buckle_ids ?? []}
+          onToggleMaterial={(id) =>
+            setForm((current) => ({
+              ...current,
+              material_ids: toggleId(current.material_ids ?? [], id),
+            }))
+          }
+          onToggleColor={(id) =>
+            setForm((current) => ({
+              ...current,
+              color_ids: toggleId(current.color_ids ?? [], id),
+            }))
+          }
+          onToggleSize={(id) =>
+            setForm((current) => ({
+              ...current,
+              size_ids: toggleId(current.size_ids ?? [], id),
+            }))
+          }
+          onToggleBuckle={(id) =>
+            setForm((current) => ({
+              ...current,
+              buckle_ids: toggleId(current.buckle_ids ?? [], id),
+            }))
+          }
+          onRefreshOptions={onRefreshOptions}
+          onSelectionCleanup={(removed) =>
+            setForm((current) => ({
+              ...current,
+              material_ids: removed.materialIds ?? current.material_ids,
+              color_ids: removed.colorIds ?? current.color_ids,
+              size_ids: removed.sizeIds ?? current.size_ids,
+              buckle_ids: removed.buckleIds ?? current.buckle_ids,
+            }))
+          }
+        />
+      ) : (
+        <div className="glass-panel space-y-6 rounded-[1.5rem] p-6">
+          <p className="text-sm text-stone-600">
+            Materials, colors, sizes, and buckles can be managed while editing a product.
+          </p>
+        </div>
+      )}
 
       <details className="glass-panel rounded-[1.5rem] p-6">
         <summary className="cursor-pointer text-sm uppercase tracking-[0.2em] text-stone-700">

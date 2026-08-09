@@ -47,6 +47,10 @@ import type {
   PaginatedAdmin,
   PaginatedOrders,
   PaymentConfirmPayload,
+  PayFastCheckoutPayload,
+  PayFastCheckoutSession,
+  PayFastStatusPayload,
+  PayFastVerifyPayload,
   RegisterPayload,
   ShippingAddress,
   ShippingAddressInput,
@@ -304,6 +308,32 @@ class ApiClient {
     });
   }
 
+  async getPayfastStatus(): Promise<PayFastStatusPayload> {
+    try {
+      return await authFetch<PayFastStatusPayload>("/payments/payfast/status");
+    } catch {
+      return { enabled: false, mode: "sandbox" };
+    }
+  }
+
+  async createPayfastCheckout(payload: PayFastCheckoutPayload): Promise<PayFastCheckoutSession> {
+    return authFetch<PayFastCheckoutSession>("/payments/payfast/checkout", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async verifyPayfastReturn(payload: PayFastVerifyPayload): Promise<Order> {
+    const order = await authFetch<Order>("/payments/payfast/verify", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    clearGuestCheckoutToken();
+
+    return order;
+  }
+
   async confirmPayment(payload: PaymentConfirmPayload): Promise<Order> {
     const order = await authFetch<Order>("/payments/confirm", {
       method: "POST",
@@ -431,6 +461,54 @@ class ApiClient {
 
   async getAdminProductOptions(): Promise<AdminProductOptions> {
     return authFetch<AdminProductOptions>("/admin/product-options");
+  }
+
+  async createAdminMaterial(payload: { name: string }): Promise<AdminProductOptions["materials"][number]> {
+    return authFetch("/admin/product-options/materials", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminMaterial(id: number): Promise<void> {
+    await authFetch<null>(`/admin/product-options/materials/${id}`, { method: "DELETE" });
+  }
+
+  async createAdminColor(payload: { name: string; hex_code: string }): Promise<AdminProductOptions["colors"][number]> {
+    return authFetch("/admin/product-options/colors", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminColor(id: number): Promise<void> {
+    await authFetch<null>(`/admin/product-options/colors/${id}`, { method: "DELETE" });
+  }
+
+  async createAdminSize(payload: {
+    gender: "men" | "women";
+    value: number;
+    label?: string;
+  }): Promise<AdminProductOptions["sizes"][number]> {
+    return authFetch("/admin/product-options/sizes", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminSize(id: number): Promise<void> {
+    await authFetch<null>(`/admin/product-options/sizes/${id}`, { method: "DELETE" });
+  }
+
+  async createAdminBuckle(payload: { name: string }): Promise<AdminProductOptions["buckles"][number]> {
+    return authFetch("/admin/product-options/buckles", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminBuckle(id: number): Promise<void> {
+    await authFetch<null>(`/admin/product-options/buckles/${id}`, { method: "DELETE" });
   }
 
   async getAdminShoes(params?: {

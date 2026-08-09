@@ -44,7 +44,7 @@ export function SiteFooter() {
         </Container>
       </div>
 
-      <Container className="grid gap-10 py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-4">
+      <Container className="grid gap-10 py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-5">
         <Reveal className="space-y-4">
           <BrandLogo linked={false} imageClassName="h-14 sm:h-16 lg:h-[6rem]" />
           <p className="max-w-xs text-sm leading-7 text-stone-700">{siteConfig.description}</p>
@@ -70,7 +70,7 @@ export function SiteFooter() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Client Care</p>
+          <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Policies</p>
           <ul className="space-y-3">
             <li>
               <Link href={siteConfig.links.privacy} className="text-sm text-stone-700 hover:text-stone-900">
@@ -83,6 +83,32 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
+              <Link href={siteConfig.links.refundPolicy} className="text-sm text-stone-700 hover:text-stone-900">
+                Refund Policy
+              </Link>
+            </li>
+            <li>
+              <Link href={siteConfig.links.returnsPolicy} className="text-sm text-stone-700 hover:text-stone-900">
+                Returns & Exchanges
+              </Link>
+            </li>
+            <li>
+              <Link href={siteConfig.links.shippingPolicy} className="text-sm text-stone-700 hover:text-stone-900">
+                Shipping & Delivery
+              </Link>
+            </li>
+            <li>
+              <Link href={siteConfig.links.paymentPolicy} className="text-sm text-stone-700 hover:text-stone-900">
+                Payment Policy
+              </Link>
+            </li>
+          </ul>
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Client Care</p>
+          <ul className="space-y-3">
+            <li>
               <Link href={siteConfig.links.contact} className="text-sm text-stone-700 hover:text-stone-900">
                 Contact Concierge
               </Link>
@@ -90,7 +116,7 @@ export function SiteFooter() {
           </ul>
         </Reveal>
 
-        <Reveal delay={0.15}>
+        <Reveal delay={0.2}>
           <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Contact</p>
           <p className="text-sm leading-7 text-stone-700">
             Mon–Sat, 12:00 PM – 10:00 PM
