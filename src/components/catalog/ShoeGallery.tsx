@@ -36,6 +36,8 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
               alt={`${alt} — view ${activeIndex + 1}`}
               fill
               priority={activeIndex === 0}
+              loading={activeIndex === 0 ? "eager" : "lazy"}
+              fetchPriority={activeIndex === 0 ? "high" : "auto"}
               sizes="(max-width: 1024px) 100vw, 45vw"
               className="object-contain p-4 sm:p-8 md:p-10"
             />
@@ -87,6 +89,7 @@ export function ShoeGallery({ images, alt }: ShoeGalleryProps) {
                 src={image}
                 alt={`${alt} thumbnail ${index + 1}`}
                 fill
+                loading="lazy"
                 sizes="120px"
                 className="object-contain p-2"
               />

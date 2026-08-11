@@ -159,7 +159,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
           initial={{ opacity: 0, scale: 0.94 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="relative order-1 w-full min-w-0 lg:order-2"
+          className="relative order-1 w-full min-w-0 overflow-visible lg:order-2"
         >
           <HeroProductVisual
             imageUrl={heroImage}

@@ -5,7 +5,7 @@ import { CollectionCatalog } from "@/components/catalog/CollectionCatalog";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ShoeCardSkeleton } from "@/components/ui/Skeleton";
-export const dynamic = "force-dynamic";
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Collection",

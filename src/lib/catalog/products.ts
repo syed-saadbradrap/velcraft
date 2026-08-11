@@ -12,7 +12,7 @@ export const catalogProducts = [
     sizing: "EU 40–45 Men",
     base_price: 2999,
     description: "Black boot with a structured silhouette, polished leather finish, and everyday versatility.",
-    images: ["catalog-extra/black-boot-1.png", "catalog-extra/black-boot-2.png", "catalog-extra/black-boot-3.png"],
+    images: ["catalog-extra/black-boot-2.png", "catalog-extra/black-boot-1.png", "catalog-extra/black-boot-3.png"],
     is_featured: true,
     supported_types: ["covered"] as const,
     highlights: [
@@ -54,8 +54,8 @@ export const catalogProducts = [
     base_price: 2999,
     description: "Dark blue covered mule in velvet with a polished horsebit finish.",
     images: [
-      "catalog-extra/blue-covered-1.png",
       "catalog-extra/blue-covered-2.png",
+      "catalog-extra/blue-covered-1.png",
       "catalog-extra/blue-covered-3.png",
       "catalog-extra/blue-covered-4.png",
     ],
@@ -79,9 +79,9 @@ export const catalogProducts = [
     base_price: 2999,
     description: "Classic black covered mule with a minimal silhouette and gold hardware.",
     images: [
-      "noir-minimal-mule/black-covered-3.png",
-      "noir-minimal-mule/black-covered-1.png",
       "noir-minimal-mule/black-covered-2.png",
+      "noir-minimal-mule/black-covered-1.png",
+      "noir-minimal-mule/black-covered-3.png",
     ],
     is_featured: true,
     supported_types: ["covered"] as const,

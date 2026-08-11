@@ -18,6 +18,8 @@ interface ShoeDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 180;
+
 export async function generateMetadata({ params }: ShoeDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
   const shoe = await apiClient.getShoe(slug);
@@ -61,7 +63,7 @@ export default async function ShoeDetailPage({ params }: ShoeDetailPageProps) {
   const recentProducts = catalog.items.filter((item) => item.slug !== shoe.slug).slice(0, 4);
 
   return (
-    <Container className="py-12 pb-[calc(9.5rem+env(safe-area-inset-bottom))] sm:py-16 lg:py-24 lg:pb-24">
+    <Container className="py-12 pb-[calc(11rem+env(safe-area-inset-bottom))] sm:py-16 lg:py-24 lg:pb-24">
       <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-12">
         <ShoeGallery images={galleryImages} alt={shoe.name} />
 

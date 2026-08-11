@@ -1,12 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { pageTransition } from "@/lib/motion";
+
+const WhatsAppButton = dynamic(
+  () => import("@/components/layout/WhatsAppButton").then((mod) => mod.WhatsAppButton),
+  { ssr: false },
+);
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

@@ -23,7 +23,7 @@ interface CustomizeStudioProps {
 export function CustomizeStudio({ config }: CustomizeStudioProps) {
   return (
     <CustomizationProvider config={config}>
-      <div className="grid gap-6 pb-24 sm:gap-8 lg:grid-cols-[420px_minmax(0,1fr)] lg:items-start lg:pb-0">
+      <div className="grid gap-6 pb-[calc(10rem+env(safe-area-inset-bottom))] sm:gap-8 lg:grid-cols-[420px_minmax(0,1fr)] lg:items-start lg:pb-0">
         <CustomizationPanel />
         <div className="h-[min(72svh,560px)] sm:h-[min(78svh,640px)] lg:sticky lg:top-0 lg:h-[100vh]">
           <ShoeViewer />

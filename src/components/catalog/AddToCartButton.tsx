@@ -81,7 +81,7 @@ export function AddToCartButton({
         {label}
       </Button>
       {state === "error" && errorMessage ? (
-        <p className="absolute left-0 top-[calc(100%+6px)] z-10 min-w-[180px] text-[10px] leading-4 text-red-300">
+        <p className="absolute left-0 right-0 top-[calc(100%+6px)] z-10 max-w-full break-words text-[10px] leading-4 text-red-600">
           {errorMessage}
         </p>
       ) : null}

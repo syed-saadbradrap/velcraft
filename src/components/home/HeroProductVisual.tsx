@@ -48,33 +48,33 @@ export function HeroProductVisual({ imageUrl, alt }: HeroProductVisualProps) {
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
     >
-      <div className="hero-visual-backdrop pointer-events-none absolute inset-[2%] rounded-[1.75rem] bg-[radial-gradient(circle_at_50%_62%,rgba(255,255,255,0.92)_0%,rgba(250,246,238,0.55)_42%,transparent_72%)] dark:bg-[radial-gradient(circle_at_50%_62%,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.03)_42%,transparent_72%)] sm:inset-[4%] sm:rounded-[2.5rem] lg:inset-[2%] lg:rounded-[3rem]" />
-      <div className="pointer-events-none absolute left-1/2 top-[58%] h-[18%] w-[72%] -translate-x-1/2 rounded-full bg-accent/16 blur-3xl" />
-
       <motion.div
-        className="hero-shoe-3d-stage relative mx-auto aspect-[4/3] w-full max-w-none sm:aspect-[16/11] md:aspect-[5/3] lg:aspect-[11/6]"
+        className="hero-shoe-3d-stage relative mx-auto w-full max-w-[420px] sm:max-w-[460px] lg:max-w-[500px]"
         style={{ rotateX, rotateY, transformPerspective: 1600 }}
       >
         <motion.div
           animate={{ y: [0, -10, 0] }}
           transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
-          className="group relative flex h-full w-full items-center justify-center px-1 py-4 sm:px-4 sm:py-8"
+          className="group relative"
         >
-          <div className="relative h-full w-full max-w-[980px]">
-            <div className="hero-visual-pedestal pointer-events-none absolute bottom-[6%] left-1/2 h-[14%] w-[68%] -translate-x-1/2 rounded-full" />
-            <Image
-              src={src}
-              alt={alt}
-              fill
-              priority
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 58vw"
-              className="object-contain object-center drop-shadow-[0_40px_70px_rgba(28,25,23,0.22)] transition-transform duration-700 group-hover:scale-[1.015]"
-            />
+          <div className="relative overflow-hidden rounded-[2rem] border border-stone-200/80 bg-white shadow-[0_24px_60px_rgba(28,25,23,0.12)] sm:rounded-[2.25rem] lg:rounded-[2.5rem]">
+            <div className="relative aspect-[3/4] w-full">
+              <Image
+                src={src}
+                alt={alt}
+                fill
+                priority
+                fetchPriority="high"
+                sizes="(max-width: 640px) 88vw, (max-width: 1024px) 42vw, 500px"
+                className="object-contain object-center p-4 transition-transform duration-700 group-hover:scale-[1.02] sm:p-5 lg:p-6"
+              />
+            </div>
           </div>
+          <div className="pointer-events-none absolute -bottom-4 left-1/2 h-8 w-[72%] -translate-x-1/2 rounded-full bg-stone-900/10 blur-xl" />
         </motion.div>
       </motion.div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 px-1 sm:absolute sm:inset-x-0 sm:bottom-[10%] sm:mt-0 sm:justify-between sm:px-4 lg:px-6">
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 px-1 lg:absolute lg:inset-x-0 lg:bottom-[10%] lg:mt-0 lg:justify-between lg:px-6">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

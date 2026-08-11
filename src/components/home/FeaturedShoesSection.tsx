@@ -133,7 +133,7 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
                 <p className="font-display text-base leading-tight text-stone-900 transition group-hover:text-accent sm:text-xl xl:text-2xl">
                   {stat.value}
                 </p>
-                <p className="mt-1.5 break-words text-[7px] uppercase leading-tight tracking-[0.12em] text-stone-600 sm:mt-2 sm:text-[9px] sm:tracking-[0.2em]">
+                <p className="mt-1.5 break-words text-[8px] uppercase leading-tight tracking-[0.12em] text-stone-600 sm:mt-2 sm:text-[9px] sm:tracking-[0.2em]">
                   {stat.label}
                 </p>
               </div>

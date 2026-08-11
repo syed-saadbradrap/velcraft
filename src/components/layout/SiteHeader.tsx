@@ -186,7 +186,7 @@ export function SiteHeader() {
           <div className="flex items-center justify-end gap-2 sm:gap-3">
             <ThemeToggle className="hidden sm:inline-flex" />
 
-            <div className="hidden items-center gap-2 sm:flex">
+            <div className="hidden items-center gap-2 lg:flex">
               <HeaderIconButton href={siteConfig.links.wishlist} label="Wishlist" count={wishlistCount}>
                 <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">
                   <path d="M12 20.5s-7-4.6-7-10a4 4 0 017-2.5 4 4 0 017 2.5c0 5.4-7 10-7 10z" />

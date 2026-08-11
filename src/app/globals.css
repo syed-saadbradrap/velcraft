@@ -519,3 +519,8 @@ body {
 .dark .bg-\[linear-gradient\(180deg\,\#ffffff_0\%\,\#f8f6f2_100\%\)\] {
   background: linear-gradient(180deg, #1c1917 0%, #171412 100%);
 }
+
+.defer-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 720px;
+}

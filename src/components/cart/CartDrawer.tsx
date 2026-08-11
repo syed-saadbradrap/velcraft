@@ -54,7 +54,7 @@ export function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 320, damping: 34 }}
-            className="fixed inset-y-0 right-0 z-[80] flex w-full max-w-md flex-col border-l border-stone-200 bg-white shadow-[-24px_0_60px_rgba(28,25,23,0.12)]"
+            className="fixed inset-y-0 right-0 z-[80] flex w-full max-w-md flex-col border-l border-stone-200 bg-white shadow-[-24px_0_60px_rgba(28,25,23,0.12)] pt-[env(safe-area-inset-top)]"
             role="dialog"
             aria-modal="true"
             aria-label="Shopping cart"
@@ -101,12 +101,12 @@ export function CartDrawer() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <div className="flex items-start justify-between gap-3">
-                            <div>
+                          <div className="flex min-w-0 items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
                               <p className="text-[10px] uppercase tracking-[0.2em] text-stone-600">
                                 {item.shoe.collection?.name ?? "Collection"}
                               </p>
-                              <h3 className="font-display text-lg leading-tight text-stone-900">{item.shoe.name}</h3>
+                              <h3 className="break-words font-display text-lg leading-tight text-stone-900">{item.shoe.name}</h3>
                             </div>
                             <p className="shrink-0 font-display text-base text-accent">{formatPrice(item.line_total)}</p>
                           </div>
@@ -136,7 +136,7 @@ export function CartDrawer() {
             </div>
 
             {items.length > 0 ? (
-              <div className="border-t border-stone-200 bg-white px-6 py-5">
+              <div className="border-t border-stone-200 bg-white px-6 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
                 <dl className="space-y-2 text-sm">
                   <div className="flex justify-between text-stone-600">
                     <dt>Subtotal</dt>

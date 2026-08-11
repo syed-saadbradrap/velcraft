@@ -75,6 +75,8 @@ export function ShoeCard({
             alt={shoe.name}
             fill
             priority={priority}
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : "auto"}
             sizes={
               isSlider
                 ? "(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
@@ -134,7 +136,7 @@ export function ShoeCard({
                 <p className="text-[10px] uppercase tracking-[0.24em] text-stone-600 sm:text-xs">
                   {shoe.collection?.name ?? "Collection"}
                 </p>
-                <h3 className="mt-1.5 font-display text-xl leading-tight text-stone-900 sm:text-2xl md:text-3xl">
+                <h3 className="mt-1.5 break-words font-display text-xl leading-tight text-stone-900 sm:text-2xl md:text-3xl">
                   <Link href={productHref} className="transition hover:text-accent">
                     {shoe.name}
                   </Link>

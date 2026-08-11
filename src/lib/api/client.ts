@@ -63,10 +63,22 @@ import type {
 class ApiClient {
   private readonly baseUrl = siteConfig.apiUrl;
 
-  private async request<T>(path: string, init?: RequestInit, cache: RequestCache = "no-store"): Promise<T> {
+  private async request<T>(
+    path: string,
+    init?: RequestInit,
+    cacheOptions: { revalidate?: number; tags?: string[] } | "no-store" = { revalidate: 60 },
+  ): Promise<T> {
+    const isGet = !init?.method || init.method === "GET";
     const response = await fetch(`${this.baseUrl}${path}`, {
       ...init,
-      cache: init?.method && init.method !== "GET" ? undefined : cache,
+      ...(isGet && cacheOptions !== "no-store"
+        ? {
+            next: {
+              revalidate: cacheOptions.revalidate ?? 60,
+              tags: cacheOptions.tags,
+            },
+          }
+        : { cache: "no-store" }),
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -89,7 +101,10 @@ class ApiClient {
 
   async getHomepage(): Promise<HomepageData> {
     try {
-      return await this.request<HomepageData>("/homepage");
+      return await this.request<HomepageData>("/homepage", undefined, {
+        revalidate: 120,
+        tags: ["homepage"],
+      });
     } catch {
       return fallbackHomepageData;
     }
@@ -97,7 +112,10 @@ class ApiClient {
 
   async getCollections(): Promise<CollectionSummary[]> {
     try {
-      return await this.request<CollectionSummary[]>("/collections");
+      return await this.request<CollectionSummary[]>("/collections", undefined, {
+        revalidate: 300,
+        tags: ["collections"],
+      });
     } catch {
       return fallbackCollections;
     }
@@ -109,7 +127,10 @@ class ApiClient {
       if (collectionSlug) {
         params.set("collection", collectionSlug);
       }
-      return await this.request<PaginatedShoes>(`/shoes?${params.toString()}`);
+      return await this.request<PaginatedShoes>(`/shoes?${params.toString()}`, undefined, {
+        revalidate: 120,
+        tags: ["shoes", collectionSlug ?? "all", `page-${page}`],
+      });
     } catch {
       const items = collectionSlug
         ? fallbackPaginatedShoes.items.filter(
@@ -129,7 +150,10 @@ class ApiClient {
 
   async getShoe(slug: string): Promise<ShoeDetail | null> {
     try {
-      return await this.request<ShoeDetail>(`/shoes/${slug}`);
+      return await this.request<ShoeDetail>(`/shoes/${slug}`, undefined, {
+        revalidate: 180,
+        tags: ["shoes", `shoe-${slug}`],
+      });
     } catch {
       return getFallbackShoeDetail(slug);
     }
@@ -137,7 +161,10 @@ class ApiClient {
 
   async getContactPage(): Promise<ContactPageData> {
     try {
-      return await this.request<ContactPageData>("/contact");
+      return await this.request<ContactPageData>("/contact", undefined, {
+        revalidate: 600,
+        tags: ["contact"],
+      });
     } catch {
       return fallbackContactPage;
     }
