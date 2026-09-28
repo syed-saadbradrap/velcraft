@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { LoginForm } from "@/components/auth/LoginForm";
+import { AdminLoginForm } from "@/components/admin/AdminLoginForm";
 import { AdminNavIconGlyph } from "@/components/admin/AdminIcons";
 import { useAuth } from "@/context/AuthContext";
 import { BrandLogo } from "@/components/layout/BrandLogo";
@@ -25,17 +25,55 @@ function AdminLoginContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[linear-gradient(180deg,#faf8f5_0%,#f3efe8_100%)]">
-      <div className="mx-auto flex max-w-md flex-col px-4 py-10 sm:px-6">
-        <div className="mb-8 flex items-center gap-3">
-          <BrandLogo imageClassName="h-12 sm:h-14" />
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">Velcraft</p>
-            <p className="text-sm text-stone-600">Admin Console</p>
+    <div className="relative min-h-screen overflow-hidden bg-[#f4efe7]">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,#fff8ee_0%,transparent_55%),linear-gradient(135deg,rgba(201,169,98,0.12),transparent_40%,rgba(28,25,23,0.06))]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 top-16 h-72 w-72 rounded-full bg-accent/10 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-16 bottom-10 h-64 w-64 rounded-full bg-stone-900/5 blur-3xl"
+      />
+
+      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl items-center px-4 py-10 sm:px-6 lg:px-10">
+        <div className="grid w-full overflow-hidden rounded-[2rem] border border-border/80 bg-white/80 shadow-[0_30px_80px_rgba(28,25,23,0.12)] backdrop-blur-sm lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="relative hidden overflow-hidden bg-stone-950 px-10 py-12 text-white lg:flex lg:flex-col lg:justify-between">
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(201,169,98,0.28),transparent_42%),linear-gradient(160deg,#1c1917_0%,#292524_55%,#1c1917_100%)]"
+            />
+            <div className="relative">
+              <BrandLogo linked={false} imageClassName="h-16 brightness-0 invert" priority />
+              <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.32em] text-accent">Admin Console</p>
+              <h2 className="mt-4 max-w-sm font-display text-4xl leading-tight text-white">
+                Command the atelier from one calm workspace.
+              </h2>
+              <p className="mt-4 max-w-sm text-sm leading-relaxed text-stone-300">
+                Update catalog, fulfill orders, and keep Velcraft storefronts in sync.
+              </p>
+            </div>
+            <div className="relative space-y-3 border-t border-white/10 pt-8 text-sm text-stone-400">
+              <p>Products · Orders · Customers · Coupons</p>
+              <Link href="/" className="inline-flex text-accent transition hover:text-[#d4b56a]">
+                ← Back to storefront
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="rounded-[1.75rem] border border-border bg-white p-6 shadow-[0_24px_60px_rgba(28,25,23,0.08)] sm:p-8">
-          <LoginForm redirectTo="/admin/dashboard" />
+
+          <div className="relative px-6 py-8 sm:px-10 sm:py-12">
+            <div className="mb-8 flex items-center justify-between gap-4 lg:hidden">
+              <BrandLogo imageClassName="h-12" priority />
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-accent">Admin</p>
+            </div>
+            <AdminLoginForm />
+            <p className="mt-8 text-center text-xs text-stone-500 lg:text-left">
+              Authorized staff only. All activity is monitored.
+            </p>
+          </div>
         </div>
       </div>
     </div>
