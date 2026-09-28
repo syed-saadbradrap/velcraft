@@ -5,6 +5,7 @@ import { useCart } from "@/context/CartContext";
 import { useCustomization } from "@/context/CustomizationContext";
 import { getErrorMessage } from "@/lib/api/auth-client";
 import { siteConfig } from "@/config/site";
+import { normalizeImageUrl } from "@/lib/media";
 import { cn, formatPrice } from "@/lib/utils";
 import { isCustomizationComplete, selectionToApiCustomization } from "@/types/commerce";
 import type { ShoeGender } from "@/types/customization";
@@ -161,32 +162,44 @@ export function CustomizationPanel() {
         ) : null}
 
         <OptionGroup title="Color">
-          <div className="grid grid-cols-4 gap-3 sm:grid-cols-6">
-            {config.colors.map((color) => (
-              <button
-                key={color.id}
-                type="button"
-                aria-label={color.name}
-                onClick={() => setColor(color.hex_code)}
-                className={cn(
-                  "group flex flex-col items-center gap-2",
-                  selection.colorHex === color.hex_code && "opacity-100",
-                )}
-              >
-                <span
+          <div className="grid grid-cols-4 gap-3 sm:grid-cols-5">
+            {config.colors.map((color) => {
+              const swatch =
+                normalizeImageUrl(color.swatch_path) ||
+                normalizeImageUrl(color.swatch_url) ||
+                (color.swatch_path?.startsWith("images/") ? `/${color.swatch_path}` : "");
+
+              return (
+                <button
+                  key={color.id}
+                  type="button"
+                  aria-label={color.name}
+                  title={color.name}
+                  onClick={() => setColor(color.hex_code)}
                   className={cn(
-                    "h-10 w-10 rounded-full border-2 transition",
-                    selection.colorHex === color.hex_code
-                      ? "border-accent scale-110"
-                      : "border-transparent group-hover:border-stone-300/50",
+                    "group flex flex-col items-center gap-2",
+                    selection.colorHex === color.hex_code && "opacity-100",
                   )}
-                  style={{ backgroundColor: color.hex_code }}
-                />
-                <span className="text-[10px] uppercase tracking-[0.12em] text-stone-600">
-                  {color.name}
-                </span>
-              </button>
-            ))}
+                >
+                  <span
+                    className={cn(
+                      "h-11 w-11 overflow-hidden rounded-full border-2 bg-cover bg-center shadow-sm transition",
+                      selection.colorHex === color.hex_code
+                        ? "scale-110 border-accent"
+                        : "border-stone-200 group-hover:border-stone-400",
+                    )}
+                    style={
+                      swatch
+                        ? { backgroundImage: `url(${swatch})`, backgroundColor: color.hex_code }
+                        : { backgroundColor: color.hex_code }
+                    }
+                  />
+                  <span className="max-w-[4.5rem] text-center text-[10px] leading-tight uppercase tracking-[0.08em] text-stone-600">
+                    {color.name}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </OptionGroup>
 

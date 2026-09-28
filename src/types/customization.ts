@@ -23,6 +23,8 @@ export interface CustomizationOptionColor {
   id: number;
   name: string;
   hex_code: string;
+  swatch_path?: string | null;
+  swatch_url?: string | null;
 }
 
 export interface CustomizationOptionBuckle {
