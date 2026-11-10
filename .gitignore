@@ -1,10 +1,9 @@
 # dependencies / build
 node_modules/
+.next/
+out/
+build/
 vendor/
-frontend/node_modules/
-frontend/.next/
-frontend/out/
-frontend/build/
 backend/vendor/
 backend/node_modules/
 backend/public/build/
@@ -17,14 +16,13 @@ backend/public/storage
 !.env.example
 !**/.env.example
 !**/.env.*.example
-frontend/.env.local
-frontend/.env.production
 backend/.env
 backend/deploy/**/.env
 
 # caches / logs
 *.log
 .phpunit.result.cache
+tsconfig.tsbuildinfo
 storage/*.key
 storage/pail
 backend/storage/logs/
@@ -44,9 +42,5 @@ composer.phar
 backend/vendor.zip
 backend/deploy/
 
-# large generated previews (keep blend/scripts; skip huge png dumps if needed)
-# assets/blender/previews/ can stay for reference
-
-frontend/.env.production
-frontend/.env.local
-
+# leftover nested frontend install (after hoist)
+frontend/

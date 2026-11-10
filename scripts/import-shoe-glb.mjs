@@ -25,7 +25,7 @@ if (!fs.existsSync(source)) {
 }
 
 const targets = [
-  `frontend/public/models/shoes/${slug}/body.glb`,
+  `public/models/shoes/${slug}/body.glb`,
   `backend/storage/app/public/models/shoes/${slug}/body.glb`,
   `backend/public/storage/models/shoes/${slug}/body.glb`,
 ];
@@ -38,5 +38,5 @@ for (const relativePath of targets) {
 }
 
 console.log("");
-console.log(`Next step: add "${slug}" to importedModelSlugs in frontend/src/lib/customize/config-builder.ts`);
+console.log(`Next step: add "${slug}" to importedModelSlugs in src/lib/customize/config-builder.ts`);
 console.log("Then hard refresh the customize page.");
