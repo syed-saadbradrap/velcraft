@@ -85,7 +85,7 @@ function attachImageBuckle(shoeRoot: THREE.Object3D, texture: THREE.Texture) {
   const toeZ = box.min.z;
   const heelZ = box.max.z;
   const aimX = center.x;
-  const aimZ = toeZ + (heelZ - toeZ) * 0.46;
+  const aimZ = toeZ + (heelZ - toeZ) * 0.38;
 
   const bodyTargets: THREE.Object3D[] = [];
   body.traverse((child) => {
@@ -197,7 +197,7 @@ export function ImportedShoeViewer() {
     selectedBuckle?.image_url ||
     selectedBuckle?.thumbnail_url ||
     "/images/buckles/buckle_01.png";
-  const buckleImageUrl = `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-8`;
+  const buckleImageUrl = `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-9`;
 
   const combinedUrl = `/models/shoes/${config.shoeSlug}/shoe.glb?v=${PRODUCTION_SHOE_GLB_VERSION}`;
   const buckleUrl =
