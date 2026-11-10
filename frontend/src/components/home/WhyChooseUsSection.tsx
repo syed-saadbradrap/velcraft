@@ -1,0 +1,79 @@
+"use client";
+
+import { motion } from "framer-motion";
+import type { WhyChooseItem } from "@/types/api";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionShell } from "@/components/ui/SectionShell";
+import { homeContent } from "@/lib/content/velcraft";
+import { staggerContainer, staggerItem } from "@/lib/motion";
+
+const iconLabels: Record<string, string> = {
+  gem: "Fabrics",
+  palette: "Colors",
+  buckle: "Buckles",
+  size: "Sizing",
+  people: "Unisex",
+  cube: "3D Studio",
+  craft: "Craft",
+  shield: "Assurance",
+};
+
+interface WhyChooseUsSectionProps {
+  items: WhyChooseItem[];
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+}
+
+function getCardGridClass(index: number, total: number) {
+  if (total !== 5) return "lg:col-span-2";
+
+  if (index === 3) return "lg:col-span-2 lg:col-start-2";
+  if (index === 4) return "lg:col-span-2 lg:col-start-4";
+
+  return "lg:col-span-2";
+}
+
+function WhyChooseCard({ item, index }: { item: WhyChooseItem; index: number }) {
+  return (
+    <>
+      <p className="text-xs uppercase tracking-[0.35em] text-accent">
+        {iconLabels[item.icon ?? ""] ?? "Customization"}
+      </p>
+      <p className="mt-3 font-display text-5xl text-stone-900/25 dark:text-white/45">{String(index + 1).padStart(2, "0")}</p>
+      <h3 className="mt-4 font-display text-2xl text-stone-900 md:text-3xl">{item.title}</h3>
+      <p className="mt-4 flex-1 text-sm leading-7 text-stone-600 md:text-base md:leading-8">{item.description}</p>
+    </>
+  );
+}
+
+export function WhyChooseUsSection({
+  items,
+  eyebrow = homeContent.whySettle.eyebrow,
+  title = homeContent.whySettle.title,
+  description = homeContent.whySettle.description,
+}: WhyChooseUsSectionProps) {
+  return (
+    <SectionShell tone="default" containerClassName="space-y-14">
+      <SectionHeading eyebrow={eyebrow} title={title} description={description} align="center" />
+
+      <motion.div
+        variants={staggerContainer(0.08, 0.05)}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+        className="grid gap-6 md:grid-cols-2 lg:grid-cols-6"
+      >
+        {items.map((item, index) => (
+          <motion.div
+            key={item.title}
+            variants={staggerItem}
+            className={`glass-panel glass-panel-hover flex h-full flex-col rounded-[1.75rem] p-8 ${getCardGridClass(index, items.length)}`}
+          >
+            <WhyChooseCard item={item} index={index} />
+          </motion.div>
+        ))}
+      </motion.div>
+    </SectionShell>
+  );
+}

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 720" fill="none" role="img" aria-label="Velcraft luxury loafer illustration">
+  <defs>
+    <linearGradient id="velvetBase" x1="18%" y1="8%" x2="86%" y2="92%">
+      <stop offset="0%" stop-color="#3d5688"/>
+      <stop offset="42%" stop-color="#1b2f57"/>
+      <stop offset="100%" stop-color="#0f1a33"/>
+    </linearGradient>
+    <linearGradient id="velvetSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.34"/>
+      <stop offset="38%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="soleTop" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3f3f46"/>
+      <stop offset="50%" stop-color="#27272a"/>
+      <stop offset="100%" stop-color="#18181b"/>
+    </linearGradient>
+    <linearGradient id="soleSide" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#52525b"/>
+      <stop offset="100%" stop-color="#18181b"/>
+    </linearGradient>
+    <linearGradient id="goldMetal" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f6e6b4"/>
+      <stop offset="34%" stop-color="#d4af63"/>
+      <stop offset="68%" stop-color="#9a7728"/>
+      <stop offset="100%" stop-color="#f0dba0"/>
+    </linearGradient>
+    <linearGradient id="goldEdge" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6f5420" stop-opacity="0.55"/>
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#6f5420" stop-opacity="0.45"/>
+    </linearGradient>
+    <radialGradient id="groundGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#c9a962" stop-opacity="0.34"/>
+      <stop offset="58%" stop-color="#c9a962" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#c9a962" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="24" stdDeviation="18" flood-color="#1c1917" flood-opacity="0.24"/>
+    </filter>
+    <filter id="goldGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#c9a962" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="320" cy="612" rx="220" ry="34" fill="url(#groundGlow)"/>
+  <ellipse cx="320" cy="618" rx="178" ry="18" fill="#1c1917" opacity="0.12"/>
+
+  <g filter="url(#softShadow)">
+    <path d="M112 470 C132 438 176 412 236 396 C286 384 360 378 426 388 C486 398 534 422 548 452 C556 468 548 484 520 496 C454 522 342 534 248 528 C182 524 128 508 112 470 Z" fill="url(#soleSide)"/>
+    <path d="M118 468 C150 430 214 406 286 396 C360 386 438 388 512 404 C528 408 538 418 534 430 C520 454 448 470 350 476 C252 482 166 474 118 468 Z" fill="url(#soleTop)"/>
+    <path d="M142 430 C168 352 228 286 308 248 C356 226 412 218 466 226 C514 234 548 258 560 292 C568 318 560 344 530 364 C470 404 362 432 262 444 C206 450 162 446 142 430 Z" fill="url(#velvetBase)"/>
+    <path d="M142 430 C168 352 228 286 308 248 C356 226 412 218 466 226 C514 234 548 258 560 292 C568 318 560 344 530 364 C470 404 362 432 262 444 C206 450 162 446 142 430 Z" fill="url(#velvetSheen)"/>
+    <path d="M176 392 C206 330 262 282 322 262 C362 250 404 248 442 256" stroke="#ffffff" stroke-opacity="0.16" stroke-width="3" stroke-linecap="round"/>
+    <path d="M186 404 C214 352 268 312 328 296 C372 286 412 286 448 294" stroke="#0f172a" stroke-opacity="0.22" stroke-width="2" stroke-linecap="round"/>
+    <path d="M248 318 C286 302 334 296 382 302 C418 306 448 318 462 334 C468 342 462 350 442 356 C392 370 322 372 272 360 C252 354 242 344 248 318 Z" fill="#101828" opacity="0.88"/>
+    <g filter="url(#goldGlow)">
+      <rect x="286" y="318" width="22" height="34" rx="8" fill="url(#goldMetal)"/>
+      <rect x="332" y="318" width="22" height="34" rx="8" fill="url(#goldMetal)"/>
+      <path d="M308 334 C324 326 344 322 364 326 C378 328 392 334 404 342" stroke="url(#goldMetal)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M308 334 C324 326 344 322 364 326 C378 328 392 334 404 342" stroke="url(#goldEdge)" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+    </g>
+    <path d="M168 360 C214 286 286 242 360 232 C404 226 448 232 486 252" stroke="#ffffff" stroke-opacity="0.12" stroke-width="2" stroke-dasharray="5 8"/>
+    <path d="M520 300 C536 318 542 338 536 356 C528 378 498 396 452 408" stroke="#ffffff" stroke-opacity="0.08" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</svg>

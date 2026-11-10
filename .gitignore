@@ -46,3 +46,7 @@ backend/deploy/
 
 # large generated previews (keep blend/scripts; skip huge png dumps if needed)
 # assets/blender/previews/ can stay for reference
+
+frontend/.env.production
+frontend/.env.local
+

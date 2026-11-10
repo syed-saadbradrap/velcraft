@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#1c1917"/>
+  <path d="M140 370C240 250 330 190 400 160C470 190 560 250 660 370" stroke="#f5f5f4" stroke-width="2.5"/>
+  <text x="400" y="430" fill="#a8a29e" font-family="Georgia, serif" font-size="32" text-anchor="middle">Evening Collection</text>
+</svg>
