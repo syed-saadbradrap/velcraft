@@ -1,0 +1,48 @@
+# dependencies / build
+node_modules/
+vendor/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/public/hot/
+backend/public/storage
+
+# secrets / env
+.env
+.env.*
+!.env.example
+!**/.env.example
+!**/.env.*.example
+frontend/.env.local
+frontend/.env.production
+backend/.env
+backend/deploy/**/.env
+
+# caches / logs
+*.log
+.phpunit.result.cache
+storage/*.key
+storage/pail
+backend/storage/logs/
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/views/
+backend/bootstrap/cache/*.php
+
+# tooling / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.cursor/
+*.zip
+composer.phar
+backend/vendor.zip
+backend/deploy/
+
+# large generated previews (keep blend/scripts; skip huge png dumps if needed)
+# assets/blender/previews/ can stay for reference
