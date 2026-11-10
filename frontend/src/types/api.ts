@@ -57,6 +57,7 @@ export interface ShoeDetail extends ShoeSummary {
     slug: string;
     model_url?: string | null;
     thumbnail_url?: string | null;
+    image_url?: string | null;
     price_modifier: number;
   }>;
   sizes?: Array<{ id: number; gender: string; label: string; value: number }>;
