@@ -41,25 +41,22 @@ function removeNamedPart(root: THREE.Object3D, name: string) {
   part?.parent?.remove(part);
 }
 
-// Fraction of toe→heel length where the bit sits (0 = toe tip, 1 = heel). 0.38 sits on the vamp
-// just in front of the tongue/opening lip.
-const BUCKLE_AIM_Z_FRACTION = 0.38;
-// Max visible bit footprint, as a fraction of the shoe body width.
-const BUCKLE_MAX_WIDTH_RATIO = 0.4;
-const BUCKLE_MAX_HEIGHT_RATIO = 0.2;
-// Gap between leather and the PNG skin, as a fraction of body height.
-const BUCKLE_LIFT_RATIO = 0.006;
-const BUCKLE_SEGMENTS_X = 28;
-const BUCKLE_SEGMENTS_Y = 14;
+// Fraction of toe→heel length where the bit sits (0 = toe tip, 1 = heel).
+const BUCKLE_AIM_Z_FRACTION = 0.4;
+// Visible bit footprint vs shoe body width (real loafer hardware is fairly wide on the vamp).
+const BUCKLE_MAX_WIDTH_RATIO = 0.52;
+const BUCKLE_MAX_HEIGHT_RATIO = 0.24;
+// Keep the decal slightly above leather so it stays readable.
+const BUCKLE_LIFT_RATIO = 0.014;
 
 type TextureCrop = { u0: number; v0: number; uSize: number; vSize: number; aspect: number };
 const cropCache = new WeakMap<object, TextureCrop>();
 
-// Client PNGs are 2048x2048 with the metal bit centred in transparent padding. Measure the
-// opaque bounds so the plane matches the bit itself (no dead space, correct aspect ratio).
+// Client PNGs are 2048² with the metal bit in transparent padding. Crop to opaque bounds
+// so bars stay wide and emblems stay compact (no empty square plane).
 function getTextureCrop(texture: THREE.Texture): TextureCrop {
   const image = texture.image as (CanvasImageSource & { width: number; height: number }) | undefined;
-  const full: TextureCrop = { u0: 0, v0: 0, uSize: 1, vSize: 1, aspect: 0.4 };
+  const full: TextureCrop = { u0: 0, v0: 0, uSize: 1, vSize: 1, aspect: 0.42 };
   if (!image || !image.width || !image.height || typeof document === "undefined") {
     return full;
   }
@@ -86,7 +83,7 @@ function getTextureCrop(texture: THREE.Texture): TextureCrop {
       let maxY = -1;
       for (let y = 0; y < h; y++) {
         for (let x = 0; x < w; x++) {
-          if (data[(y * w + x) * 4 + 3] > 24) {
+          if (data[(y * w + x) * 4 + 3] > 20) {
             if (x < minX) minX = x;
             if (x > maxX) maxX = x;
             if (y < minY) minY = y;
@@ -95,20 +92,19 @@ function getTextureCrop(texture: THREE.Texture): TextureCrop {
         }
       }
       if (maxX >= minX && maxY >= minY) {
-        const pad = 2;
+        const pad = 3;
         const x0 = Math.max(0, minX - pad);
         const y0 = Math.max(0, minY - pad);
         const x1 = Math.min(w, maxX + 1 + pad);
         const y1 = Math.min(h, maxY + 1 + pad);
-        const cw = x1 - x0;
-        const ch = y1 - y0;
+        const cw = Math.max(1, x1 - x0);
+        const ch = Math.max(1, y1 - y0);
         result = {
           u0: x0 / w,
-          // canvas Y is top-down; texture V is bottom-up (flipY = true)
           v0: 1 - y1 / h,
           uSize: cw / w,
           vSize: ch / h,
-          aspect: (ch * image.height) / h / ((cw * image.width) / w),
+          aspect: ch / cw,
         };
       }
     }
@@ -126,10 +122,8 @@ function attachImageBuckle(
   maxAnisotropy = 8,
 ) {
   removeNamedPart(shoeRoot, "Buckle");
-
   shoeRoot.updateMatrixWorld(true);
 
-  // Prefer Body vamp surface only — Inner/Sole hits bury the PNG inside the shoe
   const body = shoeRoot.getObjectByName("Body") ?? shoeRoot;
   const box = new THREE.Box3().setFromObject(body);
   if (box.isEmpty()) {
@@ -138,13 +132,10 @@ function attachImageBuckle(
 
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-
-  // glTF Y-up: X=width, Y=up, Z=length (toe ≈ -Z)
   const crop = getTextureCrop(texture);
 
-  // Fit the opaque bit inside a max width/height box; keeps real aspect (bars wide, emblem compact)
-  const maxW = Math.max(size.x * BUCKLE_MAX_WIDTH_RATIO, 0.026);
-  const maxH = Math.max(size.x * BUCKLE_MAX_HEIGHT_RATIO, 0.013);
+  const maxW = Math.max(size.x * BUCKLE_MAX_WIDTH_RATIO, 0.03);
+  const maxH = Math.max(size.x * BUCKLE_MAX_HEIGHT_RATIO, 0.014);
   let planeW = maxW;
   let planeH = planeW * crop.aspect;
   if (planeH > maxH) {
@@ -165,20 +156,14 @@ function attachImageBuckle(
   map.repeat.set(crop.uSize, crop.vSize);
   map.needsUpdate = true;
 
-  const material = new THREE.MeshStandardMaterial({
+  // BasicMaterial keeps the PNG's baked metal look (Standard was crushing dark chrome to black).
+  const material = new THREE.MeshBasicMaterial({
     map,
-    // PNGs already carry baked metal shading; keep PBR light so they don't go black
     transparent: true,
-    alphaTest: 0.35,
-    metalness: 0.25,
-    roughness: 0.45,
+    alphaTest: 0.12,
     side: THREE.DoubleSide,
-    // Real depth testing so the bit is hidden by the shoe from behind/below (no see-through)
-    depthTest: true,
-    depthWrite: true,
-    polygonOffset: true,
-    polygonOffsetFactor: -2,
-    polygonOffsetUnits: -2,
+    depthTest: false,
+    depthWrite: false,
   });
 
   const toeZ = box.min.z;
@@ -194,55 +179,45 @@ function attachImageBuckle(
   });
 
   const raycaster = new THREE.Raycaster();
-  const rayDir = new THREE.Vector3(0, -1, 0);
   const rayOrigin = new THREE.Vector3();
-  const rayStartY = box.max.y + size.y * 0.8;
+  const rayDir = new THREE.Vector3(0, -1, 0);
+  rayOrigin.set(aimX, box.max.y + size.y * 0.8, aimZ);
+  raycaster.set(rayOrigin, rayDir);
+  const hits = raycaster.intersectObjects(bodyTargets, true);
 
-  const surfaceY = (x: number, z: number): number | null => {
-    rayOrigin.set(x, rayStartY, z);
-    raycaster.set(rayOrigin, rayDir);
-    const hits = raycaster.intersectObjects(bodyTargets, true);
-    let best: number | null = null;
-    for (const h of hits) {
-      if (!h.face) continue;
-      const n = h.face.normal.clone().transformDirection(h.object.matrixWorld).normalize();
-      if (n.y < 0.3) continue;
-      if (best === null || h.point.y > best) best = h.point.y;
+  let bestPoint: THREE.Vector3 | null = null;
+  let bestY = -Infinity;
+  for (const hit of hits) {
+    if (!hit.face) continue;
+    const n = hit.face.normal.clone().transformDirection(hit.object.matrixWorld).normalize();
+    if (n.y < 0.25) continue;
+    if (hit.point.y > bestY) {
+      bestY = hit.point.y;
+      bestPoint = hit.point.clone();
     }
-    return best;
-  };
-
-  const centerY = surfaceY(aimX, aimZ);
-  const fallbackY = centerY ?? box.min.y + size.y * 0.86;
-  const lift = size.y * BUCKLE_LIFT_RATIO;
-  const maxDelta = size.y * 0.1;
-
-  // Plane laid flat (XZ), image-up → toe (-Z). Every vertex is draped onto the vamp surface so the
-  // bit follows the leather curve instead of floating at the edges or clipping at the apex.
-  const geometry = new THREE.PlaneGeometry(planeW, planeH, BUCKLE_SEGMENTS_X, BUCKLE_SEGMENTS_Y);
-  geometry.rotateX(-Math.PI / 2);
-  const pos = geometry.attributes.position as THREE.BufferAttribute;
-  const inv = new THREE.Matrix4().copy(shoeRoot.matrixWorld).invert();
-  const v = new THREE.Vector3();
-  for (let i = 0; i < pos.count; i++) {
-    const wx = aimX + pos.getX(i);
-    const wz = aimZ + pos.getZ(i);
-    let y = surfaceY(wx, wz);
-    if (y === null || Math.abs(y - fallbackY) > maxDelta) {
-      y = fallbackY;
-    }
-    v.set(wx, y + lift, wz).applyMatrix4(inv);
-    pos.setXYZ(i, v.x, v.y, v.z);
   }
-  pos.needsUpdate = true;
-  geometry.computeVertexNormals();
-  geometry.computeBoundingSphere();
-  geometry.computeBoundingBox();
+
+  // World-sized plane must be converted into shoeRoot local units (GLB roots are often scaled).
+  const worldScale = new THREE.Vector3();
+  shoeRoot.getWorldScale(worldScale);
+  const sx = Math.max(Math.abs(worldScale.x), 1e-6);
+  const sz = Math.max(Math.abs(worldScale.z), 1e-6);
+
+  // Flat decal on vamp (image top → toe). Stable and readable; draping was clipping/hiding bits.
+  const geometry = new THREE.PlaneGeometry(planeW / sx, planeH / sz);
+  geometry.rotateX(-Math.PI / 2);
 
   const mesh = new THREE.Mesh(geometry, material);
   mesh.name = "Buckle";
-  mesh.renderOrder = 2;
+  mesh.renderOrder = 10;
   mesh.frustumCulled = false;
+
+  const lift = size.y * BUCKLE_LIFT_RATIO;
+  const worldY = bestPoint ? bestPoint.y + lift : box.min.y + size.y * 0.86 + lift;
+  // Ray/box are world-space; mesh is parented under shoeRoot so convert to local.
+  const localPos = new THREE.Vector3(aimX, worldY, aimZ);
+  shoeRoot.worldToLocal(localPos);
+  mesh.position.copy(localPos);
 
   shoeRoot.add(mesh);
 }
@@ -314,11 +289,19 @@ export function ImportedShoeViewer() {
   const materialSlug = material?.slug ?? "suede";
   const selectedBuckle = config.buckles.find((item) => item.id === selection.buckleId);
 
+  const buckleSlugMatch = selectedBuckle?.slug?.match(/buckle-?(\d+)/i);
+  const buckleIndex = buckleSlugMatch ? Number(buckleSlugMatch[1]) : null;
+  const localBuckleImage =
+    buckleIndex && buckleIndex >= 1 && buckleIndex <= 10
+      ? `/images/buckles/buckle_${String(buckleIndex).padStart(2, "0")}.png`
+      : null;
+
   const buckleImageBase =
+    localBuckleImage ||
     selectedBuckle?.image_url ||
     selectedBuckle?.thumbnail_url ||
     "/images/buckles/buckle_01.png";
-  const buckleImageUrl = `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-10`;
+  const buckleImageUrl = `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-12`;
 
   const combinedUrl = `/models/shoes/${config.shoeSlug}/shoe.glb?v=${PRODUCTION_SHOE_GLB_VERSION}`;
   const buckleUrl =

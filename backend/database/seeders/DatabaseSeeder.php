@@ -96,7 +96,6 @@ class DatabaseSeeder extends Seeder
         ])->map(fn (array $data) => Material::query()->updateOrCreate(['slug' => $data['slug']], $data));
 
         $colors = collect([
-            ['name' => 'Black', 'hex_code' => '#060709', 'swatch_path' => 'images/colors/black.jpg'],
             ['name' => 'Charcoal Black', 'hex_code' => '#3D312D', 'swatch_path' => 'images/colors/charcoal-black.jpg'],
             ['name' => 'Charcoal Grey', 'hex_code' => '#7C615D', 'swatch_path' => 'images/colors/charcoal-grey.jpg'],
             ['name' => 'Coral', 'hex_code' => '#9B4534', 'swatch_path' => 'images/colors/coral.jpg'],
@@ -112,6 +111,7 @@ class DatabaseSeeder extends Seeder
         ));
 
         // Keep legacy inactive palette rows so old pivots don't break references.
+        // "Black" removed from the active upper-color picker (was first).
         Color::query()
             ->whereNotIn('name', $colors->pluck('name'))
             ->update(['is_active' => false]);
@@ -504,10 +504,10 @@ class DatabaseSeeder extends Seeder
             ->update(['is_active' => false, 'is_featured' => false]);
 
         $productAttributes = [
-            'black-boot' => ['material' => 'premium-leather', 'color' => 'Black', 'buckle' => 'buckle-01'],
+            'black-boot' => ['material' => 'premium-leather', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
             'brown-boot' => ['material' => 'premium-leather', 'color' => 'Dark Brown', 'buckle' => 'buckle-01'],
             'dark-blue-covered' => ['material' => 'velvet', 'color' => 'Navy Blue', 'buckle' => 'buckle-01'],
-            'black-covered' => ['material' => 'suede', 'color' => 'Black', 'buckle' => 'buckle-01'],
+            'black-covered' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
             'medium-brown-covered' => ['material' => 'suede', 'color' => 'Light Brown', 'buckle' => 'buckle-01'],
             'brown-covered' => ['material' => 'suede', 'color' => 'Light Brown', 'buckle' => 'buckle-01'],
             'brown-diff-buckle' => ['material' => 'suede', 'color' => 'Dark Brown', 'buckle' => 'buckle-03'],
@@ -515,9 +515,9 @@ class DatabaseSeeder extends Seeder
             'charcoal' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
             'faune' => ['material' => 'suede', 'color' => 'Mauve', 'buckle' => 'buckle-01'],
             'grey' => ['material' => 'suede', 'color' => 'Grey', 'buckle' => 'buckle-01'],
-            'full-black-backless' => ['material' => 'suede', 'color' => 'Black', 'buckle' => 'buckle-01'],
+            'full-black-backless' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
             'black-and-white-backless' => ['material' => 'suede', 'color' => 'Charcoal Grey', 'buckle' => 'buckle-01'],
-            'black-xl' => ['material' => 'premium-leather', 'color' => 'Black', 'buckle' => 'buckle-01'],
+            'black-xl' => ['material' => 'premium-leather', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
             'brown-xl' => ['material' => 'premium-leather', 'color' => 'Dark Brown', 'buckle' => 'buckle-01'],
             'ivory-gold-bit-mule' => ['material' => 'suede', 'color' => 'Grey', 'buckle' => 'buckle-01', 'all_colors' => true, 'all_materials' => true, 'all_buckles' => true],
         ];
