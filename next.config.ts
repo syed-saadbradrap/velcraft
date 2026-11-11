@@ -9,8 +9,9 @@ const nextConfig: NextConfig = {
   compress: true,
   // Keep tracing/watching inside the Next app — ignore the Laravel/Blender monorepo noise.
   outputFileTracingRoot: rootDir,
-  // Do not optimizePackageImports for three/drei — it can break GLTFLoader deep imports
-  // and leave the canvas stuck on Suspense forever.
+  // Next 16 defaults to Turbopack; empty config allows turbo when used, while `build --webpack`
+  // matches local monorepo watchOptions below.
+  turbopack: {},
   webpack: (config, { dev }) => {
     if (dev) {
       // Ignore monorepo noise so Windows file-watching stays responsive.
