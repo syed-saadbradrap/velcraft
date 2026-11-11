@@ -1,6 +1,28 @@
 import { CUSTOMIZABLE_SHOE_SLUG, customizeUrl } from "@/lib/catalog/purchase";
 
 const isProd = process.env.NODE_ENV === "production";
+const DEFAULT_UPSTREAM_API = "https://rpsspvt.com/api/v1";
+
+/**
+ * Browser → same-origin `/api/v1` (Next rewrite → Laravel) to avoid Imunify360/CORS.
+ * Server → absolute upstream URL (relative fetch has no host in Node).
+ */
+export function getApiUrl(): string {
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return process.env.NEXT_PUBLIC_API_URL;
+  }
+
+  if (!isProd) {
+    return "http://localhost:8000/api/v1";
+  }
+
+  if (typeof window === "undefined") {
+    const origin = (process.env.VELCRAFT_API_ORIGIN ?? "https://rpsspvt.com").replace(/\/$/, "");
+    return `${origin}/api/v1`;
+  }
+
+  return "/api/v1";
+}
 
 export const siteConfig = {
   name: "Velcraft",
@@ -11,9 +33,9 @@ export const siteConfig = {
   url:
     process.env.NEXT_PUBLIC_SITE_URL ??
     (isProd ? "https://velcraft-pearl.vercel.app" : "http://localhost:3000"),
-  apiUrl:
-    process.env.NEXT_PUBLIC_API_URL ??
-    (isProd ? "https://rpsspvt.com/api/v1" : "http://localhost:8000/api/v1"),
+  get apiUrl() {
+    return getApiUrl();
+  },
   logo: {
     src: "/images/logo/velcraft-logo.png",
     alt: "Velcraft Luxury Shoes",

@@ -63,6 +63,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    const apiOrigin = (
+      process.env.VELCRAFT_API_ORIGIN ??
+      process.env.NEXT_PUBLIC_API_ORIGIN ??
+      "https://rpsspvt.com"
+    ).replace(/\/$/, "");
+
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: `${apiOrigin}/api/v1/:path*`,
+      },
+    ];
+  },
   async redirects() {
     return [
       { source: "/customize/maison-loafer", destination: "/customize/ivory-gold-bit-mule", permanent: true },
