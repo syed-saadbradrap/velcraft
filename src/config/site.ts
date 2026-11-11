@@ -1,7 +1,6 @@
 import { CUSTOMIZABLE_SHOE_SLUG, customizeUrl } from "@/lib/catalog/purchase";
 
 const isProd = process.env.NODE_ENV === "production";
-const DEFAULT_UPSTREAM_API = "https://rpsspvt.com/api/v1";
 
 /**
  * Browser → same-origin `/api/v1` (Next rewrite → Laravel) to avoid Imunify360/CORS.
