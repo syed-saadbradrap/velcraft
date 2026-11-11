@@ -1,8 +1,29 @@
 import type { NextConfig } from "next";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   compress: true,
+  // Keep tracing/watching inside the Next app — ignore the Laravel/Blender monorepo noise.
+  outputFileTracingRoot: rootDir,
+  // Do not optimizePackageImports for three/drei — it can break GLTFLoader deep imports
+  // and leave the canvas stuck on Suspense forever.
+  webpack: (config, { dev }) => {
+    if (dev) {
+      // Ignore monorepo noise so Windows file-watching stays responsive.
+      // Keep this as a single RegExp — string globs can break webpack's watcher.
+      config.watchOptions = {
+        ...config.watchOptions,
+        ignored: /node_modules|\.git|\.next|[\\/]backend[\\/]|[\\/]assets[\\/]|[\\/]tools[\\/]|[\\/]scripts[\\/]|[\\/]web-scripts[\\/]|[\\/]public[\\/]models[\\/]/,
+        aggregateTimeout: 400,
+        poll: false,
+      };
+    }
+    return config;
+  },
   async headers() {
     return [
       {

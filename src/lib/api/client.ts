@@ -69,8 +69,11 @@ class ApiClient {
     cacheOptions: { revalidate?: number; tags?: string[] } | "no-store" = { revalidate: 60 },
   ): Promise<T> {
     const isGet = !init?.method || init.method === "GET";
+    // Local Laravel can hang; never block RSC pages forever.
+    const signal = init?.signal ?? AbortSignal.timeout(8_000);
     const response = await fetch(`${this.baseUrl}${path}`, {
       ...init,
+      signal,
       ...(isGet && cacheOptions !== "no-store"
         ? {
             next: {

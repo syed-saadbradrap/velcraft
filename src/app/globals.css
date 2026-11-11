@@ -1,12 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" source(none);
 
-/* Repo root is a monorepo — do not scan backend/assets/tools (hangs PostCSS/Turbopack). */
-@source not "../../backend";
-@source not "../../assets";
-@source not "../../tools";
-@source not "../../scripts";
-@source not "../../web-scripts";
-@source not "../../frontend";
+/* Explicit app sources only — auto-scan of backend/assets hung PostCSS for minutes. */
 @source "../**/*.{js,ts,jsx,tsx}";
 
 @custom-variant dark (&:where(.dark, .dark *));

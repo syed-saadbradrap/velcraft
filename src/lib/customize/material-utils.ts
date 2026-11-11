@@ -96,9 +96,37 @@ export function applyShoeTypeVisibility(root: THREE.Object3D, shoeType: "backles
   });
 }
 
-export function centerAndScale(root: THREE.Object3D, targetSize = 3.2) {
+function visibleWorldBox(root: THREE.Object3D) {
+  const box = new THREE.Box3();
+  let hasVisible = false;
   root.updateMatrixWorld(true);
-  const box = new THREE.Box3().setFromObject(root);
+  root.traverse((child) => {
+    if (!(child instanceof THREE.Mesh) || !child.visible) {
+      return;
+    }
+    let parent: THREE.Object3D | null = child;
+    while (parent) {
+      if (!parent.visible) {
+        return;
+      }
+      parent = parent.parent;
+    }
+    const meshBox = new THREE.Box3().setFromObject(child);
+    if (meshBox.isEmpty()) {
+      return;
+    }
+    if (!hasVisible) {
+      box.copy(meshBox);
+      hasVisible = true;
+    } else {
+      box.union(meshBox);
+    }
+  });
+  return hasVisible ? box : new THREE.Box3().setFromObject(root);
+}
+
+export function centerAndScale(root: THREE.Object3D, targetSize = 3.2) {
+  const box = visibleWorldBox(root);
   if (box.isEmpty()) {
     return;
   }
@@ -119,7 +147,10 @@ export function prepareImportedMesh(root: THREE.Object3D) {
       return;
     }
 
-    child.geometry.computeVertexNormals();
+    // Client GLBs already ship normals — recomputing them every load freezes the customize tab.
+    if (!child.geometry.attributes.normal) {
+      child.geometry.computeVertexNormals();
+    }
 
     if (!child.geometry.attributes.uv) {
       applyPlanarUvs(child.geometry);
@@ -570,25 +601,35 @@ function firstMaterial(material: THREE.Material | THREE.Material[]) {
 
 // Body/Cover in client full-mesh GLBs include the sole region; paint their bottom band with
 // the sole color while keeping the upper material already assigned (call after upper material).
-export function applyFullShoeSoleBand(root: THREE.Object3D, colorHex: string) {
+export function applyFullShoeSoleBand(
+  root: THREE.Object3D,
+  colorHex: string,
+  shoeType: "backless" | "covered" = "backless",
+) {
   if (!isFullShoeVariantPair(root)) {
     return;
   }
 
-  for (const partName of ["Body", "Cover"]) {
-    const part = root.getObjectByName(partName);
-    part?.traverse((child) => {
-      if (!(child instanceof THREE.Mesh) || !child.material) {
-        return;
-      }
+  // Only split the visible variant — Cover+Body together freezes the tab for tens of seconds.
+  const partName = shoeType === "covered" ? "Cover" : "Body";
+  const part = root.getObjectByName(partName);
+  part?.traverse((child) => {
+    if (!(child instanceof THREE.Mesh) || !child.material) {
+      return;
+    }
 
-      splitSoleBandGroups(child.geometry);
-      child.material = [firstMaterial(child.material), createSoleMaterial(colorHex)];
-    });
-  }
+    splitSoleBandGroups(child.geometry);
+    child.material = [firstMaterial(child.material), createSoleMaterial(colorHex)];
+  });
 }
 
-export function applyProductionSoleMaterial(root: THREE.Object3D, colorHex: string) {
+export function applyProductionSoleMaterial(
+  root: THREE.Object3D,
+  colorHex: string,
+  options: { splitFullShoeBand?: boolean; shoeType?: "backless" | "covered" } = {},
+) {
+  const { splitFullShoeBand = true, shoeType = "backless" } = options;
+
   root.getObjectByName("Sole")?.traverse((child) => {
     if (!(child instanceof THREE.Mesh)) {
       return;
@@ -597,7 +638,10 @@ export function applyProductionSoleMaterial(root: THREE.Object3D, colorHex: stri
     child.material = createSoleMaterial(colorHex);
   });
 
-  applyFullShoeSoleBand(root, colorHex);
+  // Full-shoe Body/Cover band split rewrites dense geometry — defer on first paint.
+  if (splitFullShoeBand) {
+    applyFullShoeSoleBand(root, colorHex, shoeType);
+  }
 }
 
 export function applyProductionInnerMaterial(root: THREE.Object3D) {
@@ -702,7 +746,35 @@ export function fitCameraToObject(
     return;
   }
 
-  const box = new THREE.Box3().setFromObject(object);
+  // Prefer visible meshes only — hidden Cover/Body inflated the box and framed the shoe low.
+  const box = new THREE.Box3();
+  let hasVisible = false;
+  object.updateMatrixWorld(true);
+  object.traverse((child) => {
+    if (!(child instanceof THREE.Mesh) || !child.visible) {
+      return;
+    }
+    let parent: THREE.Object3D | null = child;
+    while (parent) {
+      if (!parent.visible) {
+        return;
+      }
+      parent = parent.parent;
+    }
+    const meshBox = new THREE.Box3().setFromObject(child);
+    if (!meshBox.isEmpty()) {
+      if (!hasVisible) {
+        box.copy(meshBox);
+        hasVisible = true;
+      } else {
+        box.union(meshBox);
+      }
+    }
+  });
+
+  if (!hasVisible) {
+    box.setFromObject(object);
+  }
   if (box.isEmpty()) {
     return;
   }
@@ -711,19 +783,19 @@ export function fitCameraToObject(
   const size = box.getSize(new THREE.Vector3());
   const maxDim = Math.max(size.x, size.y, size.z, 0.001);
   const fov = camera.fov * (Math.PI / 180);
-  const distance = (maxDim / (2 * Math.tan(fov / 2))) * 1.32;
+  const distance = (maxDim / (2 * Math.tan(fov / 2))) * 1.55;
 
   camera.position.set(
-    center.x + distance * 0.82,
-    center.y + distance * 0.38,
-    center.z + distance * 0.88,
+    center.x + distance * 0.78,
+    center.y + distance * 0.42,
+    center.z + distance * 0.92,
   );
   camera.near = 0.01;
-  camera.far = distance * 40;
+  camera.far = Math.max(50, distance * 40);
   camera.updateProjectionMatrix();
 
   if (controls) {
-    controls.target.copy(center);
+    controls.target.set(center.x, center.y + size.y * 0.05, center.z);
     controls.update();
   }
 }
