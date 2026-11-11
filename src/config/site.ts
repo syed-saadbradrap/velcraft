@@ -1,12 +1,19 @@
 import { CUSTOMIZABLE_SHOE_SLUG, customizeUrl } from "@/lib/catalog/purchase";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const siteConfig = {
   name: "Velcraft",
   tagline: "Bespoke luxury footwear",
   description:
     "Design footwear that's made to match your style. Customize colors, premium fabrics, buckles, soles, and sizes in our interactive 3D designer.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3002",
-  apiUrl: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1",
+  // Production fallbacks keep Vercel working even if env vars were not set at build time.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (isProd ? "https://velcraft-pearl.vercel.app" : "http://localhost:3000"),
+  apiUrl:
+    process.env.NEXT_PUBLIC_API_URL ??
+    (isProd ? "https://rpsspvt.com/api/v1" : "http://localhost:8000/api/v1"),
   logo: {
     src: "/images/logo/velcraft-logo.png",
     alt: "Velcraft Luxury Shoes",
