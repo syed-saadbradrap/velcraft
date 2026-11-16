@@ -8,7 +8,21 @@ import { customizeUrl } from "@/lib/catalog/purchase";
 import { homeContent } from "@/lib/content/velcraft";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
-export function AtelierShowcaseSection() {
+export function AtelierShowcaseSection({
+  eyebrow,
+  title,
+  description,
+  features,
+  ctaLabel,
+  ctaUrl,
+}: {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  features?: string[];
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+}) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -16,6 +30,15 @@ export function AtelierShowcaseSection() {
   });
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const { craftedStyle } = homeContent;
+  const copy = {
+    eyebrow: eyebrow || craftedStyle.eyebrow,
+    title: title || craftedStyle.title,
+    description: description || craftedStyle.description,
+    features: features?.length ? features : craftedStyle.features,
+    ctaLabel: ctaLabel || craftedStyle.ctaLabel,
+    ctaUrl: ctaUrl || customizeUrl(),
+    whyCustomersLoveUs: craftedStyle.whyCustomersLoveUs,
+  };
 
   return (
     <SectionShell ref={ref} tone="default" containerClassName="relative">
@@ -37,21 +60,21 @@ export function AtelierShowcaseSection() {
         <div className="relative grid gap-10 lg:grid-cols-2 lg:items-center">
           <div className="space-y-6">
             <motion.p variants={staggerItem} className="text-xs uppercase tracking-[0.35em] text-accent">
-              {craftedStyle.eyebrow}
+              {copy.eyebrow}
             </motion.p>
             <motion.h2
               variants={staggerItem}
               className="font-display text-4xl leading-tight text-stone-900 dark:text-stone-50 md:text-5xl"
             >
-              {craftedStyle.title}
+              {copy.title}
             </motion.h2>
             <motion.p variants={staggerItem} className="max-w-xl text-base leading-8 text-stone-600 dark:text-stone-300">
-              {craftedStyle.description}
+              {copy.description}
             </motion.p>
 
             <motion.div variants={staggerItem} className="pt-2">
-              <Button href={customizeUrl()} size="lg">
-                {craftedStyle.ctaLabel}
+              <Button href={copy.ctaUrl} size="lg">
+                {copy.ctaLabel}
               </Button>
             </motion.div>
           </div>
@@ -60,14 +83,19 @@ export function AtelierShowcaseSection() {
             variants={staggerItem}
             className="rounded-[2rem] border border-border bg-white/80 p-8 shadow-[0_16px_40px_rgba(28,25,23,0.06)] dark:border-stone-700/80 dark:bg-stone-900/90 dark:shadow-[0_16px_40px_rgba(0,0,0,0.35)]"
           >
-            <p className="text-xs uppercase tracking-[0.35em] text-accent">{craftedStyle.whyCustomersLoveUs}</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-accent">{copy.whyCustomersLoveUs}</p>
             <ul className="mt-6 space-y-4">
-              {craftedStyle.features.map((feature, index) => (
-                <li key={feature} className="flex items-start gap-4 border-b border-border pb-4 last:border-0 last:pb-0">
+              {copy.features.map((feature, index) => (
+                <li
+                  key={feature}
+                  className="flex items-start gap-4 border-b border-border pb-4 last:border-0 last:pb-0"
+                >
                   <span className="font-display text-2xl text-accent/70 dark:text-white/35">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <p className="pt-1 text-sm leading-7 text-stone-700 dark:text-stone-200 md:text-base">{feature}</p>
+                  <p className="pt-1 text-sm leading-7 text-stone-700 dark:text-stone-200 md:text-base">
+                    {feature}
+                  </p>
                 </li>
               ))}
             </ul>

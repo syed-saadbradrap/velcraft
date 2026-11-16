@@ -14,6 +14,9 @@ import { cn } from "@/lib/utils";
 
 interface FeaturedShoesSectionProps {
   shoes: ShoeSummary[];
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
 }
 
 function useItemsPerView(count: number) {
@@ -55,8 +58,19 @@ function NavArrow({ direction, onClick }: { direction: "prev" | "next"; onClick:
   );
 }
 
-export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
+export function FeaturedShoesSection({
+  shoes,
+  eyebrow,
+  title,
+  description,
+}: FeaturedShoesSectionProps) {
   const { products } = homeContent;
+  const section = {
+    eyebrow: eyebrow || products.eyebrow,
+    title: title || products.title,
+    description: description || products.description,
+    stats: products.stats,
+  };
 
   const featuredIndex = shoes.findIndex((shoe) => isCustomizableShoe(shoe.slug));
   const ordered =
@@ -117,15 +131,15 @@ export function FeaturedShoesSection({ shoes }: FeaturedShoesSectionProps) {
       <div className="relative grid min-w-0 gap-10 sm:gap-12 xl:grid-cols-[minmax(0,440px)_minmax(0,1fr)] xl:items-start xl:gap-16">
         <Reveal className="min-w-0 space-y-6 sm:space-y-8 xl:sticky xl:top-28">
           <div className="accent-bar-left min-w-0 space-y-4 sm:space-y-5">
-            <p className="text-xs uppercase tracking-[0.35em] text-accent">{products.eyebrow}</p>
+            <p className="text-xs uppercase tracking-[0.35em] text-accent">{section.eyebrow}</p>
             <h2 className="break-words font-display text-[clamp(1.75rem,6vw,3rem)] leading-[1.08] text-stone-900">
-              {products.title}
+              {section.title}
             </h2>
-            <p className="max-w-full text-base leading-7 text-stone-600 sm:leading-8">{products.description}</p>
+            <p className="max-w-full text-base leading-7 text-stone-600 sm:leading-8">{section.description}</p>
           </div>
 
           <div className="grid min-w-0 grid-cols-3 gap-2 sm:gap-3">
-            {products.stats.map((stat) => (
+            {section.stats.map((stat) => (
               <div
                 key={stat.label}
                 className="group min-w-0 rounded-2xl border border-stone-200/80 bg-white px-2 py-3.5 text-center shadow-[0_8px_24px_rgba(28,25,23,0.05)] transition hover:-translate-y-0.5 hover:border-accent/25 hover:shadow-[0_16px_32px_rgba(28,25,23,0.08)] sm:px-3 sm:py-5"

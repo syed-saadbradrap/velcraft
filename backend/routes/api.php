@@ -4,10 +4,16 @@ use App\Http\Controllers\Api\V1\Admin\AdminCollectionController;
 use App\Http\Controllers\Api\V1\Admin\AdminContactMessageController;
 use App\Http\Controllers\Api\V1\Admin\AdminCouponController;
 use App\Http\Controllers\Api\V1\Admin\AdminCustomerController;
+use App\Http\Controllers\Api\V1\Admin\AdminHeroSlideController;
 use App\Http\Controllers\Api\V1\Admin\AdminOrderController;
+use App\Http\Controllers\Api\V1\Admin\AdminPageSectionController;
+use App\Http\Controllers\Api\V1\Admin\AdminProcessStepController;
 use App\Http\Controllers\Api\V1\Admin\AdminProductOptionsController;
 use App\Http\Controllers\Api\V1\Admin\AdminShoeController;
+use App\Http\Controllers\Api\V1\Admin\AdminSiteSettingsController;
+use App\Http\Controllers\Api\V1\Admin\AdminTestimonialController;
 use App\Http\Controllers\Api\V1\Admin\AdminUploadController;
+use App\Http\Controllers\Api\V1\Admin\AdminWhyChooseItemController;
 use App\Http\Controllers\Api\V1\Admin\DashboardController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CartController;
@@ -17,14 +23,18 @@ use App\Http\Controllers\Api\V1\CouponController;
 use App\Http\Controllers\Api\V1\HomepageController;
 use App\Http\Controllers\Api\V1\NewsletterController;
 use App\Http\Controllers\Api\V1\OrderController;
+use App\Http\Controllers\Api\V1\PageController;
 use App\Http\Controllers\Api\V1\PaymentController;
 use App\Http\Controllers\Api\V1\ShippingAddressController;
 use App\Http\Controllers\Api\V1\ShoeController;
+use App\Http\Controllers\Api\V1\SiteController;
 use App\Http\Controllers\Api\V1\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function (): void {
     Route::get('/homepage', [HomepageController::class, 'show']);
+    Route::get('/site', [SiteController::class, 'show']);
+    Route::get('/pages/{pageKey}', [PageController::class, 'show']);
     Route::get('/shoes', [ShoeController::class, 'index']);
     Route::get('/shoes/featured', [ShoeController::class, 'featured']);
     Route::get('/shoes/{slug}', [ShoeController::class, 'show']);
@@ -85,8 +95,39 @@ Route::prefix('v1')->group(function (): void {
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
         Route::get('/collections', [AdminCollectionController::class, 'index']);
+        Route::put('/collections/{collection}', [AdminCollectionController::class, 'update']);
 
         Route::post('/uploads/image', [AdminUploadController::class, 'storeImage']);
+
+        Route::get('/settings', [AdminSiteSettingsController::class, 'index']);
+        Route::put('/settings', [AdminSiteSettingsController::class, 'updateMany']);
+        Route::get('/settings/{key}', [AdminSiteSettingsController::class, 'show']);
+        Route::put('/settings/{key}', [AdminSiteSettingsController::class, 'update']);
+
+        Route::get('/hero-slides', [AdminHeroSlideController::class, 'index']);
+        Route::post('/hero-slides', [AdminHeroSlideController::class, 'store']);
+        Route::put('/hero-slides/{id}', [AdminHeroSlideController::class, 'update']);
+        Route::delete('/hero-slides/{id}', [AdminHeroSlideController::class, 'destroy']);
+
+        Route::get('/why-choose-items', [AdminWhyChooseItemController::class, 'index']);
+        Route::post('/why-choose-items', [AdminWhyChooseItemController::class, 'store']);
+        Route::put('/why-choose-items/{id}', [AdminWhyChooseItemController::class, 'update']);
+        Route::delete('/why-choose-items/{id}', [AdminWhyChooseItemController::class, 'destroy']);
+
+        Route::get('/testimonials', [AdminTestimonialController::class, 'index']);
+        Route::post('/testimonials', [AdminTestimonialController::class, 'store']);
+        Route::put('/testimonials/{id}', [AdminTestimonialController::class, 'update']);
+        Route::delete('/testimonials/{id}', [AdminTestimonialController::class, 'destroy']);
+
+        Route::get('/process-steps', [AdminProcessStepController::class, 'index']);
+        Route::post('/process-steps', [AdminProcessStepController::class, 'store']);
+        Route::put('/process-steps/{id}', [AdminProcessStepController::class, 'update']);
+        Route::delete('/process-steps/{id}', [AdminProcessStepController::class, 'destroy']);
+
+        Route::get('/page-sections', [AdminPageSectionController::class, 'index']);
+        Route::post('/page-sections', [AdminPageSectionController::class, 'store']);
+        Route::put('/page-sections/{pageSection}', [AdminPageSectionController::class, 'update']);
+        Route::delete('/page-sections/{pageSection}', [AdminPageSectionController::class, 'destroy']);
 
         Route::get('/product-options', [AdminProductOptionsController::class, 'index']);
         Route::post('/product-options/materials', [AdminProductOptionsController::class, 'storeMaterial']);

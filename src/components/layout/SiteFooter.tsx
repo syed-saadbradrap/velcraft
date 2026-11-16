@@ -4,20 +4,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { Reveal } from "@/components/motion/Reveal";
-import { navigation, siteConfig } from "@/config/site";
+import { siteConfig } from "@/config/site";
+import { useSiteCms } from "@/context/SiteCmsContext";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { WhatsAppIcon } from "@/components/layout/WhatsAppIcon";
 import { getWhatsAppUrl } from "@/lib/utils";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
-const highlights = [
-  { title: "Complimentary sizing guidance", body: "EU men & women sizing with concierge support." },
-  { title: "Artisan production", body: `Hand-finished pairs delivered in ${siteConfig.deliveryTimeline}.` },
-  { title: "Secure checkout", body: "Cash on delivery and bank transfer available across Pakistan." },
-] as const;
-
 export function SiteFooter() {
+  const { navigation, footerBlurb, footerHighlights, contact } = useSiteCms();
+
   return (
     <footer className="border-t border-border bg-stone-50">
       <div className="border-b border-border bg-white py-8">
@@ -29,7 +26,7 @@ export function SiteFooter() {
             viewport={{ once: true, margin: "-40px" }}
             className="grid gap-6 md:grid-cols-3"
           >
-            {highlights.map((item) => (
+            {footerHighlights.map((item) => (
               <motion.div
                 key={item.title}
                 variants={staggerItem}
@@ -47,7 +44,7 @@ export function SiteFooter() {
       <Container className="grid gap-10 py-12 sm:gap-12 sm:py-16 md:grid-cols-2 lg:grid-cols-5">
         <Reveal className="space-y-4">
           <BrandLogo linked={false} imageClassName="h-14 sm:h-16 lg:h-[6rem]" />
-          <p className="max-w-xs text-sm leading-7 text-stone-700">{siteConfig.description}</p>
+          <p className="max-w-xs text-sm leading-7 text-stone-700">{footerBlurb}</p>
           <Button href={siteConfig.links.customize} size="sm">
             Start Customizing
           </Button>
@@ -119,27 +116,27 @@ export function SiteFooter() {
         <Reveal delay={0.2}>
           <p className="mb-4 text-xs uppercase tracking-[0.35em] text-accent">Contact</p>
           <p className="text-sm leading-7 text-stone-700">
-            Mon–Sat, 12:00 PM – 10:00 PM
+            {contact.hours}
             <br />
-            <a href={`mailto:${siteConfig.contact.email}`} className="transition hover:text-accent">
-              {siteConfig.contact.email}
+            <a href={`mailto:${contact.email}`} className="transition hover:text-accent">
+              {contact.email}
             </a>
             <br />
-            <a href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`} className="transition hover:text-accent">
-              {siteConfig.contact.phone}
+            <a href={`tel:${contact.phone.replace(/\s/g, "")}`} className="transition hover:text-accent">
+              {contact.phone}
             </a>
             <br />
             <a
-              href={siteConfig.contact.mapUrl}
+              href={contact.mapUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="transition hover:text-accent"
             >
-              {siteConfig.contact.address}
+              {contact.address}
             </a>
             <br />
             <a
-              href={getWhatsAppUrl(siteConfig.contact.whatsapp, siteConfig.contact.whatsappMessage)}
+              href={getWhatsAppUrl(contact.whatsapp, contact.whatsappMessage)}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-2 inline-flex items-center gap-2 transition hover:text-[#25D366]"

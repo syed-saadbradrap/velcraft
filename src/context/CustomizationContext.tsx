@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getBuckleModelUrl } from "@/lib/customize/config-builder";
+import { getBuckleModelUrl, isNoBuckle } from "@/lib/customize/config-builder";
 import type {
   CustomizationConfig,
   CustomizationSelection,
@@ -47,11 +47,14 @@ function createInitialSelection(config: CustomizationConfig): CustomizationSelec
   const gender = getDefaultGender(config);
   const defaultSize = getFirstSizeForGender(config, gender);
 
+  const defaultBuckle =
+    config.buckles.find((buckle) => !isNoBuckle(buckle.slug, buckle.id)) ?? config.buckles[0];
+
   return {
     materialId: config.materials[0]?.id ?? null,
     colorHex: config.colors[0]?.hex_code ?? "#F8F4EC",
     soleColorHex: config.soleColors[0]?.hex_code ?? "#111111",
-    buckleId: config.buckles[0]?.id ?? null,
+    buckleId: defaultBuckle?.id ?? null,
     shoeType: config.supportedTypes[0] ?? "covered",
     gender,
     sizeId: defaultSize?.id ?? config.sizes[0]?.id ?? null,

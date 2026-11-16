@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useCustomization } from "@/context/CustomizationContext";
 import { getErrorMessage } from "@/lib/api/auth-client";
+import { isNoBuckle } from "@/lib/customize/config-builder";
 import { siteConfig } from "@/config/site";
 import { normalizeImageUrl } from "@/lib/media";
 import { cn, formatPrice } from "@/lib/utils";
@@ -26,7 +27,20 @@ function OptionGroup({
   );
 }
 
-export function CustomizationPanel() {
+function fabricPreviewStyle(slug: string): React.CSSProperties {
+  if (slug.includes("suede")) {
+    return {
+      backgroundImage:
+        "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 45%), linear-gradient(145deg, #8a7364 0%, #5c463a 48%, #3f2f28 100%)",
+    };
+  }
+  return {
+    backgroundImage:
+      "linear-gradient(125deg, rgba(255,255,255,0.45) 0%, transparent 32%, transparent 62%, rgba(255,255,255,0.2) 100%), linear-gradient(160deg, #6b5246 0%, #3d2a22 55%, #2a1c17 100%)",
+  };
+}
+
+export function CustomizationPanel({ className }: { className?: string }) {
   const { addItem } = useCart();
   const {
     config,
@@ -77,12 +91,14 @@ export function CustomizationPanel() {
   const activeSizes = config.sizes.filter((size) => size.gender === selection.gender);
 
   return (
-    <div className="glass-panel flex h-full flex-col rounded-[2rem] p-6 lg:p-8">
+    <div className={cn("glass-panel flex h-full flex-col rounded-[2rem] p-6 lg:p-8", className)}>
       <div className="space-y-2 border-b border-border pb-6">
         <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Customization Studio</p>
         <h1 className="font-display text-4xl text-stone-900">{config.shoeName}</h1>
-        <p className="text-sm text-stone-700">
-          Configure gender, fabric, style, color, sole, buckle, and size with live 3D preview.
+        <p className="truncate text-sm text-stone-700">
+          Customize every detail, from material and color to buckle, sole, and fit, with an
+          interactive live preview. Exclusively designed for our signature customizable shoe
+          style.
         </p>
         <p className="text-xs text-stone-600">
           Estimated delivery: {siteConfig.deliveryTimeline}
@@ -99,7 +115,7 @@ export function CustomizationPanel() {
                   type="button"
                   onClick={() => setGender(gender)}
                   className={cn(
-                    "rounded-full border px-5 py-2.5 text-sm capitalize transition",
+                    "rounded-full border px-5 py-2.5 text-sm capitalize transition-colors",
                     selection.gender === gender
                       ? "border-accent bg-accent/10 text-accent"
                       : "border-border text-stone-700 hover:text-stone-900",
@@ -122,18 +138,25 @@ export function CustomizationPanel() {
                 type="button"
                 onClick={() => setMaterial(material.id)}
                 className={cn(
-                  "rounded-2xl border px-4 py-3 text-left transition",
+                  "flex items-center gap-4 rounded-2xl border px-4 py-3 text-left transition-colors",
                   selection.materialId === material.id
                     ? "border-accent bg-accent/10 text-stone-900"
                     : "border-border text-stone-700 hover:text-stone-900",
                 )}
               >
-                <span className="block font-medium">{material.name}</span>
-                {material.price_modifier > 0 ? (
-                  <span className="mt-1 block text-xs text-stone-600">
-                    +{formatPrice(material.price_modifier)}
+                <span
+                  className="h-12 w-12 shrink-0 rounded-xl border border-stone-200/80 shadow-inner"
+                  style={fabricPreviewStyle(material.slug)}
+                  aria-hidden
+                />
+                <span>
+                  <span className="block font-medium">{material.name}</span>
+                  <span className="mt-0.5 block text-xs text-stone-500">
+                    {material.slug.includes("suede")
+                      ? "Soft brushed nap"
+                      : "Smooth polished finish"}
                   </span>
-                ) : null}
+                </span>
               </button>
             ))}
           </div>
@@ -148,7 +171,7 @@ export function CustomizationPanel() {
                   type="button"
                   onClick={() => setShoeType(type)}
                   className={cn(
-                    "rounded-full border px-5 py-2.5 text-sm capitalize transition",
+                    "rounded-full border px-5 py-2.5 text-sm capitalize transition-colors",
                     selection.shoeType === type
                       ? "border-accent bg-accent/10 text-accent"
                       : "border-border text-stone-700 hover:text-stone-900",
@@ -162,8 +185,9 @@ export function CustomizationPanel() {
         ) : null}
 
         <OptionGroup title="Color">
-          <div className="grid grid-cols-4 gap-3 sm:grid-cols-5">
+          <div className="grid grid-cols-5 gap-3">
             {config.colors.map((color) => {
+              const selected = selection.colorHex === color.hex_code;
               const swatch =
                 normalizeImageUrl(color.swatch_path) ||
                 normalizeImageUrl(color.swatch_url) ||
@@ -176,16 +200,13 @@ export function CustomizationPanel() {
                   aria-label={color.name}
                   title={color.name}
                   onClick={() => setColor(color.hex_code)}
-                  className={cn(
-                    "group flex flex-col items-center gap-2",
-                    selection.colorHex === color.hex_code && "opacity-100",
-                  )}
+                  className="group flex flex-col items-center gap-2"
                 >
                   <span
                     className={cn(
-                      "h-11 w-11 overflow-hidden rounded-full border-2 bg-cover bg-center shadow-sm transition",
-                      selection.colorHex === color.hex_code
-                        ? "scale-110 border-accent"
+                      "relative h-11 w-11 overflow-hidden rounded-full border-2 bg-cover bg-center shadow-sm",
+                      selected
+                        ? "border-accent ring-2 ring-accent/35 ring-offset-2"
                         : "border-stone-200 group-hover:border-stone-400",
                     )}
                     style={
@@ -193,8 +214,19 @@ export function CustomizationPanel() {
                         ? { backgroundImage: `url(${swatch})`, backgroundColor: color.hex_code }
                         : { backgroundColor: color.hex_code }
                     }
-                  />
-                  <span className="max-w-[4.5rem] text-center text-[10px] leading-tight uppercase tracking-[0.08em] text-stone-600">
+                  >
+                    {selected ? (
+                      <span className="absolute inset-0 flex items-center justify-center bg-black/25 text-[11px] font-bold text-white">
+                        ✓
+                      </span>
+                    ) : null}
+                  </span>
+                  <span
+                    className={cn(
+                      "max-w-[4.5rem] text-center text-[10px] leading-tight uppercase tracking-[0.08em]",
+                      selected ? "font-semibold text-stone-900" : "text-stone-600",
+                    )}
+                  >
                     {color.name}
                   </span>
                 </button>
@@ -211,7 +243,7 @@ export function CustomizationPanel() {
                 type="button"
                 onClick={() => setSoleColor(sole.hex_code)}
                 className={cn(
-                  "inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition",
+                  "inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition-colors",
                   selection.soleColorHex === sole.hex_code
                     ? "border-accent bg-accent/10 text-stone-900"
                     : "border-border text-stone-700 hover:text-stone-900",
@@ -230,6 +262,7 @@ export function CustomizationPanel() {
         <OptionGroup title="Buckle">
           <div className="grid max-h-[28rem] grid-cols-2 gap-3 overflow-y-auto pr-1 sm:grid-cols-3">
             {config.buckles.map((buckle) => {
+              const none = isNoBuckle(buckle.slug, buckle.id);
               const thumb =
                 normalizeImageUrl(buckle.thumbnail_url) ||
                 normalizeImageUrl(buckle.image_url);
@@ -239,28 +272,27 @@ export function CustomizationPanel() {
                   type="button"
                   onClick={() => setBuckle(buckle.id)}
                   className={cn(
-                    "rounded-2xl border p-3 text-left transition",
+                    "rounded-2xl border p-3 text-left transition-colors",
                     selection.buckleId === buckle.id
                       ? "border-accent bg-accent/10 text-stone-900"
                       : "border-border text-stone-700 hover:text-stone-900",
                   )}
                 >
-                  {thumb ? (
-                    <span className="mb-2 flex h-14 items-center justify-center rounded-xl bg-stone-950/90 px-2">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <span className="mb-2 flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl border border-stone-100 bg-white px-2">
+                    {none ? (
+                      <span className="text-[11px] uppercase tracking-[0.18em] text-stone-400">
+                        None
+                      </span>
+                    ) : thumb ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={`${thumb}?v=buckle-front-1`}
+                        src={`${thumb}?v=buckle-front-2`}
                         alt={buckle.name}
-                        className="max-h-12 w-full object-contain"
+                        className="max-h-full max-w-full object-contain"
                       />
-                    </span>
-                  ) : null}
+                    ) : null}
+                  </span>
                   <span className="block text-sm font-medium">{buckle.name}</span>
-                  {buckle.price_modifier > 0 ? (
-                    <span className="mt-1 block text-xs text-stone-600">
-                      +{formatPrice(buckle.price_modifier)}
-                    </span>
-                  ) : null}
                 </button>
               );
             })}
@@ -280,7 +312,7 @@ export function CustomizationPanel() {
                     type="button"
                     onClick={() => setSize(size.id)}
                     className={cn(
-                      "min-w-12 rounded-full border px-3 py-2 text-sm transition",
+                      "min-w-12 rounded-full border px-3 py-2 text-sm transition-colors",
                       selection.sizeId === size.id
                         ? "border-accent bg-accent/10 text-accent"
                         : "border-border text-stone-700 hover:text-stone-900",
@@ -297,7 +329,7 @@ export function CustomizationPanel() {
         </OptionGroup>
       </div>
 
-      <div className="mt-6 border-t border-border pt-6">
+      <div className="mt-6 hidden border-t border-border pt-6 lg:block">
         <div className="flex items-end justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.28em] text-stone-600">Estimated Total</p>

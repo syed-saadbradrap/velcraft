@@ -267,14 +267,30 @@ const UPPER_PARTS = new Set(["Body", "Upper", "Cover"]);
 
 function createFabricMaterial(colorHex: string, materialSlug: string) {
   const isSuede = materialSlug.includes("suede");
-  const isLeather = materialSlug.includes("leather");
+  const color = new THREE.Color(colorHex);
 
-  return new THREE.MeshStandardMaterial({
-    name: isSuede ? "Suede_Material" : "Leather_Material",
-    color: new THREE.Color(colorHex),
-    roughness: isSuede ? 0.94 : isLeather ? 0.72 : 0.68,
-    metalness: isSuede ? 0 : 0.02,
-    envMapIntensity: isSuede ? 0.15 : 0.25,
+  if (isSuede) {
+    // Sheen fakes the soft brushed nap: light catches the fibres at grazing angles only.
+    return new THREE.MeshPhysicalMaterial({
+      name: "Suede_Material",
+      color,
+      roughness: 0.96,
+      metalness: 0,
+      envMapIntensity: 0.08,
+      sheen: 0.55,
+      sheenRoughness: 0.85,
+      sheenColor: color.clone().lerp(new THREE.Color("#ffffff"), 0.35),
+    });
+  }
+
+  return new THREE.MeshPhysicalMaterial({
+    name: "Leather_Material",
+    color,
+    roughness: 0.55,
+    metalness: 0.08,
+    envMapIntensity: 0.6,
+    clearcoat: 0.25,
+    clearcoatRoughness: 0.45,
   });
 }
 
@@ -741,6 +757,7 @@ export function fitCameraToObject(
   camera: THREE.Camera,
   controls: { target: THREE.Vector3; update: () => void } | null,
   object: THREE.Object3D,
+  fitPadding = 1.25,
 ) {
   if (!(camera instanceof THREE.PerspectiveCamera)) {
     return;
@@ -783,7 +800,7 @@ export function fitCameraToObject(
   const size = box.getSize(new THREE.Vector3());
   const maxDim = Math.max(size.x, size.y, size.z, 0.001);
   const fov = camera.fov * (Math.PI / 180);
-  const distance = (maxDim / (2 * Math.tan(fov / 2))) * 1.55;
+  const distance = (maxDim / (2 * Math.tan(fov / 2))) * fitPadding;
 
   camera.position.set(
     center.x + distance * 0.78,

@@ -114,6 +114,35 @@ export function normalizeModelUrl(url?: string | null, fallback?: string | null)
   return resolveLegacyBuckleUrl(candidate);
 }
 
+const STUDIO_MATERIAL_SLUGS = new Set(["suede", "synthetic-leather"]);
+
+const COLOR_DISPLAY_NAMES: Record<string, string> = {
+  Black: "Onyx",
+  "Charcoal Black": "Raven",
+  "Charcoal Grey": "Cinder",
+  Coral: "Terracotta",
+  "Dark Brown": "Espresso",
+  "Dark Grey": "Graphite",
+  Grey: "Greige",
+  "Light Brown": "Chestnut",
+  Mauve: "Mink",
+  "Navy Blue": "Midnight",
+};
+
+const NO_BUCKLE = {
+  id: 0,
+  name: "No Buckle",
+  slug: "no-buckle",
+  model_url: "",
+  thumbnail_url: "",
+  image_url: "",
+  price_modifier: 0,
+};
+
+export function isNoBuckle(slug?: string | null, id?: number | null) {
+  return slug === "no-buckle" || id === 0;
+}
+
 export function buildCustomizationConfig(shoe: ShoeDetail): CustomizationConfig {
   const fallbackModels =
     fallbackModelsBySlug[shoe.slug] ?? fallbackModelsBySlug["ivory-gold-bit-mule"];
@@ -126,41 +155,75 @@ export function buildCustomizationConfig(shoe: ShoeDetail): CustomizationConfig 
     default_buckle: normalizeModelUrl(shoe.models?.default_buckle, fallbackModels.default_buckle),
   };
 
-  const buckles = (shoe.buckles ?? []).map((buckle) => {
-    const slugMatch = buckle.slug?.match(/buckle-?(\d+)/i);
-    const index = slugMatch ? Number(slugMatch[1]) : null;
-    const imageFallback =
-      index && index >= 1 && index <= 10
-        ? `/images/buckles/buckle_${String(index).padStart(2, "0")}.png`
-        : null;
+  const isStudio = shoe.slug === CUSTOMIZABLE_SHOE_SLUG;
 
-    return {
-      ...buckle,
-      model_url: normalizeModelUrl(
-        buckle.model_url,
-        buckleModelsBySlug[buckle.slug] ?? models.default_buckle,
-      ),
-      thumbnail_url: normalizeImageUrl(
-        buckle.thumbnail_url ?? buckle.image_url,
-        imageFallback,
-      ),
-      image_url: normalizeImageUrl(
-        buckle.image_url ?? buckle.thumbnail_url,
-        imageFallback,
-      ),
-    };
-  });
+  let materials = shoe.materials ?? [];
+  if (isStudio) {
+    materials = materials
+      .filter((material) => STUDIO_MATERIAL_SLUGS.has(material.slug))
+      .map((material) => ({ ...material, price_modifier: 0 }));
+    if (materials.length === 0) {
+      materials = [
+        { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
+        { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 0 },
+      ];
+    }
+  }
+
+  const colors = (shoe.colors ?? []).map((color) => ({
+    ...color,
+    name: COLOR_DISPLAY_NAMES[color.name] ?? color.name,
+  }));
+
+  const buckles = (shoe.buckles ?? [])
+    .filter(
+      (buckle) =>
+        buckle.slug !== "buckle-10" &&
+        buckle.slug !== "studio-emblem" &&
+        buckle.name !== "Studio Emblem",
+    )
+    .map((buckle) => {
+      const slugMatch = buckle.slug?.match(/buckle-?(\d+)/i);
+      const index = slugMatch ? Number(slugMatch[1]) : null;
+      const imageFallback =
+        index && index >= 1 && index <= 10
+          ? `/images/buckles/buckle_${String(index).padStart(2, "0")}.png`
+          : null;
+      const isNone = isNoBuckle(buckle.slug, buckle.id);
+
+      return {
+        ...buckle,
+        price_modifier: 0,
+        model_url: isNone
+          ? ""
+          : normalizeModelUrl(
+              buckle.model_url,
+              buckleModelsBySlug[buckle.slug] ?? models.default_buckle,
+            ),
+        thumbnail_url: isNone
+          ? ""
+          : normalizeImageUrl(buckle.thumbnail_url ?? buckle.image_url, imageFallback),
+        image_url: isNone
+          ? ""
+          : normalizeImageUrl(buckle.image_url ?? buckle.thumbnail_url, imageFallback),
+      };
+    });
+
+  if (!buckles.some((buckle) => isNoBuckle(buckle.slug, buckle.id))) {
+    buckles.unshift({ ...NO_BUCKLE });
+  }
 
   return {
     shoeId: shoe.id,
-    shoeName: shoe.name,
+    // Studio display title can also be overridden via admin Settings → Customize page.
+    shoeName: isStudio ? "Our Studio" : shoe.name,
     shoeSlug: shoe.slug,
     thumbnailUrl: normalizeImageUrl(shoe.thumbnail_url, `/images/shoes/${shoe.slug}.jpg`),
     basePrice: shoe.base_price,
     supportedTypes: (shoe.supported_types ?? ["backless", "covered"]) as ShoeType[],
     models,
-    materials: shoe.materials ?? [],
-    colors: shoe.colors ?? [],
+    materials,
+    colors,
     soleColors: shoe.sole_colors ?? [
       { id: 1, name: "Black", slug: "black", hex_code: "#111111" },
       { id: 2, name: "White", slug: "white", hex_code: "#FFFFFF" },

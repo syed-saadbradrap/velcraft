@@ -21,18 +21,24 @@ export default async function CollectionPage({ searchParams }: CollectionPagePro
   const activeCollection = params.collection ?? "men";
   const page = Number(params.page ?? "1");
 
-  const [collections, catalog] = await Promise.all([
+  const [collections, catalog, pageContent] = await Promise.all([
     apiClient.getCollections(),
     apiClient.getShoes(activeCollection, page),
+    apiClient.getPageSections("collection"),
   ]);
+
+  const hero = pageContent.hero;
 
   return (
     <Container className="py-14 md:py-20">
       <div className="space-y-10">
         <SectionHeading
-          eyebrow="Collection"
-          title="Signature silhouettes, ready to order"
-          description="Browse our men's collection — boots, covered mules, and backless styles. Select your size and add to cart."
+          eyebrow={hero?.eyebrow || "Collection"}
+          title={hero?.title || "Signature silhouettes, ready to order"}
+          description={
+            hero?.description ||
+            "Browse our men's collection — boots, covered mules, and backless styles. Select your size and add to cart."
+          }
         />
 
         <Suspense

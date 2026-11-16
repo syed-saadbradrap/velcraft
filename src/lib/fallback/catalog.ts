@@ -75,16 +75,16 @@ function getModelSlug(slug: string) {
 }
 
 const fallbackCustomizeBuckles: ShoeDetail["buckles"] = [
+  { id: 0, name: "No Buckle", slug: "no-buckle", model_url: "", thumbnail_url: "", image_url: "", price_modifier: 0 },
   { id: 1, name: "Logo Plaque", slug: "buckle-01", model_url: "/models/buckles/buckle_01.glb", thumbnail_url: "/images/buckles/buckle_01.png", image_url: "/images/buckles/buckle_01.png", price_modifier: 0 },
-  { id: 2, name: "Medallion Mesh", slug: "buckle-02", model_url: "/models/buckles/buckle_02.glb", thumbnail_url: "/images/buckles/buckle_02.png", image_url: "/images/buckles/buckle_02.png", price_modifier: 50 },
-  { id: 3, name: "Twin Horsebit", slug: "buckle-03", model_url: "/models/buckles/buckle_03.glb", thumbnail_url: "/images/buckles/buckle_03.png", image_url: "/images/buckles/buckle_03.png", price_modifier: 100 },
-  { id: 4, name: "Chain Link Bar", slug: "buckle-04", model_url: "/models/buckles/buckle_04.glb", thumbnail_url: "/images/buckles/buckle_04.png", image_url: "/images/buckles/buckle_04.png", price_modifier: 150 },
-  { id: 5, name: "Classic Bit", slug: "buckle-05", model_url: "/models/buckles/buckle_05.glb", thumbnail_url: "/images/buckles/buckle_05.png", image_url: "/images/buckles/buckle_05.png", price_modifier: 200 },
-  { id: 6, name: "Ornate Crest", slug: "buckle-06", model_url: "/models/buckles/buckle_06.glb", thumbnail_url: "/images/buckles/buckle_06.png", image_url: "/images/buckles/buckle_06.png", price_modifier: 250 },
-  { id: 7, name: "Slim Metal Bar", slug: "buckle-07", model_url: "/models/buckles/buckle_07.glb", thumbnail_url: "/images/buckles/buckle_07.png", image_url: "/images/buckles/buckle_07.png", price_modifier: 300 },
-  { id: 8, name: "Double Ring", slug: "buckle-08", model_url: "/models/buckles/buckle_08.glb", thumbnail_url: "/images/buckles/buckle_08.png", image_url: "/images/buckles/buckle_08.png", price_modifier: 350 },
-  { id: 9, name: "Heritage Plate", slug: "buckle-09", model_url: "/models/buckles/buckle_09.glb", thumbnail_url: "/images/buckles/buckle_09.png", image_url: "/images/buckles/buckle_09.png", price_modifier: 400 },
-  { id: 10, name: "Studio Emblem", slug: "buckle-10", model_url: "/models/buckles/buckle_10.glb", thumbnail_url: "/images/buckles/buckle_10.png", image_url: "/images/buckles/buckle_10.png", price_modifier: 450 },
+  { id: 2, name: "Medallion Mesh", slug: "buckle-02", model_url: "/models/buckles/buckle_02.glb", thumbnail_url: "/images/buckles/buckle_02.png", image_url: "/images/buckles/buckle_02.png", price_modifier: 0 },
+  { id: 3, name: "Twin Horsebit", slug: "buckle-03", model_url: "/models/buckles/buckle_03.glb", thumbnail_url: "/images/buckles/buckle_03.png", image_url: "/images/buckles/buckle_03.png", price_modifier: 0 },
+  { id: 4, name: "Chain Link Bar", slug: "buckle-04", model_url: "/models/buckles/buckle_04.glb", thumbnail_url: "/images/buckles/buckle_04.png", image_url: "/images/buckles/buckle_04.png", price_modifier: 0 },
+  { id: 5, name: "Classic Bit", slug: "buckle-05", model_url: "/models/buckles/buckle_05.glb", thumbnail_url: "/images/buckles/buckle_05.png", image_url: "/images/buckles/buckle_05.png", price_modifier: 0 },
+  { id: 6, name: "Ornate Crest", slug: "buckle-06", model_url: "/models/buckles/buckle_06.glb", thumbnail_url: "/images/buckles/buckle_06.png", image_url: "/images/buckles/buckle_06.png", price_modifier: 0 },
+  { id: 7, name: "Slim Metal Bar", slug: "buckle-07", model_url: "/models/buckles/buckle_07.glb", thumbnail_url: "/images/buckles/buckle_07.png", image_url: "/images/buckles/buckle_07.png", price_modifier: 0 },
+  { id: 8, name: "Double Ring", slug: "buckle-08", model_url: "/models/buckles/buckle_08.glb", thumbnail_url: "/images/buckles/buckle_08.png", image_url: "/images/buckles/buckle_08.png", price_modifier: 0 },
+  { id: 9, name: "Heritage Plate", slug: "buckle-09", model_url: "/models/buckles/buckle_09.glb", thumbnail_url: "/images/buckles/buckle_09.png", image_url: "/images/buckles/buckle_09.png", price_modifier: 0 },
 ];
 
 const fallbackCustomizeSizes: ShoeDetail["sizes"] = [
@@ -104,10 +104,10 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
   if (slug === "studio-loafer") {
     return {
       id: 17,
-      name: "Studio Loafer",
+      name: "Our Studio",
       slug: "studio-loafer",
       description:
-        "Clean blank loafer for full customization — backless mule or covered heel.",
+        "Customize every detail, from material and color to buckle, sole, and fit, with an interactive live preview. Exclusively designed for our signature customizable shoe style.",
       base_price: 2999,
       thumbnail_url: "/images/shoes/studio-loafer/main.png",
       is_featured: true,
@@ -123,19 +123,18 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
       materials: [
         { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
         { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 0 },
-        { id: 3, name: "Premium Leather", slug: "premium-leather", price_modifier: 0 },
-        { id: 4, name: "Velvet", slug: "velvet", price_modifier: 0 },
       ],
       colors: [
-        { id: 1, name: "Charcoal Black", hex_code: "#3D312D" },
-        { id: 2, name: "Charcoal Grey", hex_code: "#7C615D" },
-        { id: 3, name: "Coral", hex_code: "#9B4534" },
-        { id: 4, name: "Dark Brown", hex_code: "#3F1C16" },
-        { id: 5, name: "Dark Grey", hex_code: "#564D48" },
-        { id: 6, name: "Grey", hex_code: "#AFA299" },
-        { id: 7, name: "Light Brown", hex_code: "#744438" },
-        { id: 8, name: "Mauve", hex_code: "#846B64" },
-        { id: 9, name: "Navy Blue", hex_code: "#463851" },
+        { id: 10, name: "Onyx", hex_code: "#111111" },
+        { id: 1, name: "Raven", hex_code: "#3D312D" },
+        { id: 2, name: "Cinder", hex_code: "#7C615D" },
+        { id: 3, name: "Terracotta", hex_code: "#9B4534" },
+        { id: 4, name: "Espresso", hex_code: "#3F1C16" },
+        { id: 5, name: "Graphite", hex_code: "#564D48" },
+        { id: 6, name: "Greige", hex_code: "#AFA299" },
+        { id: 7, name: "Chestnut", hex_code: "#744438" },
+        { id: 8, name: "Mink", hex_code: "#846B64" },
+        { id: 9, name: "Midnight", hex_code: "#463851" },
       ],
       sole_colors: [
         { id: 1, name: "Black", slug: "black", hex_code: "#111111" },
@@ -233,8 +232,8 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
     ],
     buckles: [
       { id: 1, name: "Classic Oval", slug: "classic-oval", model_url: "/models/buckles/classic-oval.glb", price_modifier: 0 },
-      { id: 2, name: "Heritage Square", slug: "heritage-square", model_url: "/models/buckles/heritage-square.glb", price_modifier: 100 },
-      { id: 3, name: "Minimal Bar", slug: "minimal-bar", model_url: "/models/buckles/minimal-bar.glb", price_modifier: 200 },
+      { id: 2, name: "Heritage Square", slug: "heritage-square", model_url: "/models/buckles/heritage-square.glb", price_modifier: 0 },
+      { id: 3, name: "Minimal Bar", slug: "minimal-bar", model_url: "/models/buckles/minimal-bar.glb", price_modifier: 0 },
     ],
     sizes: [
       { id: 5, gender: "men", label: "40", value: 40 },

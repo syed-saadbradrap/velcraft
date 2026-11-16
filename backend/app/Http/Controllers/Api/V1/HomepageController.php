@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CollectionResource;
 use App\Http\Resources\ShoeResource;
-use App\Models\Collection;
 use App\Models\HeroSlide;
+use App\Models\PageSection;
 use App\Models\ProcessStep;
 use App\Models\Shoe;
 use App\Models\SiteSetting;
@@ -24,6 +23,23 @@ class HomepageController extends Controller
             ->whereIn('key', ['brand', 'newsletter'])
             ->get()
             ->keyBy('key');
+
+        $sections = PageSection::query()
+            ->where('page_key', 'home')
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->get()
+            ->mapWithKeys(fn (PageSection $section) => [
+                $section->section_key => [
+                    'eyebrow' => $section->eyebrow,
+                    'title' => $section->title,
+                    'description' => $section->description,
+                    'body_json' => $section->body_json,
+                    'image_url' => AssetUrl::publicUrl($section->image_path),
+                    'cta_label' => $section->cta_label,
+                    'cta_url' => $section->cta_url,
+                ],
+            ]);
 
         return ApiResponse::success([
             'brand' => $settings->get('brand')?->value ?? [
@@ -84,6 +100,7 @@ class HomepageController extends Controller
                 'title' => 'Join the Atelier List',
                 'description' => 'Receive early access to new collections and bespoke customization drops.',
             ],
+            'sections' => $sections,
         ]);
     }
 }

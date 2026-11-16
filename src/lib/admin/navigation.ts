@@ -4,7 +4,10 @@ export type AdminNavIcon =
   | "orders"
   | "customers"
   | "messages"
-  | "coupons";
+  | "coupons"
+  | "content"
+  | "settings"
+  | "media";
 
 export interface AdminNavItem {
   label: string;
@@ -19,6 +22,24 @@ export const adminNavigation: AdminNavItem[] = [
     href: "/admin/dashboard",
     icon: "dashboard",
     description: "Overview & analytics",
+  },
+  {
+    label: "Content",
+    href: "/admin/content",
+    icon: "content",
+    description: "Homepage & page copy",
+  },
+  {
+    label: "Settings",
+    href: "/admin/settings",
+    icon: "settings",
+    description: "Brand, contact, nav",
+  },
+  {
+    label: "Media",
+    href: "/admin/media",
+    icon: "media",
+    description: "Image uploads",
   },
   {
     label: "Products",

@@ -110,6 +110,16 @@ export interface NewsletterSection {
   description: string;
 }
 
+export interface PageSectionContent {
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  body_json?: Record<string, unknown> | null;
+  image_url?: string | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
+}
+
 export interface HomepageData {
   brand: BrandSettings;
   hero: HeroSlide[];
@@ -118,6 +128,27 @@ export interface HomepageData {
   why_choose_us: WhyChooseItem[];
   testimonials: Testimonial[];
   newsletter: NewsletterSection;
+  sections?: Record<string, PageSectionContent>;
+}
+
+export interface SiteBootstrap {
+  brand: BrandSettings & {
+    description?: string;
+    logo_path?: string | null;
+    logo_url?: string | null;
+  };
+  contact: Record<string, unknown>;
+  navigation: { items?: Array<{ label: string; href: string }> };
+  footer: Record<string, unknown>;
+  header: { announcement_items?: string[] };
+  commerce: Record<string, unknown>;
+  payments: Record<string, unknown>;
+  newsletter: NewsletterSection & { enabled?: boolean };
+  customize_page: {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+  };
 }
 
 export interface ContactPageContent {

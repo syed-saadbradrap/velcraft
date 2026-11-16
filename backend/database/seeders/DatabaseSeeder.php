@@ -10,6 +10,7 @@ use App\Models\Color;
 use App\Models\Coupon;
 use App\Models\HeroSlide;
 use App\Models\Material;
+use App\Models\PageSection;
 use App\Models\ProcessStep;
 use App\Models\Shoe;
 use App\Models\SiteSetting;
@@ -43,10 +44,21 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        $this->seedSiteSettings();
+        $this->seedCatalog();
+        $this->seedHomepageContent();
+        $this->seedPageSections();
+        $this->seedCoupons();
+    }
+
+    private function seedSiteSettings(): void
+    {
         SiteSetting::query()->updateOrCreate(['key' => 'brand'], [
             'value' => [
                 'name' => 'Velcraft',
-                'tagline' => 'Bespoke luxury footwear crafted with precision and soul.',
+                'tagline' => 'Bespoke luxury footwear',
+                'description' => 'Design footwear that\'s made to match your style. Customize colors, premium fabrics, buckles, soles, and sizes in our interactive 3D designer.',
+                'logo_path' => 'images/logo/velcraft-logo.png',
             ],
         ]);
 
@@ -54,6 +66,7 @@ class DatabaseSeeder extends Seeder
             'value' => [
                 'title' => 'Join the Atelier List',
                 'description' => 'Receive early access to new collections and bespoke customization drops.',
+                'enabled' => true,
             ],
         ]);
 
@@ -63,14 +76,230 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Reach out through your preferred method, and we\'ll respond as quickly as possible.',
                 'email' => 'ajshoes@velcraftpk.com',
                 'phone' => '+92 304 2568744',
+                'whatsapp' => '+92 304 2568744',
+                'whatsapp_message' => 'Hi Velcraft, I would like to know more about your custom shoes.',
                 'hours' => 'Monday - Saturday, 12:00 PM - 10:00 PM (PKT)',
                 'address' => 'Dolmen Center, Tariq Road, Karachi, Pakistan',
+                'map_url' => 'https://maps.google.com/?q=Dolmen+Center+Tariq+Road+Karachi',
             ],
         ]);
 
-        $this->seedCatalog();
-        $this->seedHomepageContent();
-        $this->seedCoupons();
+        SiteSetting::query()->updateOrCreate(['key' => 'navigation'], [
+            'value' => [
+                'items' => [
+                    ['label' => 'Home', 'href' => '/'],
+                    ['label' => 'About', 'href' => '/about'],
+                    ['label' => 'Collection', 'href' => '/collection'],
+                    ['label' => 'Customization', 'href' => '/customize/studio-loafer'],
+                    ['label' => 'Contact', 'href' => '/contact'],
+                ],
+            ],
+        ]);
+
+        SiteSetting::query()->updateOrCreate(['key' => 'header'], [
+            'value' => [
+                'announcement_items' => [
+                    'Complimentary EU sizing guidance',
+                    '7–10 business day delivery',
+                    'Bespoke craftsmanship',
+                ],
+            ],
+        ]);
+
+        SiteSetting::query()->updateOrCreate(['key' => 'footer'], [
+            'value' => [
+                'blurb' => 'Bespoke luxury footwear crafted with precision and soul.',
+                'highlights' => [
+                    ['title' => 'Made to order', 'body' => 'Every pair is crafted after you finalize your design.'],
+                    ['title' => 'Concierge support', 'body' => 'WhatsApp and email help for sizing and customization.'],
+                ],
+            ],
+        ]);
+
+        SiteSetting::query()->updateOrCreate(['key' => 'commerce'], [
+            'value' => [
+                'currency' => 'PKR',
+                'shipping_flat' => 2500,
+                'delivery_timeline' => '7–10 business days',
+                'default_country' => 'PK',
+                'country_name' => 'Pakistan',
+            ],
+        ]);
+
+        SiteSetting::query()->updateOrCreate(['key' => 'payments'], [
+            'value' => [
+                'cod' => [
+                    'label' => 'Cash on Delivery',
+                    'description' => 'Pay in cash when your order arrives at your doorstep.',
+                ],
+                'bank_transfer' => [
+                    'label' => 'Bank Transfer',
+                    'description' => 'Transfer the order total to our bank account and share payment proof by email.',
+                    'bank_name' => 'Meezan Bank',
+                    'account_title' => 'Velcraft',
+                    'account_number' => '01234567890123',
+                    'iban' => 'PK00MEZN0000123456789012',
+                ],
+                'card' => [
+                    'label' => 'Debit / Credit Card',
+                    'description' => 'Pay securely with card via PayFast.',
+                    'provider' => 'PayFast',
+                ],
+            ],
+        ]);
+
+        SiteSetting::query()->updateOrCreate(['key' => 'customize_page'], [
+            'value' => [
+                'eyebrow' => 'Customization Studio',
+                'title' => 'Our Studio',
+                'description' => 'Customize every detail, from material and color to buckle, sole, and fit, with an interactive live preview. Exclusively designed for our signature customizable shoe style.',
+            ],
+        ]);
+    }
+
+    private function seedPageSections(): void
+    {
+        $sections = [
+            [
+                'page_key' => 'home',
+                'section_key' => 'products',
+                'eyebrow' => 'Shop Collection',
+                'title' => 'Signature Styles, Ready to Wear',
+                'description' => 'Explore our curated mule collection with premium fabrics, signature buckles, and sizes for men and women.',
+                'body_json' => [
+                    'stats' => [
+                        ['label' => 'Premium colors', 'value' => '20+'],
+                        ['label' => 'Buckle designs', 'value' => '10+'],
+                        ['label' => 'Unisex sizing', 'value' => 'Men & Women'],
+                    ],
+                ],
+                'sort_order' => 1,
+            ],
+            [
+                'page_key' => 'home',
+                'section_key' => 'trust',
+                'eyebrow' => 'The Velcraft Standard',
+                'title' => null,
+                'description' => null,
+                'body_json' => [
+                    'items' => [
+                        'Premium materials',
+                        'Made-to-order craftsmanship',
+                        'Interactive 3D design',
+                        'EU sizing guidance',
+                        'Secure checkout',
+                        'Nationwide delivery',
+                    ],
+                ],
+                'sort_order' => 2,
+            ],
+            [
+                'page_key' => 'home',
+                'section_key' => 'atelier',
+                'eyebrow' => 'Crafted Around Your Style',
+                'title' => 'See It. Customize It. Wear It.',
+                'description' => 'Experience your design before it reaches your doorstep. Our real-time 3D configurator lets you visualize every change instantly.',
+                'body_json' => [
+                    'features' => [
+                        '5+ customizations',
+                        'Premium craftsmanship',
+                        'Personalized to your preferences',
+                        'Stylish, comfortable, and built to last',
+                        'Secure ordering and reliable delivery',
+                    ],
+                ],
+                'cta_label' => 'Start Designing',
+                'cta_url' => '/customize/studio-loafer',
+                'sort_order' => 3,
+            ],
+            [
+                'page_key' => 'home',
+                'section_key' => 'testimonials',
+                'eyebrow' => 'Customer Reviews',
+                'title' => 'Loved by Every Step',
+                'description' => null,
+                'body_json' => null,
+                'sort_order' => 4,
+            ],
+            [
+                'page_key' => 'home',
+                'section_key' => 'faq',
+                'eyebrow' => 'FAQ',
+                'title' => 'Questions, Answered',
+                'description' => null,
+                'body_json' => [
+                    'faqs' => [
+                        ['question' => 'Can I customize every part of the shoe?', 'answer' => 'Yes. Personalize colors, premium fabrics, buckles, soles, sizes, and shoe styles through our interactive 3D designer.'],
+                        ['question' => 'How many colors can I choose from?', 'answer' => 'We offer 20+ carefully selected colors, with new options added regularly.'],
+                        ['question' => 'What buckle options are available?', 'answer' => 'Choose from 10+ buckle designs, ranging from classic finishes to bold contemporary styles.'],
+                        ['question' => 'Do you offer sizes for everyone?', 'answer' => 'Absolutely. We provide a complete size range for both men and women to ensure the perfect fit.'],
+                        ['question' => 'Can I see my design before ordering?', 'answer' => 'Yes. Our live 3D configurator updates instantly, allowing you to preview every customization before placing your order.'],
+                    ],
+                ],
+                'sort_order' => 5,
+            ],
+            [
+                'page_key' => 'home',
+                'section_key' => 'final_cta',
+                'eyebrow' => null,
+                'title' => 'Create a Pair That\'s Uniquely Yours',
+                'description' => 'From premium fabrics and bold colors to signature buckles and perfect sizing, every detail is yours to personalize.',
+                'body_json' => ['subline' => 'Design today. Wear your identity tomorrow.'],
+                'cta_label' => 'Design Your Shoes',
+                'cta_url' => '/customize/studio-loafer',
+                'sort_order' => 6,
+            ],
+            [
+                'page_key' => 'about',
+                'section_key' => 'hero',
+                'title' => 'Two Decades of Craftsmanship. A New Era of Personalization.',
+                'description' => 'For over 20 years, Velcraft has been dedicated to crafting premium footwear with exceptional quality and timeless design.',
+                'sort_order' => 1,
+            ],
+            [
+                'page_key' => 'contact',
+                'section_key' => 'hero',
+                'title' => 'We\'re Here to Help',
+                'description' => 'Have a question about your order, customization options, or sizing? Our team is ready to assist you every step of the way.',
+                'sort_order' => 1,
+            ],
+            [
+                'page_key' => 'collection',
+                'section_key' => 'hero',
+                'eyebrow' => 'Collection',
+                'title' => 'Signature silhouettes for every step',
+                'description' => 'Browse our men\'s collection of ready-to-wear mules, or open customization to design your own.',
+                'sort_order' => 1,
+            ],
+            [
+                'page_key' => 'customize',
+                'section_key' => 'hero',
+                'eyebrow' => 'Customization Studio',
+                'title' => 'Our Studio',
+                'description' => 'Customize every detail, from material and color to buckle, sole, and fit, with an interactive live preview. Exclusively designed for our signature customizable shoe style.',
+                'sort_order' => 1,
+            ],
+        ];
+
+        foreach ($sections as $section) {
+            PageSection::query()->updateOrCreate(
+                [
+                    'page_key' => $section['page_key'],
+                    'section_key' => $section['section_key'],
+                ],
+                [
+                    'eyebrow' => $section['eyebrow'] ?? null,
+                    'title' => $section['title'] ?? null,
+                    'description' => $section['description'] ?? null,
+                    'body_json' => $section['body_json'] ?? null,
+                    'image_path' => $section['image_path'] ?? null,
+                    'cta_label' => $section['cta_label'] ?? null,
+                    'cta_url' => $section['cta_url'] ?? null,
+                    'sort_order' => $section['sort_order'] ?? 0,
+                    'is_active' => true,
+                ]
+            );
+        }
     }
 
     private function seedCoupons(): void
@@ -95,23 +324,44 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Velvet', 'slug' => 'velvet', 'texture_path' => 'textures/suede.jpg', 'price_modifier' => 0],
         ])->map(fn (array $data) => Material::query()->updateOrCreate(['slug' => $data['slug']], $data));
 
+        $studioMaterialSlugs = ['suede', 'synthetic-leather'];
+
+        // Rename legacy palette rows in place so existing pivots keep their color ids.
+        $legacyColorNames = [
+            'Charcoal Black' => 'Raven',
+            'Charcoal Grey' => 'Cinder',
+            'Coral' => 'Terracotta',
+            'Dark Brown' => 'Espresso',
+            'Dark Grey' => 'Graphite',
+            'Grey' => 'Greige',
+            'Light Brown' => 'Chestnut',
+            'Mauve' => 'Mink',
+            'Navy Blue' => 'Midnight',
+        ];
+
+        foreach ($legacyColorNames as $legacyName => $newName) {
+            if (! Color::query()->where('name', $newName)->exists()) {
+                Color::query()->where('name', $legacyName)->update(['name' => $newName]);
+            }
+        }
+
         $colors = collect([
-            ['name' => 'Charcoal Black', 'hex_code' => '#3D312D', 'swatch_path' => 'images/colors/charcoal-black.jpg'],
-            ['name' => 'Charcoal Grey', 'hex_code' => '#7C615D', 'swatch_path' => 'images/colors/charcoal-grey.jpg'],
-            ['name' => 'Coral', 'hex_code' => '#9B4534', 'swatch_path' => 'images/colors/coral.jpg'],
-            ['name' => 'Dark Brown', 'hex_code' => '#3F1C16', 'swatch_path' => 'images/colors/dark-brown.jpg'],
-            ['name' => 'Dark Grey', 'hex_code' => '#564D48', 'swatch_path' => 'images/colors/dark-grey.jpg'],
-            ['name' => 'Grey', 'hex_code' => '#AFA299', 'swatch_path' => 'images/colors/grey.jpg'],
-            ['name' => 'Light Brown', 'hex_code' => '#744438', 'swatch_path' => 'images/colors/light-brown.jpg'],
-            ['name' => 'Mauve', 'hex_code' => '#846B64', 'swatch_path' => 'images/colors/mauve.jpg'],
-            ['name' => 'Navy Blue', 'hex_code' => '#463851', 'swatch_path' => 'images/colors/navy-blue.jpg'],
+            ['name' => 'Onyx', 'hex_code' => '#111111', 'swatch_path' => null],
+            ['name' => 'Raven', 'hex_code' => '#3D312D', 'swatch_path' => 'images/colors/charcoal-black.jpg'],
+            ['name' => 'Cinder', 'hex_code' => '#7C615D', 'swatch_path' => 'images/colors/charcoal-grey.jpg'],
+            ['name' => 'Terracotta', 'hex_code' => '#9B4534', 'swatch_path' => 'images/colors/coral.jpg'],
+            ['name' => 'Espresso', 'hex_code' => '#3F1C16', 'swatch_path' => 'images/colors/dark-brown.jpg'],
+            ['name' => 'Graphite', 'hex_code' => '#564D48', 'swatch_path' => 'images/colors/dark-grey.jpg'],
+            ['name' => 'Greige', 'hex_code' => '#AFA299', 'swatch_path' => 'images/colors/grey.jpg'],
+            ['name' => 'Chestnut', 'hex_code' => '#744438', 'swatch_path' => 'images/colors/light-brown.jpg'],
+            ['name' => 'Mink', 'hex_code' => '#846B64', 'swatch_path' => 'images/colors/mauve.jpg'],
+            ['name' => 'Midnight', 'hex_code' => '#463851', 'swatch_path' => 'images/colors/navy-blue.jpg'],
         ])->map(fn (array $data, int $index) => Color::query()->updateOrCreate(
             ['name' => $data['name']],
             [...$data, 'is_active' => true, 'sort_order' => $index + 1]
         ));
 
         // Keep legacy inactive palette rows so old pivots don't break references.
-        // "Black" removed from the active upper-color picker (was first).
         Color::query()
             ->whereNotIn('name', $colors->pluck('name'))
             ->update(['is_active' => false]);
@@ -137,6 +387,7 @@ class DatabaseSeeder extends Seeder
         Buckle::query()->whereIn('slug', ['classic-oval', 'heritage-square', 'minimal-bar'])->update(['is_active' => false]);
 
         $buckles = collect([
+            ['name' => 'No Buckle', 'slug' => 'no-buckle', 'model_path' => '', 'thumbnail_path' => null],
             ['name' => 'Logo Plaque', 'slug' => 'buckle-01', 'model_path' => 'models/buckles/buckle_01.glb', 'thumbnail_path' => 'images/buckles/buckle_01.png'],
             ['name' => 'Medallion Mesh', 'slug' => 'buckle-02', 'model_path' => 'models/buckles/buckle_02.glb', 'thumbnail_path' => 'images/buckles/buckle_02.png'],
             ['name' => 'Twin Horsebit', 'slug' => 'buckle-03', 'model_path' => 'models/buckles/buckle_03.glb', 'thumbnail_path' => 'images/buckles/buckle_03.png'],
@@ -146,11 +397,13 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Slim Metal Bar', 'slug' => 'buckle-07', 'model_path' => 'models/buckles/buckle_07.glb', 'thumbnail_path' => 'images/buckles/buckle_07.png'],
             ['name' => 'Double Ring', 'slug' => 'buckle-08', 'model_path' => 'models/buckles/buckle_08.glb', 'thumbnail_path' => 'images/buckles/buckle_08.png'],
             ['name' => 'Heritage Plate', 'slug' => 'buckle-09', 'model_path' => 'models/buckles/buckle_09.glb', 'thumbnail_path' => 'images/buckles/buckle_09.png'],
-            ['name' => 'Studio Emblem', 'slug' => 'buckle-10', 'model_path' => 'models/buckles/buckle_10.glb', 'thumbnail_path' => 'images/buckles/buckle_10.png'],
         ])->map(fn (array $data, int $index) => Buckle::query()->updateOrCreate(
             ['slug' => $data['slug']],
-            [...$data, 'sort_order' => $index + 1, 'price_modifier' => $index * 50, 'is_active' => true]
+            [...$data, 'sort_order' => $index, 'price_modifier' => 0, 'is_active' => true]
         ));
+
+        // Studio Emblem duplicated the Gucci-style plaque; keep the row for old orders but hide it.
+        Buckle::query()->where('slug', 'buckle-10')->update(['is_active' => false, 'price_modifier' => 0]);
 
         $signature = Collection::query()->updateOrCreate(['slug' => 'signature'], [
             'name' => 'Impression',
@@ -192,9 +445,9 @@ class DatabaseSeeder extends Seeder
         $shoes = [
             [
                 'collection_id' => $men->id,
-                'name' => 'Studio Loafer',
+                'name' => 'Our Studio',
                 'slug' => 'studio-loafer',
-                'description' => 'Clean blank loafer for full customization — backless mule or covered heel.',
+                'description' => 'Customize every detail, from material and color to buckle, sole, and fit, with an interactive live preview. Exclusively designed for our signature customizable shoe style.',
                 'base_price' => 2999,
                 'thumbnail_path' => 'images/shoes/studio-loafer/main.png',
                 'body_model_path' => "models/shoes/{$studioModel}/shoe.glb",
@@ -504,22 +757,23 @@ class DatabaseSeeder extends Seeder
             ->update(['is_active' => false, 'is_featured' => false]);
 
         $productAttributes = [
-            'black-boot' => ['material' => 'premium-leather', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
-            'brown-boot' => ['material' => 'premium-leather', 'color' => 'Dark Brown', 'buckle' => 'buckle-01'],
-            'dark-blue-covered' => ['material' => 'velvet', 'color' => 'Navy Blue', 'buckle' => 'buckle-01'],
-            'black-covered' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
-            'medium-brown-covered' => ['material' => 'suede', 'color' => 'Light Brown', 'buckle' => 'buckle-01'],
-            'brown-covered' => ['material' => 'suede', 'color' => 'Light Brown', 'buckle' => 'buckle-01'],
-            'brown-diff-buckle' => ['material' => 'suede', 'color' => 'Dark Brown', 'buckle' => 'buckle-03'],
-            'dark-brown-covered' => ['material' => 'suede', 'color' => 'Dark Brown', 'buckle' => 'buckle-01'],
-            'charcoal' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
-            'faune' => ['material' => 'suede', 'color' => 'Mauve', 'buckle' => 'buckle-01'],
-            'grey' => ['material' => 'suede', 'color' => 'Grey', 'buckle' => 'buckle-01'],
-            'full-black-backless' => ['material' => 'suede', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
-            'black-and-white-backless' => ['material' => 'suede', 'color' => 'Charcoal Grey', 'buckle' => 'buckle-01'],
-            'black-xl' => ['material' => 'premium-leather', 'color' => 'Charcoal Black', 'buckle' => 'buckle-01'],
-            'brown-xl' => ['material' => 'premium-leather', 'color' => 'Dark Brown', 'buckle' => 'buckle-01'],
-            'ivory-gold-bit-mule' => ['material' => 'suede', 'color' => 'Grey', 'buckle' => 'buckle-01', 'all_colors' => true, 'all_materials' => true, 'all_buckles' => true],
+            'studio-loafer' => ['materials' => $studioMaterialSlugs, 'color' => 'Onyx', 'buckle' => 'no-buckle', 'all_colors' => true, 'all_buckles' => true],
+            'black-boot' => ['material' => 'premium-leather', 'color' => 'Raven', 'buckle' => 'buckle-01'],
+            'brown-boot' => ['material' => 'premium-leather', 'color' => 'Espresso', 'buckle' => 'buckle-01'],
+            'dark-blue-covered' => ['material' => 'velvet', 'color' => 'Midnight', 'buckle' => 'buckle-01'],
+            'black-covered' => ['material' => 'suede', 'color' => 'Raven', 'buckle' => 'buckle-01'],
+            'medium-brown-covered' => ['material' => 'suede', 'color' => 'Chestnut', 'buckle' => 'buckle-01'],
+            'brown-covered' => ['material' => 'suede', 'color' => 'Chestnut', 'buckle' => 'buckle-01'],
+            'brown-diff-buckle' => ['material' => 'suede', 'color' => 'Espresso', 'buckle' => 'buckle-03'],
+            'dark-brown-covered' => ['material' => 'suede', 'color' => 'Espresso', 'buckle' => 'buckle-01'],
+            'charcoal' => ['material' => 'suede', 'color' => 'Raven', 'buckle' => 'buckle-01'],
+            'faune' => ['material' => 'suede', 'color' => 'Mink', 'buckle' => 'buckle-01'],
+            'grey' => ['material' => 'suede', 'color' => 'Greige', 'buckle' => 'buckle-01'],
+            'full-black-backless' => ['material' => 'suede', 'color' => 'Raven', 'buckle' => 'buckle-01'],
+            'black-and-white-backless' => ['material' => 'suede', 'color' => 'Cinder', 'buckle' => 'buckle-01'],
+            'black-xl' => ['material' => 'premium-leather', 'color' => 'Raven', 'buckle' => 'buckle-01'],
+            'brown-xl' => ['material' => 'premium-leather', 'color' => 'Espresso', 'buckle' => 'buckle-01'],
+            'ivory-gold-bit-mule' => ['material' => 'suede', 'color' => 'Greige', 'buckle' => 'buckle-01', 'all_colors' => true, 'all_materials' => true, 'all_buckles' => true],
         ];
 
         foreach ($shoes as $shoeData) {
@@ -527,11 +781,11 @@ class DatabaseSeeder extends Seeder
             $attributes = $productAttributes[$shoe->slug] ?? null;
 
             if ($attributes) {
-                $shoe->materials()->sync(
-                    ($attributes['all_materials'] ?? false)
-                        ? $materials->pluck('id')
-                        : [$materials->firstWhere('slug', $attributes['material'])?->id]
-                );
+                $shoe->materials()->sync(match (true) {
+                    $attributes['all_materials'] ?? false => $materials->pluck('id'),
+                    isset($attributes['materials']) => $materials->whereIn('slug', $attributes['materials'])->pluck('id'),
+                    default => [$materials->firstWhere('slug', $attributes['material'])?->id],
+                });
                 $shoe->colors()->sync(
                     ($attributes['all_colors'] ?? false)
                         ? $colors->pluck('id')
@@ -571,7 +825,7 @@ class DatabaseSeeder extends Seeder
                 'description' => 'Design footwear that\'s made to match your style—not someone else\'s. Configure materials, colors, buckles, and soles in real time with our interactive 3D atelier.',
                 'image_path' => 'images/shoes/catalog-extra/blue-covered-2.png',
                 'cta_label' => 'Start Customizing',
-                'cta_url' => '/customize/ivory-gold-bit-mule',
+                'cta_url' => '/customize/studio-loafer',
                 'sort_order' => 1,
                 'is_active' => true,
             ]

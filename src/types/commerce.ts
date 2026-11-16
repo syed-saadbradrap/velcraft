@@ -345,7 +345,60 @@ export interface AdminProductOptions {
 export interface AdminUploadResult {
   path: string;
   url: string;
+  folder?: string;
 }
+
+export interface AdminHeroSlide {
+  id: number;
+  title: string;
+  subtitle?: string | null;
+  description?: string | null;
+  image_path?: string | null;
+  image_url?: string | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
+  is_active: boolean;
+  sort_order: number;
+}
+
+export interface AdminWhyChooseItem {
+  id: number;
+  title: string;
+  description: string;
+  icon?: string | null;
+  is_active: boolean;
+  sort_order: number;
+}
+
+export interface AdminTestimonialItem {
+  id: number;
+  customer_name: string;
+  customer_title?: string | null;
+  content: string;
+  rating: number;
+  avatar_path?: string | null;
+  avatar_url?: string | null;
+  is_active: boolean;
+  sort_order: number;
+}
+
+export interface AdminPageSection {
+  id: number;
+  page_key: string;
+  section_key: string;
+  eyebrow?: string | null;
+  title?: string | null;
+  description?: string | null;
+  body_json?: Record<string, unknown> | null;
+  image_path?: string | null;
+  image_url?: string | null;
+  cta_label?: string | null;
+  cta_url?: string | null;
+  sort_order: number;
+  is_active: boolean;
+}
+
+export type AdminSiteSettingsMap = Record<string, Record<string, unknown>>;
 
 export function selectionToApiCustomization(
   selection: CustomizationSelection,
@@ -361,6 +414,7 @@ export function selectionToApiCustomization(
 }
 
 export function isCustomizationComplete(selection: CustomizationSelection): boolean {
+  // buckleId 0 = "No Buckle" — still a completed choice
   return (
     selection.materialId !== null &&
     selection.buckleId !== null &&

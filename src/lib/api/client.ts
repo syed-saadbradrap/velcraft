@@ -26,6 +26,7 @@ import type {
   HomepageData,
   PaginatedShoes,
   ShoeDetail,
+  SiteBootstrap,
 } from "@/types/api";
 import type {
   AddCartItemPayload,
@@ -33,10 +34,15 @@ import type {
   AdminCustomer,
   AdminCustomerDetail,
   AdminDashboard,
+  AdminHeroSlide,
+  AdminPageSection,
   AdminProductOptions,
   AdminShoe,
   AdminShoeInput,
+  AdminSiteSettingsMap,
+  AdminTestimonialItem,
   AdminUploadResult,
+  AdminWhyChooseItem,
   AuthPayload,
   Cart,
   CheckoutPayload,
@@ -110,6 +116,32 @@ class ApiClient {
       });
     } catch {
       return fallbackHomepageData;
+    }
+  }
+
+  async getSite(): Promise<SiteBootstrap | null> {
+    try {
+      return await this.request<SiteBootstrap>("/site", undefined, {
+        revalidate: 120,
+        tags: ["site"],
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  async getPageSections(pageKey: string): Promise<Record<string, import("@/types/api").PageSectionContent>> {
+    try {
+      const payload = await this.request<{
+        page_key: string;
+        sections: Record<string, import("@/types/api").PageSectionContent>;
+      }>(`/pages/${pageKey}`, undefined, {
+        revalidate: 120,
+        tags: [`page-${pageKey}`],
+      });
+      return payload.sections ?? {};
+    } catch {
+      return {};
     }
   }
 
@@ -579,10 +611,113 @@ class ApiClient {
     await authFetch<null>(`/admin/shoes/${id}`, { method: "DELETE" });
   }
 
-  async uploadAdminImage(file: File): Promise<AdminUploadResult> {
+  async uploadAdminImage(
+    file: File,
+    folder: "shoes" | "hero" | "pages" | "general" | "brand" = "shoes",
+  ): Promise<AdminUploadResult> {
     const formData = new FormData();
     formData.append("image", file);
+    formData.append("folder", folder);
     return authUpload<AdminUploadResult>("/admin/uploads/image", formData);
+  }
+
+  async getAdminSettings(): Promise<AdminSiteSettingsMap> {
+    return authFetch<AdminSiteSettingsMap>("/admin/settings");
+  }
+
+  async updateAdminSetting(key: string, value: Record<string, unknown>): Promise<{ key: string; value: Record<string, unknown> }> {
+    return authFetch(`/admin/settings/${key}`, {
+      method: "PUT",
+      body: JSON.stringify({ value }),
+    });
+  }
+
+  async getAdminHeroSlides(): Promise<AdminHeroSlide[]> {
+    return authFetch<AdminHeroSlide[]>("/admin/hero-slides");
+  }
+
+  async createAdminHeroSlide(payload: Partial<AdminHeroSlide>): Promise<AdminHeroSlide> {
+    return authFetch<AdminHeroSlide>("/admin/hero-slides", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateAdminHeroSlide(id: number, payload: Partial<AdminHeroSlide>): Promise<AdminHeroSlide> {
+    return authFetch<AdminHeroSlide>(`/admin/hero-slides/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminHeroSlide(id: number): Promise<void> {
+    await authFetch<null>(`/admin/hero-slides/${id}`, { method: "DELETE" });
+  }
+
+  async getAdminWhyChooseItems(): Promise<AdminWhyChooseItem[]> {
+    return authFetch<AdminWhyChooseItem[]>("/admin/why-choose-items");
+  }
+
+  async createAdminWhyChooseItem(payload: Partial<AdminWhyChooseItem>): Promise<AdminWhyChooseItem> {
+    return authFetch<AdminWhyChooseItem>("/admin/why-choose-items", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateAdminWhyChooseItem(id: number, payload: Partial<AdminWhyChooseItem>): Promise<AdminWhyChooseItem> {
+    return authFetch<AdminWhyChooseItem>(`/admin/why-choose-items/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminWhyChooseItem(id: number): Promise<void> {
+    await authFetch<null>(`/admin/why-choose-items/${id}`, { method: "DELETE" });
+  }
+
+  async getAdminTestimonials(): Promise<AdminTestimonialItem[]> {
+    return authFetch<AdminTestimonialItem[]>("/admin/testimonials");
+  }
+
+  async createAdminTestimonial(payload: Partial<AdminTestimonialItem>): Promise<AdminTestimonialItem> {
+    return authFetch<AdminTestimonialItem>("/admin/testimonials", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async updateAdminTestimonial(id: number, payload: Partial<AdminTestimonialItem>): Promise<AdminTestimonialItem> {
+    return authFetch<AdminTestimonialItem>(`/admin/testimonials/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async deleteAdminTestimonial(id: number): Promise<void> {
+    await authFetch<null>(`/admin/testimonials/${id}`, { method: "DELETE" });
+  }
+
+  async getAdminPageSections(pageKey?: string): Promise<AdminPageSection[]> {
+    const suffix = pageKey ? `?page_key=${encodeURIComponent(pageKey)}` : "";
+    return authFetch<AdminPageSection[]>(`/admin/page-sections${suffix}`);
+  }
+
+  async updateAdminPageSection(
+    id: number,
+    payload: Partial<AdminPageSection>,
+  ): Promise<AdminPageSection> {
+    return authFetch<AdminPageSection>(`/admin/page-sections/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async createAdminPageSection(payload: Partial<AdminPageSection>): Promise<AdminPageSection> {
+    return authFetch<AdminPageSection>("/admin/page-sections", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
   }
 }
 

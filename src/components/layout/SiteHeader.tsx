@@ -11,7 +11,8 @@ import { BrandLogo } from "@/components/layout/BrandLogo";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { HeaderIconButton } from "@/components/layout/HeaderIconButton";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { navigation, siteConfig, accountNavigation } from "@/config/site";
+import { siteConfig, accountNavigation } from "@/config/site";
+import { useSiteCms } from "@/context/SiteCmsContext";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { fadeUp } from "@/lib/motion";
@@ -121,6 +122,7 @@ export function SiteHeader() {
   const { isAuthenticated } = useAuth();
   const { itemCount: cartCount, openCart } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
+  const { navigation, announcementItems, deliveryTimeline } = useSiteCms();
 
   useEffect(() => {
     function onScroll() {
@@ -135,11 +137,15 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50">
       <div className="header-announcement hidden border-b border-accent/10 bg-[linear-gradient(90deg,rgba(201,169,98,0.08),rgba(201,169,98,0.02),rgba(201,169,98,0.08))] sm:block">
         <div className="section-shell flex h-7 items-center justify-center gap-2.5 text-[9px] uppercase tracking-[0.22em] text-stone-600">
-          <span>Complimentary EU sizing</span>
-          <span className="h-1 w-1 rounded-full bg-accent/70" />
-          <span>{siteConfig.deliveryTimeline} delivery</span>
-          <span className="h-1 w-1 rounded-full bg-accent/70" />
-          <span>Live 3D customization</span>
+          {(announcementItems.length > 0
+            ? announcementItems
+            : [`Complimentary EU sizing`, `${deliveryTimeline} delivery`, "Live 3D customization"]
+          ).map((item, index) => (
+            <span key={`${item}-${index}`} className="inline-flex items-center gap-2.5">
+              {index > 0 ? <span className="h-1 w-1 rounded-full bg-accent/70" /> : null}
+              <span>{item}</span>
+            </span>
+          ))}
         </div>
       </div>
 

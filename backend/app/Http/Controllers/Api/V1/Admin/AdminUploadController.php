@@ -15,18 +15,21 @@ class AdminUploadController extends Controller
     {
         $validated = $request->validate([
             'image' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:8192'],
+            'folder' => ['sometimes', 'string', 'in:shoes,hero,pages,general,brand'],
         ]);
 
+        $folder = $validated['folder'] ?? 'shoes';
         $file = $validated['image'];
         $extension = strtolower($file->getClientOriginalExtension() ?: 'png');
         $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
         $filename = $filename !== '' ? "{$filename}-" . Str::random(8) . ".{$extension}" : Str::random(16) . ".{$extension}";
 
-        $storedPath = $file->storeAs('images/shoes/uploads', $filename, 'public');
+        $storedPath = $file->storeAs("images/{$folder}/uploads", $filename, 'public');
 
         return ApiResponse::success([
             'path' => $storedPath,
             'url' => AssetUrl::publicUrl($storedPath),
+            'folder' => $folder,
         ], 'Image uploaded.', 201);
     }
 }

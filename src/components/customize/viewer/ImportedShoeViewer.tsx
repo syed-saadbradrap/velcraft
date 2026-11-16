@@ -5,6 +5,7 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { useCustomization } from "@/context/CustomizationContext";
+import { isNoBuckle } from "@/lib/customize/config-builder";
 import {
   PRODUCTION_SHOE_GLB_VERSION,
   applyFullShoeSoleBand,
@@ -19,6 +20,9 @@ import {
   isFullShoeVariantPair,
   prepareImportedMesh,
 } from "@/lib/customize/material-utils";
+
+/** Wordmark / crest PNGs that ship upside-down relative to vamp seating. */
+const UPSIDE_DOWN_BUCKLE_SLUGS = new Set(["buckle-02", "buckle-05", "buckle-10"]);
 
 function hasNamedPart(root: THREE.Object3D, name: string) {
   return Boolean(root.getObjectByName(name));
@@ -126,6 +130,7 @@ function attachImageBuckle(
   texture: THREE.Texture,
   maxAnisotropy = 8,
   shoeType: "backless" | "covered" = "backless",
+  rotate180 = false,
 ) {
   removeNamedPart(shoeRoot, "Buckle");
   shoeRoot.updateMatrixWorld(true);
@@ -179,6 +184,13 @@ function attachImageBuckle(
   map.wrapT = THREE.ClampToEdgeWrapping;
   map.offset.set(crop.u0, crop.v0);
   map.repeat.set(crop.uSize, crop.vSize);
+  if (rotate180) {
+    map.center.set(crop.u0 + crop.uSize * 0.5, crop.v0 + crop.vSize * 0.5);
+    map.rotation = Math.PI;
+  } else {
+    map.center.set(0, 0);
+    map.rotation = 0;
+  }
   map.needsUpdate = true;
 
   // BasicMaterial keeps the PNG's baked metal look (Standard was crushing dark chrome to black).
@@ -318,7 +330,7 @@ function attachImageBuckle(
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
       const i = row * cols + col;
-      let acc = worldPoints[i].clone();
+      const acc = worldPoints[i].clone();
       let n = 1;
       if (col > 0) {
         acc.add(worldPoints[i - 1]);
@@ -395,7 +407,7 @@ function buildShoeGroup(
   applyShoeTypeVisibility(shoeRoot, selection.shoeType);
 
   group.add(shoeRoot);
-  centerAndScale(group, 2.8);
+  centerAndScale(group, 3.35);
 
   if (usesMultiPartPipeline(shoeRoot)) {
     applyProductionUpperMaterial(shoeRoot, selection.colorHex, materialSlug);
@@ -423,11 +435,13 @@ function ImageBuckleDrape({
   imageUrl,
   shoeType,
   maxAnisotropy,
+  rotate180,
 }: {
   shoeRoot: THREE.Object3D;
   imageUrl: string;
   shoeType: "backless" | "covered";
   maxAnisotropy: number;
+  rotate180: boolean;
 }) {
   const buckleTexture = useTexture(imageUrl);
 
@@ -435,7 +449,7 @@ function ImageBuckleDrape({
     let cancelled = false;
     const id = window.requestAnimationFrame(() => {
       if (cancelled) return;
-      attachImageBuckle(shoeRoot, buckleTexture, maxAnisotropy, shoeType);
+      attachImageBuckle(shoeRoot, buckleTexture, maxAnisotropy, shoeType, rotate180);
       applyShoeTypeVisibility(shoeRoot, shoeType);
     });
     return () => {
@@ -443,7 +457,7 @@ function ImageBuckleDrape({
       window.cancelAnimationFrame(id);
       removeNamedPart(shoeRoot, "Buckle");
     };
-  }, [buckleTexture, maxAnisotropy, shoeRoot, shoeType, imageUrl]);
+  }, [buckleTexture, maxAnisotropy, shoeRoot, shoeType, imageUrl, rotate180]);
 
   return null;
 }
@@ -458,20 +472,26 @@ export function ImportedShoeViewer() {
   const material = config.materials.find((item) => item.id === selection.materialId);
   const materialSlug = material?.slug ?? "suede";
   const selectedBuckle = config.buckles.find((item) => item.id === selection.buckleId);
+  const hideBuckle = isNoBuckle(selectedBuckle?.slug, selectedBuckle?.id);
 
   const buckleSlugMatch = selectedBuckle?.slug?.match(/buckle-?(\d+)/i);
   const buckleIndex = buckleSlugMatch ? Number(buckleSlugMatch[1]) : null;
   const localBuckleImage =
-    buckleIndex && buckleIndex >= 1 && buckleIndex <= 10
+    !hideBuckle && buckleIndex && buckleIndex >= 1 && buckleIndex <= 10
       ? `/images/buckles/buckle_${String(buckleIndex).padStart(2, "0")}.png`
       : null;
 
   const buckleImageBase =
     localBuckleImage ||
-    selectedBuckle?.image_url ||
-    selectedBuckle?.thumbnail_url ||
-    "/images/buckles/buckle_01.png";
-  const buckleImageUrl = `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-21`;
+    (!hideBuckle
+      ? selectedBuckle?.image_url || selectedBuckle?.thumbnail_url || null
+      : null);
+  const buckleImageUrl = buckleImageBase
+    ? `${buckleImageBase}${buckleImageBase.includes("?") ? "&" : "?"}v=buckle-vamp-22`
+    : null;
+  const rotateBuckle180 = Boolean(
+    selectedBuckle?.slug && UPSIDE_DOWN_BUCKLE_SLUGS.has(selectedBuckle.slug),
+  );
 
   const combinedUrl = `/models/shoes/${config.shoeSlug}/shoe.glb?v=${PRODUCTION_SHOE_GLB_VERSION}`;
   const shoeGltf = useGLTF(combinedUrl);
@@ -520,16 +540,22 @@ export function ImportedShoeViewer() {
       return;
     }
 
-    // Re-fit whenever the shoe rebuilds or style changes (hidden Cover was framing wrong).
+    // Preserve orbit when recoloring / swapping fabric — only re-fit on shoe or style change.
+    const fitKey = `${config.shoeSlug}:${selection.shoeType}`;
+    if (cameraFittedRef.current && lastShoeSlugRef.current === fitKey) {
+      return;
+    }
+
     const fit = () => {
       if (!groupRef.current) return;
       fitCameraToObject(
         camera,
         controls as { target: THREE.Vector3; update: () => void } | null,
         groupRef.current,
+        1.25,
       );
       cameraFittedRef.current = true;
-      lastShoeSlugRef.current = config.shoeSlug;
+      lastShoeSlugRef.current = fitKey;
     };
 
     fit();
@@ -540,7 +566,7 @@ export function ImportedShoeViewer() {
   return (
     <group ref={groupRef}>
       <primitive object={shoeGroup} />
-      {shoeRoot ? (
+      {shoeRoot && buckleImageUrl ? (
         <Suspense fallback={null}>
           <ImageBuckleDrape
             key={`${selection.buckleId}-${selection.shoeType}-${buckleImageUrl}`}
@@ -548,6 +574,7 @@ export function ImportedShoeViewer() {
             imageUrl={buckleImageUrl}
             shoeType={selection.shoeType}
             maxAnisotropy={maxAnisotropy}
+            rotate180={rotateBuckle180}
           />
         </Suspense>
       ) : null}
