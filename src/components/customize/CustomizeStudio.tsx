@@ -32,7 +32,12 @@ export function CustomizeStudio({ config }: CustomizeStudioProps) {
 
   return (
     <CustomizationProvider config={config}>
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(300px,400px)_minmax(0,1fr)] lg:items-start lg:gap-8">
+      <div
+        className={cn(
+          "flex flex-col lg:grid lg:grid-cols-[minmax(300px,400px)_minmax(0,1fr)] lg:items-start lg:gap-8",
+          mobilePhase === "customize" ? "gap-2" : "gap-4",
+        )}
+      >
         <div className="hidden lg:block">
           <CustomizationPanel />
         </div>
@@ -54,17 +59,17 @@ export function CustomizeStudio({ config }: CustomizeStudioProps) {
 
         <div
           className={cn(
-            "overflow-hidden rounded-[1.5rem] border border-border lg:h-[calc(100vh-2rem)] lg:max-h-[780px] lg:rounded-[2rem]",
+            "overflow-hidden rounded-[1.25rem] border border-border bg-[#ece8e2] lg:h-[calc(100vh-2rem)] lg:max-h-[780px] lg:rounded-[2rem]",
             mobilePhase === "landing"
-              ? "hidden h-[min(52svh,420px)] lg:block"
-              : "h-[min(52svh,420px)]",
+              ? "hidden h-[min(36svh,280px)] lg:block"
+              : "h-[min(34svh,260px)] shrink-0",
           )}
         >
           <ShoeViewer />
         </div>
 
         {mobilePhase !== "landing" ? (
-          <div className="lg:hidden">
+          <div className="min-h-0 lg:hidden">
             <CustomizeMobileControls
               phase={mobilePhase}
               onReview={() => setMobilePhase("review")}

@@ -53,21 +53,22 @@ class ViewerErrorBoundary extends Component<
 
 export function ShoeViewer() {
   return (
-    <div className="relative h-full min-h-0 overflow-hidden rounded-[2rem] border border-border bg-transparent">
+    <div className="relative h-full min-h-0 overflow-hidden rounded-[2rem] border border-border bg-[#ece8e2]">
       <ViewerErrorBoundary>
         <Suspense fallback={<ViewerFallback />}>
           <Canvas
-            className="h-full w-full !bg-transparent"
+            className="h-full w-full"
             shadows
             dpr={[1, 1.75]}
             gl={{
               antialias: true,
-              alpha: true,
+              alpha: false,
               premultipliedAlpha: false,
               powerPreference: "high-performance",
             }}
             onCreated={({ gl }) => {
-              gl.setClearColor(0x000000, 0);
+              // Warm site grey so dark shoe colors stay visible (black canvas hid them).
+              gl.setClearColor(0xece8e2, 1);
             }}
           >
             <PerspectiveCamera makeDefault position={[2.4, 1.35, 2.6]} fov={36} />
@@ -109,12 +110,6 @@ export function ShoeViewer() {
           </Canvas>
         </Suspense>
       </ViewerErrorBoundary>
-
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-white/90 to-transparent p-5">
-        <p className="text-xs uppercase tracking-[0.28em] text-stone-600">
-          Live 3D preview · Drag to rotate · Scroll to zoom
-        </p>
-      </div>
     </div>
   );
 }

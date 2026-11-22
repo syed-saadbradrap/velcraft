@@ -55,7 +55,7 @@ export default async function CustomizePage({ params }: CustomizePageProps) {
     page.hero?.description || site?.customize_page?.description || FALLBACK_DESCRIPTION;
 
   return (
-    <Container className="py-6 lg:py-10">
+    <Container className="py-3 lg:py-10">
       <div className="mb-4 hidden space-y-1 lg:mb-6 lg:block">
         <p className="text-xs uppercase tracking-[0.32em] text-accent">{eyebrow}</p>
         <h1 className="break-words font-display text-[clamp(1.875rem,6vw,3rem)] leading-[1.08] text-stone-900">
