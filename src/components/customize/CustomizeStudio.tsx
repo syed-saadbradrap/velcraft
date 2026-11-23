@@ -61,8 +61,8 @@ export function CustomizeStudio({ config }: CustomizeStudioProps) {
           className={cn(
             "relative z-0 isolate overflow-hidden rounded-[1.25rem] border border-border bg-[#ece8e2] lg:h-[calc(100vh-2rem)] lg:max-h-[780px] lg:rounded-[2rem]",
             mobilePhase === "landing"
-              ? "hidden h-[min(40svh,300px)] lg:block"
-              : "h-[min(42svh,320px)] shrink-0",
+              ? "hidden h-[min(48svh,380px)] lg:block"
+              : "h-[min(54svh,440px)] shrink-0",
           )}
         >
           {/* Remount on customize enter so camera fits after the canvas is visible. */}

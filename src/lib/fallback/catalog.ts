@@ -122,7 +122,7 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
       },
       materials: [
         { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
-        { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 0 },
+        { id: 2, name: "Synthetic", slug: "synthetic-leather", price_modifier: 0 },
       ],
       colors: [
         { id: 10, name: "Onyx", hex_code: "#111111" },
@@ -166,7 +166,7 @@ export function getFallbackShoeDetail(slug: string): ShoeDetail | null {
       },
       materials: [
         { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
-        { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 0 },
+        { id: 2, name: "Synthetic", slug: "synthetic-leather", price_modifier: 0 },
       ],
       colors: [
         { id: 1, name: "Ivory", hex_code: "#F8F4EC" },

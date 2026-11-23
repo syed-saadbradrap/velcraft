@@ -19,6 +19,51 @@ export function usesImportedFullModel(slug: string) {
   return importedModelSlugs.has(slug);
 }
 
+/** Short, storefront-friendly material labels. */
+export function materialDisplayName(material: {
+  name?: string | null;
+  slug?: string | null;
+}) {
+  const slug = material.slug?.trim().toLowerCase() ?? "";
+  if (slug === "synthetic-leather" || slug.includes("synthetic")) {
+    return "Synthetic";
+  }
+  if (slug === "suede" || slug.includes("suede")) {
+    return "Suede";
+  }
+
+  const named = material.name?.trim() ?? "";
+  if (/synthetic\s*leather/i.test(named)) {
+    return "Synthetic";
+  }
+  return named || "Material";
+}
+
+/** Keep sole swatch labels readable even when API name is blank. */
+export function soleColorDisplayName(sole: {
+  name?: string | null;
+  slug?: string | null;
+  hex_code?: string | null;
+}) {
+  const named = sole.name?.trim();
+  if (named) return named;
+
+  const slug = sole.slug?.trim().replace(/[-_]+/g, " ");
+  if (slug) {
+    return slug.replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  const hex = (sole.hex_code ?? "").toLowerCase();
+  if (["#000", "#000000", "#111", "#111111", "#1a1a1a", "#0a0a0a"].includes(hex)) {
+    return "Black";
+  }
+  if (["#fff", "#ffffff", "#f5f5f5", "#fafafa", "#f8f8f8"].includes(hex)) {
+    return "White";
+  }
+
+  return sole.hex_code?.toUpperCase() || "Sole";
+}
+
 const fallbackModelsBySlug: Record<string, CustomizationConfig["models"]> = {
   "studio-loafer": {
     body: `${modelBase}/shoes/studio-loafer/shoe.glb`,
@@ -165,10 +210,14 @@ export function buildCustomizationConfig(shoe: ShoeDetail): CustomizationConfig 
     if (materials.length === 0) {
       materials = [
         { id: 1, name: "Suede", slug: "suede", price_modifier: 0 },
-        { id: 2, name: "Synthetic Leather", slug: "synthetic-leather", price_modifier: 0 },
+        { id: 2, name: "Synthetic", slug: "synthetic-leather", price_modifier: 0 },
       ];
     }
   }
+  materials = materials.map((material) => ({
+    ...material,
+    name: materialDisplayName(material),
+  }));
 
   const colors = (shoe.colors ?? []).map((color) => ({
     ...color,
@@ -224,10 +273,13 @@ export function buildCustomizationConfig(shoe: ShoeDetail): CustomizationConfig 
     models,
     materials,
     colors,
-    soleColors: shoe.sole_colors ?? [
+    soleColors: (shoe.sole_colors ?? [
       { id: 1, name: "Black", slug: "black", hex_code: "#111111" },
       { id: 2, name: "White", slug: "white", hex_code: "#FFFFFF" },
-    ],
+    ]).map((sole) => ({
+      ...sole,
+      name: soleColorDisplayName(sole),
+    })),
     buckles,
     sizes: shoe.sizes ?? [],
   };

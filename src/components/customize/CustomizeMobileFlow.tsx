@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useCustomization } from "@/context/CustomizationContext";
-import { isNoBuckle } from "@/lib/customize/config-builder";
+import { isNoBuckle, soleColorDisplayName } from "@/lib/customize/config-builder";
 import { normalizeImageUrl } from "@/lib/media";
 import { cn, formatPrice } from "@/lib/utils";
 import { isCustomizationComplete, selectionToApiCustomization } from "@/types/commerce";
@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/Button";
 type MobileTab = "material" | "color" | "buckle" | "sole" | "type" | "size";
 
 const TABS: { id: MobileTab; label: string; next: string }[] = [
-  { id: "material", label: "Material", next: "Color" },
+  { id: "material", label: "Material", next: "Type" },
+  { id: "type", label: "Type", next: "Color" },
   { id: "color", label: "Color", next: "Buckle" },
   { id: "buckle", label: "Buckle", next: "Sole" },
-  { id: "sole", label: "Sole", next: "Type" },
-  { id: "type", label: "Type", next: "Size" },
+  { id: "sole", label: "Sole", next: "Size" },
   { id: "size", label: "Size", next: "Review" },
 ];
 
@@ -86,10 +86,7 @@ export function CustomizeMobileStepper({
 }) {
   return (
     <div className="flex items-center justify-between gap-2 text-[11px] uppercase tracking-[0.16em] text-stone-500">
-      <button type="button" onClick={onBack}>
-        ← Back
-      </button>
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 flex-wrap items-center gap-1.5">
         <span>1 Style</span>
         <span>/</span>
         <span className={cn(phase === "customize" && "font-semibold text-accent")}>
@@ -98,6 +95,13 @@ export function CustomizeMobileStepper({
         <span>/</span>
         <span className={cn(phase === "review" && "font-semibold text-accent")}>3 Review</span>
       </div>
+      <button
+        type="button"
+        onClick={onBack}
+        className="shrink-0 rounded-full border border-border bg-[#f5f3ef] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#1c1917]"
+      >
+        ← Back
+      </button>
     </div>
   );
 }
@@ -157,48 +161,50 @@ export function CustomizeMobileControls({
 
   if (phase === "review") {
     return (
-      <div className="space-y-4 rounded-[1.25rem] border border-border bg-white/80 p-5">
-        <h2 className="font-display text-2xl text-stone-900">Review your design</h2>
-        <dl className="space-y-2 text-sm text-stone-700">
+      <div className="space-y-4 rounded-[1.25rem] border border-[#d6d3d1] bg-[#f5f3ef] p-5">
+        <h2 className="font-display text-2xl text-[#1c1917]">Review your design</h2>
+        <dl className="space-y-2 text-sm text-[#44403c]">
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Material</dt>
-            <dd>
+            <dt className="text-[#78716c]">Material</dt>
+            <dd className="font-medium text-[#1c1917]">
               {config.materials.find((item) => item.id === selection.materialId)?.name ?? "—"}
             </dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Color</dt>
-            <dd>
+            <dt className="text-[#78716c]">Color</dt>
+            <dd className="font-medium text-[#1c1917]">
               {config.colors.find((item) => item.hex_code === selection.colorHex)?.name ?? "—"}
             </dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Buckle</dt>
-            <dd>{config.buckles.find((item) => item.id === selection.buckleId)?.name ?? "—"}</dd>
+            <dt className="text-[#78716c]">Buckle</dt>
+            <dd className="font-medium text-[#1c1917]">
+              {config.buckles.find((item) => item.id === selection.buckleId)?.name ?? "—"}
+            </dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Sole</dt>
-            <dd>
+            <dt className="text-[#78716c]">Sole</dt>
+            <dd className="font-medium text-[#1c1917]">
               {config.soleColors.find((item) => item.hex_code === selection.soleColorHex)?.name ??
                 "—"}
             </dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Type</dt>
-            <dd className="capitalize">{selection.shoeType}</dd>
+            <dt className="text-[#78716c]">Type</dt>
+            <dd className="font-medium capitalize text-[#1c1917]">{selection.shoeType}</dd>
           </div>
           <div className="flex justify-between gap-3">
-            <dt className="text-stone-500">Size</dt>
-            <dd className="capitalize">
+            <dt className="text-[#78716c]">Size</dt>
+            <dd className="font-medium capitalize text-[#1c1917]">
               {selection.gender} ·{" "}
               {activeSizes.find((size) => size.id === selection.sizeId)?.label ?? "—"}
             </dd>
           </div>
         </dl>
-        <div className="flex items-end justify-between border-t border-border pt-4">
+        <div className="flex items-end justify-between border-t border-[#d6d3d1] pt-4">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.22em] text-stone-500">Total</p>
-            <p className="font-display text-3xl text-stone-900">{formatPrice(totalPrice)}</p>
+            <p className="text-[10px] uppercase tracking-[0.22em] text-[#78716c]">Total</p>
+            <p className="font-display text-3xl text-[#1c1917]">{formatPrice(totalPrice)}</p>
           </div>
           <Button
             size="lg"
@@ -232,7 +238,7 @@ export function CustomizeMobileControls({
         ))}
       </div>
 
-      <div className="rounded-[1.1rem] border border-border bg-stone-100/70 p-2.5">
+      <div className="rounded-[1.1rem] border border-[#d6d3d1] bg-[#f5f3ef] p-2.5">
         <p className="mb-2 text-[10px] uppercase tracking-[0.22em] text-accent">{currentTab.label}</p>
 
         {tab === "material" ? (
@@ -245,50 +251,57 @@ export function CustomizeMobileControls({
                 className={cn(
                   "rounded-xl border p-2 text-left transition-colors",
                   selection.materialId === material.id
-                    ? "border-stone-900 bg-white/70"
-                    : "border-border bg-transparent",
+                    ? "border-[#1c1917] bg-[#fafaf9]"
+                    : "border-[#d6d3d1] bg-transparent",
                 )}
               >
                 <span
-                  className="mb-1.5 block h-11 rounded-lg border border-stone-200/80"
+                  className="mb-1.5 block h-11 rounded-lg border border-[#e7e5e4]"
                   style={fabricPreviewStyle(material.slug)}
                 />
-                <span className="block text-xs font-medium text-stone-900">{material.name}</span>
+                <span className="block text-xs font-medium text-[#1c1917]">{material.name}</span>
               </button>
             ))}
           </div>
         ) : null}
 
         {tab === "color" ? (
-          <div className="grid grid-cols-6 gap-2">
-            {config.colors.map((color) => {
-              const selected = selection.colorHex === color.hex_code;
-              return (
-                <button
-                  key={color.id}
-                  type="button"
-                  aria-label={color.name}
-                  onClick={() => setColor(color.hex_code)}
-                  className="flex flex-col items-center"
-                >
-                  <span
-                    className={cn(
-                      "relative h-8 w-8 rounded-full border-2",
-                      selected
-                        ? "border-stone-900 ring-2 ring-stone-900/20"
-                        : "border-stone-200",
-                    )}
-                    style={{ backgroundColor: color.hex_code }}
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-[#1c1917]">
+              {config.colors.find((color) => color.hex_code === selection.colorHex)?.name ??
+                "Select a color"}
+            </p>
+            <div className="grid grid-cols-6 gap-2">
+              {config.colors.map((color) => {
+                const selected = selection.colorHex === color.hex_code;
+                return (
+                  <button
+                    key={color.id}
+                    type="button"
+                    aria-label={color.name}
+                    title={color.name}
+                    onClick={() => setColor(color.hex_code)}
+                    className="flex flex-col items-center gap-1"
                   >
-                    {selected ? (
-                      <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white">
-                        ✓
-                      </span>
-                    ) : null}
-                  </span>
-                </button>
-              );
-            })}
+                    <span
+                      className={cn(
+                        "relative h-8 w-8 rounded-full border-2",
+                        selected
+                          ? "border-stone-900 ring-2 ring-stone-900/20"
+                          : "border-stone-200",
+                      )}
+                      style={{ backgroundColor: color.hex_code }}
+                    >
+                      {selected ? (
+                        <span className="absolute inset-0 flex items-center justify-center text-[9px] font-bold text-white mix-blend-difference">
+                          ✓
+                        </span>
+                      ) : null}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ) : null}
 
@@ -324,7 +337,7 @@ export function CustomizeMobileControls({
                       />
                     ) : null}
                   </span>
-                  <span className="block truncate text-[10px] font-medium leading-tight text-stone-800">
+                  <span className="block truncate text-[10px] font-medium leading-tight text-[#1c1917]">
                     {buckle.name}
                   </span>
                 </button>
@@ -335,25 +348,29 @@ export function CustomizeMobileControls({
 
         {tab === "sole" ? (
           <div className="flex flex-wrap gap-2">
-            {config.soleColors.map((sole) => (
-              <button
-                key={sole.id}
-                type="button"
-                onClick={() => setSoleColor(sole.hex_code)}
-                className={cn(
-                  "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs",
-                  selection.soleColorHex === sole.hex_code
-                    ? "border-stone-900 bg-stone-900 text-white"
-                    : "border-border text-stone-700",
-                )}
-              >
-                <span
-                  className="h-3 w-3 rounded-full border border-white/40"
-                  style={{ backgroundColor: sole.hex_code }}
-                />
-                {sole.name}
-              </button>
-            ))}
+            {config.soleColors.map((sole) => {
+              const selected = selection.soleColorHex === sole.hex_code;
+              const label = soleColorDisplayName(sole);
+              return (
+                <button
+                  key={sole.id}
+                  type="button"
+                  onClick={() => setSoleColor(sole.hex_code)}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium",
+                    selected
+                      ? "border-[#1c1917] bg-[#fafaf9] text-[#1c1917]"
+                      : "border-[#d6d3d1] bg-transparent text-[#1c1917]",
+                  )}
+                >
+                  <span
+                    className="h-3.5 w-3.5 shrink-0 rounded-full border border-[#d6d3d1]"
+                    style={{ backgroundColor: sole.hex_code }}
+                  />
+                  <span>{label}</span>
+                </button>
+              );
+            })}
           </div>
         ) : null}
 
@@ -367,8 +384,8 @@ export function CustomizeMobileControls({
                 className={cn(
                   "rounded-full border px-4 py-2 text-xs capitalize",
                   selection.shoeType === type
-                    ? "border-stone-900 bg-stone-900 text-white"
-                    : "border-border bg-transparent text-stone-700",
+                    ? "border-[#1c1917] bg-[#1c1917] text-white"
+                    : "border-[#d6d3d1] bg-transparent text-[#44403c]",
                 )}
               >
                 {type}
@@ -380,7 +397,7 @@ export function CustomizeMobileControls({
         {tab === "size" ? (
           <div className="space-y-3">
             <div>
-              <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-stone-500">Gender</p>
+              <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-[#78716c]">Gender</p>
               <div className="flex flex-wrap gap-1.5">
                 {(["women", "men"] as const)
                   .filter((gender) => config.sizes.some((size) => size.gender === gender))
@@ -392,8 +409,8 @@ export function CustomizeMobileControls({
                       className={cn(
                         "rounded-full border px-3 py-1.5 text-xs capitalize",
                         selection.gender === gender
-                          ? "border-stone-900 bg-stone-900 text-white"
-                          : "border-border bg-transparent text-stone-700",
+                          ? "border-[#1c1917] bg-[#1c1917] text-white"
+                          : "border-[#d6d3d1] bg-transparent text-[#44403c]",
                       )}
                     >
                       {gender}
@@ -402,7 +419,7 @@ export function CustomizeMobileControls({
               </div>
             </div>
             <div>
-              <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-stone-500">
+              <p className="mb-1.5 text-[10px] uppercase tracking-[0.18em] text-[#78716c]">
                 EU Size
               </p>
               {activeSizes.length > 0 ? (
@@ -415,8 +432,8 @@ export function CustomizeMobileControls({
                       className={cn(
                         "min-w-9 rounded-full border px-2.5 py-1.5 text-xs",
                         selection.sizeId === size.id
-                          ? "border-stone-900 bg-stone-900 text-white"
-                          : "border-border bg-transparent text-stone-700",
+                          ? "border-[#1c1917] bg-[#1c1917] text-white"
+                          : "border-[#d6d3d1] bg-transparent text-[#44403c]",
                       )}
                     >
                       {size.label}
@@ -424,7 +441,7 @@ export function CustomizeMobileControls({
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-stone-500">Select a gender to view sizes.</p>
+                <p className="text-xs text-[#78716c]">Select a gender to view sizes.</p>
               )}
             </div>
           </div>

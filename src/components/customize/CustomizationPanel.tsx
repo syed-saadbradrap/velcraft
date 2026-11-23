@@ -243,17 +243,17 @@ export function CustomizationPanel({ className }: { className?: string }) {
                 type="button"
                 onClick={() => setSoleColor(sole.hex_code)}
                 className={cn(
-                  "inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm transition-colors",
+                  "inline-flex items-center gap-3 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors",
                   selection.soleColorHex === sole.hex_code
                     ? "border-accent bg-accent/10 text-stone-900"
-                    : "border-border text-stone-700 hover:text-stone-900",
+                    : "border-border text-stone-800 hover:text-stone-900",
                 )}
               >
                 <span
-                  className="h-4 w-4 rounded-full border border-stone-300/40"
+                  className="h-4 w-4 shrink-0 rounded-full border border-stone-300/40"
                   style={{ backgroundColor: sole.hex_code }}
                 />
-                {sole.name}
+                <span>{sole.name || sole.slug || sole.hex_code}</span>
               </button>
             ))}
           </div>
