@@ -35,7 +35,7 @@ export function CustomizeStudio({ config }: CustomizeStudioProps) {
       <div
         className={cn(
           "flex flex-col lg:grid lg:grid-cols-[minmax(300px,400px)_minmax(0,1fr)] lg:items-start lg:gap-8",
-          mobilePhase === "customize" ? "gap-2" : "gap-4",
+          mobilePhase === "customize" ? "gap-3" : "gap-4",
         )}
       >
         <div className="hidden lg:block">
@@ -59,17 +59,18 @@ export function CustomizeStudio({ config }: CustomizeStudioProps) {
 
         <div
           className={cn(
-            "overflow-hidden rounded-[1.25rem] border border-border bg-[#ece8e2] lg:h-[calc(100vh-2rem)] lg:max-h-[780px] lg:rounded-[2rem]",
+            "relative z-0 isolate overflow-hidden rounded-[1.25rem] border border-border bg-[#ece8e2] lg:h-[calc(100vh-2rem)] lg:max-h-[780px] lg:rounded-[2rem]",
             mobilePhase === "landing"
-              ? "hidden h-[min(36svh,280px)] lg:block"
-              : "h-[min(34svh,260px)] shrink-0",
+              ? "hidden h-[min(40svh,300px)] lg:block"
+              : "h-[min(42svh,320px)] shrink-0",
           )}
         >
-          <ShoeViewer />
+          {/* Remount on customize enter so camera fits after the canvas is visible. */}
+          <ShoeViewer key={mobilePhase === "landing" ? "desk" : "mobile-live"} />
         </div>
 
         {mobilePhase !== "landing" ? (
-          <div className="min-h-0 lg:hidden">
+          <div className="relative z-10 min-h-0 bg-background pt-1 lg:hidden">
             <CustomizeMobileControls
               phase={mobilePhase}
               onReview={() => setMobilePhase("review")}

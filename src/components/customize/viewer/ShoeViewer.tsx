@@ -53,7 +53,7 @@ class ViewerErrorBoundary extends Component<
 
 export function ShoeViewer() {
   return (
-    <div className="relative h-full min-h-0 overflow-hidden rounded-[2rem] border border-border bg-[#ece8e2]">
+    <div className="relative h-full min-h-0 overflow-hidden rounded-[1.25rem] border border-border bg-[#ece8e2] lg:rounded-[2rem]">
       <ViewerErrorBoundary>
         <Suspense fallback={<ViewerFallback />}>
           <Canvas
@@ -100,10 +100,10 @@ export function ShoeViewer() {
               enablePan
               enableZoom
               enableRotate
-              minDistance={1.2}
-              maxDistance={6.5}
-              minPolarAngle={0.55}
-              maxPolarAngle={1.45}
+              minDistance={1.5}
+              maxDistance={14}
+              minPolarAngle={0.45}
+              maxPolarAngle={1.5}
               target={[0, 0.55, 0]}
               makeDefault
             />

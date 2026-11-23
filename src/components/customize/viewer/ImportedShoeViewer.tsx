@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useLayoutEffect, useMemo, useRef } from "react";
+import { Suspense, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
 import * as THREE from "three";
@@ -548,11 +548,22 @@ export function ImportedShoeViewer() {
 
     const fit = () => {
       if (!groupRef.current) return;
+      // Skip until the canvas has a real size (mobile viewer starts hidden on landing).
+      const { clientWidth, clientHeight } = gl.domElement;
+      if (clientWidth < 8 || clientHeight < 8) {
+        return;
+      }
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.aspect = clientWidth / clientHeight;
+        // Wider FOV on short mobile strips so the shoe isn't cropped.
+        camera.fov = clientHeight < 340 || camera.aspect > 1.4 ? 44 : 36;
+        camera.updateProjectionMatrix();
+      }
       fitCameraToObject(
         camera,
         controls as { target: THREE.Vector3; update: () => void } | null,
         groupRef.current,
-        1.25,
+        1.4,
       );
       cameraFittedRef.current = true;
       lastShoeSlugRef.current = fitKey;
@@ -560,8 +571,45 @@ export function ImportedShoeViewer() {
 
     fit();
     const id = window.setTimeout(fit, 50);
-    return () => window.clearTimeout(id);
-  }, [camera, controls, config.shoeSlug, selection.shoeType, shoeGroup]);
+    const id2 = window.setTimeout(fit, 200);
+    return () => {
+      window.clearTimeout(id);
+      window.clearTimeout(id2);
+    };
+  }, [camera, controls, config.shoeSlug, gl, selection.shoeType, shoeGroup]);
+
+  // Re-frame when the viewer box changes size (e.g. landing → customize on phone).
+  useEffect(() => {
+    const el = gl.domElement;
+    let lastW = el.clientWidth;
+    let lastH = el.clientHeight;
+    const ro = new ResizeObserver(() => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      if (w < 8 || h < 8) return;
+      if (Math.abs(w - lastW) < 2 && Math.abs(h - lastH) < 2) return;
+      lastW = w;
+      lastH = h;
+      cameraFittedRef.current = false;
+      lastShoeSlugRef.current = null;
+      if (!groupRef.current) return;
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.aspect = w / h;
+        camera.fov = h < 340 || camera.aspect > 1.4 ? 44 : 36;
+        camera.updateProjectionMatrix();
+      }
+      fitCameraToObject(
+        camera,
+        controls as { target: THREE.Vector3; update: () => void } | null,
+        groupRef.current,
+        1.4,
+      );
+      cameraFittedRef.current = true;
+      lastShoeSlugRef.current = `${config.shoeSlug}:${selection.shoeType}`;
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [camera, config.shoeSlug, controls, gl, selection.shoeType]);
 
   return (
     <group ref={groupRef}>

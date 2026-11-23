@@ -757,7 +757,7 @@ export function fitCameraToObject(
   camera: THREE.Camera,
   controls: { target: THREE.Vector3; update: () => void } | null,
   object: THREE.Object3D,
-  fitPadding = 1.25,
+  fitPadding = 1.35,
 ) {
   if (!(camera instanceof THREE.PerspectiveCamera)) {
     return;
@@ -798,21 +798,26 @@ export function fitCameraToObject(
 
   const center = box.getCenter(new THREE.Vector3());
   const size = box.getSize(new THREE.Vector3());
-  const maxDim = Math.max(size.x, size.y, size.z, 0.001);
-  const fov = camera.fov * (Math.PI / 180);
-  const distance = (maxDim / (2 * Math.tan(fov / 2))) * fitPadding;
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  const radius = Math.max(sphere.radius, 0.001);
 
-  camera.position.set(
-    center.x + distance * 0.78,
-    center.y + distance * 0.42,
-    center.z + distance * 0.92,
-  );
+  // Aspect-aware fit: short/wide mobile canvases clip on vertical FOV if we only use maxDim.
+  const aspect = Math.max(camera.aspect || 1, 0.05);
+  const vFov = camera.fov * (Math.PI / 180);
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const halfMinFov = Math.min(vFov, hFov) / 2;
+  // Extra padding on squat viewports (phone customize strip).
+  const squatBoost = aspect > 1.35 ? 1.18 : 1;
+  const distance = (radius / Math.sin(halfMinFov)) * fitPadding * squatBoost;
+
+  const dir = new THREE.Vector3(0.78, 0.42, 0.92).normalize();
+  camera.position.copy(center).addScaledVector(dir, distance);
   camera.near = 0.01;
   camera.far = Math.max(50, distance * 40);
   camera.updateProjectionMatrix();
 
   if (controls) {
-    controls.target.set(center.x, center.y + size.y * 0.05, center.z);
+    controls.target.set(center.x, center.y + size.y * 0.02, center.z);
     controls.update();
   }
 }
